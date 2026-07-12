@@ -18,4 +18,13 @@ export class AppComponent {
   title = 'jlpt-app';
   
   levels = ['N5', 'N4', 'N3', 'N2', 'N1'];
+  isMobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+  
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
 }
