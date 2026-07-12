@@ -1,0 +1,47 @@
+<div class="max-w-3xl mx-auto px-4 py-8">
+  <div *ngIf="isFinished" class="text-center py-20 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+    <div class="text-5xl mb-6">🎉</div>
+    <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Chúc mừng!</h2>
+    <p class="text-slate-500 dark:text-slate-400">Bạn đã ôn tập xong tất cả các thẻ.</p>
+    <button routerLink="/" class="mt-8 px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors cursor-pointer">
+      Quay lại trang chủ
+    </button>
+  </div>
+
+  <div *ngIf="!isFinished && vocabs.length > 0" class="flex flex-col items-center">
+    <!-- Progress counter -->
+    <div class="w-full max-w-lg flex justify-between items-center mb-6 text-sm font-medium text-slate-500 dark:text-slate-400">
+      <span>Đang học thẻ: {{ currentIndex + 1 }} / {{ vocabs.length }}</span>
+      <span class="px-3 py-1 font-bold bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300 rounded-full">
+        {{ vocabs[currentIndex].type | uppercase }}
+      </span>
+    </div>
+
+    <!-- Flashcard -->
+    <div class="w-full max-w-lg aspect-[4/3] perspective-1000" (click)="flipCard()">
+      <div class="w-full h-full relative preserve-3d transition-transform duration-500 cursor-pointer" [class.rotate-y-180]="isFlipped">
+        <!-- Front side -->
+        <div class="absolute inset-0 backface-hidden bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center p-8">
+          <p class="text-6xl font-bold text-slate-800 dark:text-white text-center">{{ vocabs[currentIndex].front }}</p>
+          <p class="mt-12 text-sm text-slate-400 dark:text-slate-500 italic">Chạm vào thẻ để lật</p>
+        </div>
+
+        <!-- Back side -->
+        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-2 border-indigo-400 dark:border-indigo-600 flex flex-col items-center justify-center p-8">
+          <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 text-center mb-6">{{ vocabs[currentIndex].back }}</p>
+          <p *ngIf="vocabs[currentIndex].example" class="text-lg text-slate-600 dark:text-slate-300 text-center font-medium">
+            "{{ vocabs[currentIndex].example }}"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons (show only when flipped) -->
+    <div class="w-full max-w-lg mt-8 grid grid-cols-4 gap-3 transition-opacity duration-300" [class.opacity-0]="!isFlipped" [class.pointer-events-none]="!isFlipped">
+      <button (click)="markAnswer(0); $event.stopPropagation()" class="cursor-pointer py-3 rounded-xl font-semibold bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 shadow-sm hover:shadow transition-all">Lại từ đầu</button>
+      <button (click)="markAnswer(1); $event.stopPropagation()" class="cursor-pointer py-3 rounded-xl font-semibold bg-orange-100 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:hover:bg-orange-900/50 shadow-sm hover:shadow transition-all">Khó</button>
+      <button (click)="markAnswer(2); $event.stopPropagation()" class="cursor-pointer py-3 rounded-xl font-semibold bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50 shadow-sm hover:shadow transition-all">Tốt</button>
+      <button (click)="markAnswer(3); $event.stopPropagation()" class="cursor-pointer py-3 rounded-xl font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 shadow-sm hover:shadow transition-all">Dễ</button>
+    </div>
+  </div>
+</div>

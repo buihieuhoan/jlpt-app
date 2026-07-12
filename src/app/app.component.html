@@ -1,0 +1,90 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300">
+  
+  <!-- Header / Navigation -->
+  <header class="bg-white dark:bg-slate-800 shadow-sm sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo/Title -->
+        <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" routerLink="/">
+          <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-md">
+            あ
+          </div>
+          <span class="font-bold text-xl tracking-tight text-indigo-600 dark:text-indigo-400">JLPT Master</span>
+        </div>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden sm:flex items-center space-x-6">
+          <a routerLink="/study" routerLinkActive="text-indigo-600 dark:text-indigo-400 font-semibold" class="text-slate-500 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md font-medium transition-colors">
+            Học thẻ
+          </a>
+          <a routerLink="/quiz" routerLinkActive="text-indigo-600 dark:text-indigo-400 font-semibold" class="text-slate-500 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md font-medium transition-colors">
+            Trắc nghiệm
+          </a>
+          <a routerLink="/manage" routerLinkActive="text-indigo-600 dark:text-indigo-400 font-semibold" class="text-slate-500 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md font-medium transition-colors">
+            Quản lý từ vựng
+          </a>
+          
+          <div class="h-6 w-px bg-slate-300 dark:bg-slate-700"></div>
+          
+          <!-- User Stats -->
+          <div class="flex items-center gap-4 bg-amber-50 dark:bg-amber-900/20 px-3 py-1.5 rounded-lg border border-amber-200 dark:border-amber-800/50" *ngIf="userService.stats$ | async as stats">
+            <div class="flex items-center gap-1 text-amber-600 dark:text-amber-500 font-bold text-sm" title="Chuỗi ngày học">
+              <span>🔥</span>
+              <span>{{ stats.streak }}</span>
+            </div>
+            <div class="flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-bold text-sm" title="Cấp độ (EXP)">
+              <span>⭐</span>
+              <span>Lv.{{ stats.level }}</span>
+            </div>
+          </div>
+          
+          <div class="flex bg-slate-100 dark:bg-slate-800/50 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
+            <button *ngFor="let level of levels" 
+                    (click)="levelService.setLevel(level)"
+                    [class.bg-white]="(levelService.currentLevel$ | async) === level"
+                    [class.text-indigo-600]="(levelService.currentLevel$ | async) === level"
+                    [class.dark:bg-indigo-600]="(levelService.currentLevel$ | async) === level"
+                    [class.dark:text-white]="(levelService.currentLevel$ | async) === level"
+                    [class.shadow-sm]="(levelService.currentLevel$ | async) === level"
+                    [class.text-slate-500]="(levelService.currentLevel$ | async) !== level"
+                    class="px-3 py-1.5 text-sm font-bold rounded-md transition-all">
+              {{ level }}
+            </button>
+          </div>
+        </nav>
+        <!-- Mobile menu button (placeholder) -->
+        <div class="sm:hidden flex items-center">
+          <button class="text-slate-500 hover:text-slate-700 dark:text-slate-300 dark:hover:text-white focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <router-outlet></router-outlet>
+    
+    <!-- Placeholder message if no route is matched (Home) -->
+    <div *ngIf="router.url === '/'" class="text-center mt-20">
+      <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl md:text-6xl">
+        <span class="block">Chào mừng bạn đến với</span>
+        <span class="block text-indigo-600 dark:text-indigo-400 mt-2">Hệ thống ôn thi JLPT</span>
+      </h1>
+      <p class="mt-4 max-w-md mx-auto text-base text-slate-500 dark:text-slate-400 sm:text-lg md:mt-8 md:text-xl md:max-w-3xl">
+        Ứng dụng này sẽ giúp bạn học từ vựng, Kanji và ngữ pháp nhanh chóng với thuật toán Lặp lại ngắt quãng (Spaced Repetition).
+      </p>
+      <div class="mt-8 flex justify-center gap-4">
+        <a routerLink="/study" class="px-8 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg hover:shadow-xl transition-all">
+          Bắt đầu học
+        </a>
+        <a routerLink="/manage" class="px-8 py-3 border border-slate-300 dark:border-slate-600 text-base font-medium rounded-xl text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-all">
+          Thêm từ mới
+        </a>
+      </div>
+    </div>
+  </main>
+</div>

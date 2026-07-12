@@ -1,0 +1,47 @@
+{
+  "columns": [
+    "DANH SÁCH TỪ VỰNG TIẾNG NHẬT JLPT N4 (Bài 26 - 50)",
+    "Unnamed: 1",
+    "Unnamed: 2",
+    "Unnamed: 3",
+    "Unnamed: 4"
+  ],
+  "head": [
+    {
+      "DANH SÁCH TỪ VỰNG TIẾNG NHẬT JLPT N4 (Bài 26 - 50)": "Từ vựng (Kanji)",
+      "Unnamed: 1": "Hiragana / Katakana",
+      "Unnamed: 2": "Nghĩa tiếng Việt",
+      "Unnamed: 3": "Nhóm từ",
+      "Unnamed: 4": "Bài"
+    },
+    {
+      "DANH SÁCH TỪ VỰNG TIẾNG NHẬT JLPT N4 (Bài 26 - 50)": "診ます",
+      "Unnamed: 1": "みます",
+      "Unnamed: 2": "Khám (bệnh)",
+      "Unnamed: 3": "Động từ",
+      "Unnamed: 4": "Bài 26"
+    },
+    {
+      "DANH SÁCH TỪ VỰNG TIẾNG NHẬT JLPT N4 (Bài 26 - 50)": "探します",
+      "Unnamed: 1": "さがします",
+      "Unnamed: 2": "Tìm, tìm kiếm",
+      "Unnamed: 3": "Động từ",
+      "Unnamed: 4": "Bài 26"
+    },
+    {
+      "DANH SÁCH TỪ VỰNG TIẾNG NHẬT JLPT N4 (Bài 26 - 50)": "遅れます",
+      "Unnamed: 1": "おくれます",
+      "Unnamed: 2": "Chậm, trễ",
+      "Unnamed: 3": "Động từ",
+      "Unnamed: 4": "Bài 26"
+    },
+    {
+      "DANH SÁCH TỪ VỰNG TIẾNG NHẬT JLPT N4 (Bài 26 - 50)": "間に合います",
+      "Unnamed: 1": "まにあいます",
+      "Unnamed: 2": "Kịp giờ",
+      "Unnamed: 3": "Động từ",
+      "Unnamed: 4": "Bài 26"
+    }
+  ],
+  "total_rows": 705
+}

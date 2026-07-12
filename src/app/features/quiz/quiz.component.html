@@ -1,0 +1,195 @@
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 md:p-8">
+  
+  <!-- STAGE 1: SETUP -->
+  <div *ngIf="stage === 'setup'" class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Thi Trắc nghiệm JLPT</h2>
+      <p class="text-slate-500 dark:text-slate-400 mt-2">Cấp độ đang chọn: <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ currentLevel }}</span> ({{ availableVocabs.length }} từ vựng)</p>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Số lượng câu hỏi</label>
+        <div class="flex gap-3">
+          <label class="flex-1">
+            <input type="radio" name="qc" [value]="10" [(ngModel)]="questionCount" class="peer sr-only">
+            <div class="p-3 text-center rounded-lg border border-slate-200 dark:border-slate-600 cursor-pointer peer-checked:bg-indigo-50 peer-checked:border-indigo-500 peer-checked:text-indigo-700 dark:peer-checked:bg-indigo-900/30 dark:peer-checked:text-indigo-300 font-medium transition-colors">10 câu</div>
+          </label>
+          <label class="flex-1">
+            <input type="radio" name="qc" [value]="20" [(ngModel)]="questionCount" class="peer sr-only">
+            <div class="p-3 text-center rounded-lg border border-slate-200 dark:border-slate-600 cursor-pointer peer-checked:bg-indigo-50 peer-checked:border-indigo-500 peer-checked:text-indigo-700 dark:peer-checked:bg-indigo-900/30 dark:peer-checked:text-indigo-300 font-medium transition-colors">20 câu</div>
+          </label>
+          <label class="flex-1">
+            <input type="radio" name="qc" [value]="50" [(ngModel)]="questionCount" class="peer sr-only">
+            <div class="p-3 text-center rounded-lg border border-slate-200 dark:border-slate-600 cursor-pointer peer-checked:bg-indigo-50 peer-checked:border-indigo-500 peer-checked:text-indigo-700 dark:peer-checked:bg-indigo-900/30 dark:peer-checked:text-indigo-300 font-medium transition-colors">50 câu</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Thời gian (Giây/câu)</label>
+        <div class="flex gap-3">
+          <label class="flex-1">
+            <input type="radio" name="tpq" [value]="0" [(ngModel)]="timePerQuestion" class="peer sr-only">
+            <div class="p-3 text-center rounded-lg border border-slate-200 dark:border-slate-600 cursor-pointer peer-checked:bg-emerald-50 peer-checked:border-emerald-500 peer-checked:text-emerald-700 dark:peer-checked:bg-emerald-900/30 dark:peer-checked:text-emerald-300 font-medium transition-colors">Không giới hạn</div>
+          </label>
+          <label class="flex-1">
+            <input type="radio" name="tpq" [value]="10" [(ngModel)]="timePerQuestion" class="peer sr-only">
+            <div class="p-3 text-center rounded-lg border border-slate-200 dark:border-slate-600 cursor-pointer peer-checked:bg-orange-50 peer-checked:border-orange-500 peer-checked:text-orange-700 dark:peer-checked:bg-orange-900/30 dark:peer-checked:text-orange-300 font-medium transition-colors">10 giây ⚡</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Dạng câu hỏi</label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex items-center gap-2 p-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="selectedTypes['kanji-hiragana']" class="w-4 h-4 text-indigo-600 rounded">
+            <span class="text-slate-700 dark:text-slate-300">Kanji ➔ Hiragana</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="selectedTypes['hiragana-kanji']" class="w-4 h-4 text-indigo-600 rounded">
+            <span class="text-slate-700 dark:text-slate-300">Hiragana ➔ Kanji</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="selectedTypes['word-meaning']" class="w-4 h-4 text-indigo-600 rounded">
+            <span class="text-slate-700 dark:text-slate-300">Từ Nhật ➔ Nghĩa Việt</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 cursor-pointer">
+            <input type="checkbox" [(ngModel)]="selectedTypes['meaning-word']" class="w-4 h-4 text-indigo-600 rounded">
+            <span class="text-slate-700 dark:text-slate-300">Nghĩa Việt ➔ Từ Nhật</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Lesson Selection -->
+      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+        <div class="flex justify-between items-center mb-3">
+          <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Chọn Bài Học</label>
+          <button (click)="toggleAllLessons()" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Chọn/Bỏ chọn tất cả</button>
+        </div>
+        <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 custom-scrollbar">
+          <label *ngFor="let lesson of availableLessons" class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
+            <input type="checkbox" [(ngModel)]="selectedLessons[lesson]" class="w-4 h-4 text-indigo-600 rounded">
+            <span class="text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap">
+              {{ lesson === 0 ? 'Từ vựng ngoài (Không có bài)' : 'Bài ' + lesson }}
+            </span>
+          </label>
+          <div *ngIf="availableLessons.length === 0" class="text-sm text-slate-500 italic p-2">Không có dữ liệu bài học.</div>
+        </div>
+      </div>
+    </div>
+
+    <button (click)="startQuiz()" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg">
+      Bắt Đầu Thi
+    </button>
+  </div>
+
+  <!-- STAGE 2: PLAYING -->
+  <div *ngIf="stage === 'playing'" class="max-w-3xl mx-auto">
+    <!-- Progress Bar -->
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-sm font-bold text-slate-500 dark:text-slate-400">Câu {{ currentIndex + 1 }} / {{ questions.length }}</span>
+      <span class="text-sm font-bold text-indigo-600 dark:text-indigo-400">Điểm: {{ score }}</span>
+    </div>
+    <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5 mb-8">
+      <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" [style.width.%]="(currentIndex / questions.length) * 100"></div>
+    </div>
+
+    <!-- Timer -->
+    <div *ngIf="timePerQuestion > 0 && !showExplanation" class="flex justify-center mb-6">
+      <div class="flex items-center justify-center w-16 h-16 rounded-full border-4 font-bold text-2xl"
+           [class.border-emerald-500]="timeLeft > 5" [class.text-emerald-500]="timeLeft > 5"
+           [class.border-orange-500]="timeLeft <= 5 && timeLeft > 2" [class.text-orange-500]="timeLeft <= 5 && timeLeft > 2"
+           [class.border-red-500]="timeLeft <= 2" [class.text-red-500]="timeLeft <= 2">
+        {{ timeLeft }}
+      </div>
+    </div>
+
+    <!-- Question -->
+    <div class="text-center mb-10">
+      <h3 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white py-8 px-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm">
+        {{ questions[currentIndex].questionText }}
+      </h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-3 font-medium">Chọn đáp án đúng nhất</p>
+    </div>
+
+    <!-- Options -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <button *ngFor="let opt of questions[currentIndex].options" 
+              (click)="selectAnswer(opt)"
+              [disabled]="showExplanation"
+              [ngClass]="{
+                'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30': !showExplanation,
+                'bg-emerald-500 border-emerald-600 text-white shadow-md': showExplanation && opt.isCorrect,
+                'bg-red-500 border-red-600 text-white': showExplanation && selectedAnswer === opt && !opt.isCorrect,
+                'opacity-50': showExplanation && !opt.isCorrect && opt !== selectedAnswer
+              }"
+              class="p-5 text-xl font-semibold rounded-xl border-2 transition-all duration-200 text-center">
+        {{ opt.text }}
+      </button>
+    </div>
+
+    <!-- Explanation Box (Shows after answer) -->
+    <div *ngIf="showExplanation" class="mt-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner animate-fade-in">
+      <h4 class="text-2xl font-bold mb-5 flex items-center gap-2" [ngClass]="isAnswerCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'">
+        {{ isAnswerCorrect ? '🎉 Lựa chọn Chính xác!' : '❌ Rất tiếc, bạn đã chọn sai!' }}
+      </h4>
+      <div class="space-y-3">
+        <!-- Duyệt qua tất cả 4 đáp án để giải thích -->
+        <div *ngFor="let opt of questions[currentIndex].options" class="p-3 rounded-lg border text-base" [ngClass]="{'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/50': opt.isCorrect, 'bg-white border-slate-200 dark:bg-slate-800 dark:border-slate-700': !opt.isCorrect}">
+          <span class="font-bold text-slate-900 dark:text-white inline-block min-w-[120px]">{{ opt.text }}:</span> 
+          <span class="text-slate-600 dark:text-slate-400 ml-2">{{ opt.explanation }}</span>
+        </div>
+      </div>
+      <button (click)="nextQuestion()" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all">
+        Câu Tiếp Theo ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- STAGE 3: RESULT -->
+  <div *ngIf="stage === 'result'" class="max-w-3xl mx-auto">
+    <div class="text-center mb-10 p-8 rounded-3xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 border border-indigo-100 dark:border-indigo-800/50">
+      <div class="text-6xl mb-4">{{ score === questions.length ? '🎉' : (score > questions.length/2 ? '👍' : '💪') }}</div>
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Hoàn thành bài thi!</h2>
+      <p class="text-xl text-slate-600 dark:text-slate-300">
+        Điểm của bạn: <span class="font-bold text-indigo-600 dark:text-indigo-400 text-3xl">{{ score }}</span> / {{ questions.length }}
+      </p>
+      
+      <div class="mt-6 inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 px-6 py-3 rounded-full font-bold text-lg border border-amber-200 dark:border-amber-800/50">
+        <span>⭐</span>
+        <span>+{{ expGained }} EXP</span>
+      </div>
+    </div>
+
+    <div *ngIf="mistakes.length > 0" class="mb-10">
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+        <span>❌</span> Câu hỏi cần ôn lại ({{ mistakes.length }})
+      </h3>
+      <div class="space-y-3">
+        <div *ngFor="let m of mistakes" class="p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl flex flex-col sm:flex-row gap-4 justify-between sm:items-center">
+          <div>
+            <div class="font-bold text-lg text-slate-800 dark:text-slate-200">{{ m.questionText }}</div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Đáp án đúng: <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ m.options[0].isCorrect ? m.options[0].text : (m.options[1].isCorrect ? m.options[1].text : (m.options[2].isCorrect ? m.options[2].text : m.options[3].text)) }}</span></div>
+          </div>
+          <div class="text-right text-sm bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm self-start sm:self-auto">
+            <span class="font-bold block">{{ m.originalItem.front }}</span>
+            <span class="text-indigo-600 dark:text-indigo-400 block">{{ m.originalItem.hiragana }}</span>
+            <span class="text-slate-600 dark:text-slate-400">{{ m.originalItem.back }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      <button (click)="restart()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all">
+        Thi Lại
+      </button>
+      <a routerLink="/study" class="flex-1 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-slate-700 dark:text-slate-200 font-bold py-4 rounded-xl shadow-sm hover:shadow-md transition-all text-center">
+        Ôn Thẻ Flashcard
+      </a>
+    </div>
+  </div>
+
+</div>
