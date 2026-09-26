@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { VocabItem, VocabService } from '../../core/services/vocab.service';
 import { LevelService } from '../../core/services/level.service';
 import { UserService } from '../../core/services/user.service';
+import { QuizService, QuizQuestionDB } from '../../core/services/quiz.service';
 import { combineLatest } from 'rxjs';
 
 export interface QuizOption {
@@ -13,10 +14,11 @@ export interface QuizOption {
 }
 
 export interface QuizQuestion {
-  type: 'kanji-hiragana' | 'hiragana-kanji' | 'word-meaning' | 'meaning-word';
+  type: 'kanji-hiragana' | 'hiragana-kanji' | 'word-meaning' | 'meaning-word' | 'fixed';
   questionText: string;
   options: QuizOption[];
-  originalItem: VocabItem;
+  originalItem?: VocabItem; // only for auto generated
+  dbItem?: QuizQuestionDB; // for fixed from db
 }
 
 @Component({
@@ -30,13 +32,20 @@ export class QuizComponent implements OnInit, OnDestroy {
   private vocabService = inject(VocabService);
   private levelService = inject(LevelService);
   private userService = inject(UserService);
+  private quizService = inject(QuizService); // NEW
 
   currentLevel = 'N4';
+  
+  // Auto Mode
   availableVocabs: VocabItem[] = [];
   availableLessons: number[] = [];
   selectedLessons: { [key: number]: boolean } = {};
   
+  // Fixed Mode
+  availableFixedQuizzes: QuizQuestionDB[] = [];
+
   // Settings
+  quizMode: 'auto' | 'fixed' = 'fixed';
   questionCount: number = 10;
   timePerQuestion: number = 0; // 0 = no limit
   selectedTypes = {
@@ -64,10 +73,12 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnInit() {
     combineLatest([
       this.vocabService.getVocabs(),
+      this.quizService.getQuizzes(),
       this.levelService.currentLevel$
-    ]).subscribe(([data, level]) => {
+    ]).subscribe(([vocabs, fixedQuizzes, level]) => {
       this.currentLevel = level;
-      this.availableVocabs = data.filter(v => v.jlptLevel === level || (!v.jlptLevel && level === 'N4'));
+      this.availableVocabs = vocabs.filter(v => v.jlptLevel === level || (!v.jlptLevel && level === 'N4'));
+      this.availableFixedQuizzes = fixedQuizzes.filter(q => q.jlptLevel === level || q.jlptLevel === 'N3'); // HACK for N3 testing
       
       const lessons = new Set<number>();
       this.availableVocabs.forEach(v => {
@@ -81,6 +92,17 @@ export class QuizComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.clearTimer();
   }
+  
+  importFixedQuizzes() {
+    if (confirm('Import N3 quizzes từ file JSON vào DB?')) {
+      fetch('/assets/n3_quizzes.json')
+        .then(res => res.json())
+        .then((data: QuizQuestionDB[]) => {
+          this.quizService.importQuizzesBatch(data);
+          alert('Đang import ' + data.length + ' câu hỏi, vui lòng đợi trong console!');
+        }).catch(err => alert('Lỗi import: ' + err));
+    }
+  }
 
   toggleAllLessons() {
     const currentState = Object.values(this.selectedLessons).some(v => v);
@@ -88,6 +110,44 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   startQuiz() {
+    if (this.quizMode === 'auto') {
+      this.startAutoQuiz();
+    } else {
+      this.startFixedQuiz();
+    }
+  }
+
+  startFixedQuiz() {
+    if (this.availableFixedQuizzes.length === 0) {
+      alert('Không có câu hỏi cố định nào trong Database cho cấp độ này!');
+      return;
+    }
+    
+    // Shuffle and pick
+    const shuffled = [...this.availableFixedQuizzes].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, Math.min(this.questionCount, shuffled.length));
+    
+    this.questions = selected.map(q => {
+      return {
+        type: 'fixed',
+        questionText: q.question,
+        options: q.options.map((optText, index) => ({
+          text: optText,
+          isCorrect: index === q.correctAnswerIndex,
+          explanation: index === q.correctAnswerIndex ? q.explanation : 'Đáp án sai'
+        })).sort(() => Math.random() - 0.5), // Xáo trộn 4 đáp án khi hiển thị
+        dbItem: q
+      };
+    });
+    
+    this.currentIndex = 0;
+    this.score = 0;
+    this.mistakes = [];
+    this.stage = 'playing';
+    this.setupCurrentQuestion();
+  }
+
+  startAutoQuiz() {
     const filteredVocabs = this.availableVocabs.filter(v => this.selectedLessons[v.lesson || 0]);
 
     if (filteredVocabs.length < 4) {

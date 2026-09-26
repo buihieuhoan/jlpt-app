@@ -4,7 +4,17 @@
   <div *ngIf="stage === 'setup'" class="max-w-2xl mx-auto">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Thi Trắc nghiệm JLPT</h2>
-      <p class="text-slate-500 dark:text-slate-400 mt-2">Cấp độ đang chọn: <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ currentLevel }}</span> ({{ availableVocabs.length }} từ vựng)</p>
+      <p class="text-slate-500 dark:text-slate-400 mt-2">Cấp độ đang chọn: <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ currentLevel }}</span></p>
+    </div>
+
+    <!-- Mode Toggle -->
+    <div class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl mb-6">
+      <button (click)="quizMode = 'fixed'" [class.bg-white]="quizMode === 'fixed'" [class.shadow-sm]="quizMode === 'fixed'" [class.dark:bg-slate-800]="quizMode === 'fixed'" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-700 dark:text-slate-300">
+        Đề Cố Định ({{availableFixedQuizzes.length}} câu)
+      </button>
+      <button (click)="quizMode = 'auto'" [class.bg-white]="quizMode === 'auto'" [class.shadow-sm]="quizMode === 'auto'" [class.dark:bg-slate-800]="quizMode === 'auto'" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all text-slate-700 dark:text-slate-300">
+        Tạo Tự Động ({{availableVocabs.length}} từ)
+      </button>
     </div>
 
     <div class="space-y-6">
@@ -40,49 +50,57 @@
         </div>
       </div>
 
-      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
-        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Dạng câu hỏi</label>
-        <div class="grid grid-cols-2 gap-3">
-          <label class="flex items-center gap-2 p-2 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="selectedTypes['kanji-hiragana']" class="w-4 h-4 text-indigo-600 rounded">
-            <span class="text-slate-700 dark:text-slate-300">Kanji ➔ Hiragana</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="selectedTypes['hiragana-kanji']" class="w-4 h-4 text-indigo-600 rounded">
-            <span class="text-slate-700 dark:text-slate-300">Hiragana ➔ Kanji</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="selectedTypes['word-meaning']" class="w-4 h-4 text-indigo-600 rounded">
-            <span class="text-slate-700 dark:text-slate-300">Từ Nhật ➔ Nghĩa Việt</span>
-          </label>
-          <label class="flex items-center gap-2 p-2 cursor-pointer">
-            <input type="checkbox" [(ngModel)]="selectedTypes['meaning-word']" class="w-4 h-4 text-indigo-600 rounded">
-            <span class="text-slate-700 dark:text-slate-300">Nghĩa Việt ➔ Từ Nhật</span>
-          </label>
+      <ng-container *ngIf="quizMode === 'auto'">
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+          <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Dạng câu hỏi</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 p-2 cursor-pointer">
+              <input type="checkbox" [(ngModel)]="selectedTypes['kanji-hiragana']" class="w-4 h-4 text-indigo-600 rounded">
+              <span class="text-slate-700 dark:text-slate-300">Kanji ➔ Hiragana</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 cursor-pointer">
+              <input type="checkbox" [(ngModel)]="selectedTypes['hiragana-kanji']" class="w-4 h-4 text-indigo-600 rounded">
+              <span class="text-slate-700 dark:text-slate-300">Hiragana ➔ Kanji</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 cursor-pointer">
+              <input type="checkbox" [(ngModel)]="selectedTypes['word-meaning']" class="w-4 h-4 text-indigo-600 rounded">
+              <span class="text-slate-700 dark:text-slate-300">Từ Nhật ➔ Nghĩa Việt</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 cursor-pointer">
+              <input type="checkbox" [(ngModel)]="selectedTypes['meaning-word']" class="w-4 h-4 text-indigo-600 rounded">
+              <span class="text-slate-700 dark:text-slate-300">Nghĩa Việt ➔ Từ Nhật</span>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <!-- Lesson Selection -->
-      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
-        <div class="flex justify-between items-center mb-3">
-          <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Chọn Bài Học</label>
-          <button (click)="toggleAllLessons()" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Chọn/Bỏ chọn tất cả</button>
+        <!-- Lesson Selection -->
+        <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+          <div class="flex justify-between items-center mb-3">
+            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Chọn Bài Học</label>
+            <button (click)="toggleAllLessons()" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Chọn/Bỏ chọn tất cả</button>
+          </div>
+          <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 custom-scrollbar">
+            <label *ngFor="let lesson of availableLessons" class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
+              <input type="checkbox" [(ngModel)]="selectedLessons[lesson]" class="w-4 h-4 text-indigo-600 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap">
+                {{ lesson === 0 ? 'Từ vựng ngoài (Không có bài)' : 'Bài ' + lesson }}
+              </span>
+            </label>
+            <div *ngIf="availableLessons.length === 0" class="text-sm text-slate-500 italic p-2">Không có dữ liệu bài học.</div>
+          </div>
         </div>
-        <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 custom-scrollbar">
-          <label *ngFor="let lesson of availableLessons" class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
-            <input type="checkbox" [(ngModel)]="selectedLessons[lesson]" class="w-4 h-4 text-indigo-600 rounded">
-            <span class="text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap">
-              {{ lesson === 0 ? 'Từ vựng ngoài (Không có bài)' : 'Bài ' + lesson }}
-            </span>
-          </label>
-          <div *ngIf="availableLessons.length === 0" class="text-sm text-slate-500 italic p-2">Không có dữ liệu bài học.</div>
-        </div>
-      </div>
+      </ng-container>
     </div>
 
-    <button (click)="startQuiz()" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg">
+    <button (click)="startQuiz()" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg mb-4">
       Bắt Đầu Thi
     </button>
+
+    <div class="flex justify-center">
+      <button (click)="importFixedQuizzes()" class="text-sm bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/40 dark:hover:bg-amber-900/60 text-amber-800 dark:text-amber-300 py-2 px-6 rounded-full font-bold transition-colors border border-amber-300 dark:border-amber-700 shadow-sm animate-pulse">
+        ⚠️ CLICK VÀO ĐÂY ĐỂ IMPORT DỮ LIỆU TỪ EXCEL VÀO DATABASE NẾU CÂU HỎI = 0 ⚠️
+      </button>
+    </div>
   </div>
 
   <!-- STAGE 2: PLAYING -->
@@ -108,9 +126,12 @@
 
     <!-- Question -->
     <div class="text-center mb-10">
-      <h3 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white py-8 px-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm">
+      <h3 class="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white py-8 px-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700/50 shadow-sm leading-tight">
         {{ questions[currentIndex].questionText }}
       </h3>
+      <p *ngIf="questions[currentIndex].dbItem?.furigana" class="text-lg text-slate-600 dark:text-slate-400 mt-2 font-medium">
+        {{ questions[currentIndex].dbItem?.furigana }}
+      </p>
       <p class="text-sm text-slate-500 dark:text-slate-400 mt-3 font-medium">Chọn đáp án đúng nhất</p>
     </div>
 
@@ -130,17 +151,24 @@
       </button>
     </div>
 
-    <!-- Explanation Box (Shows after answer) -->
+    <!-- Explanation Box -->
     <div *ngIf="showExplanation" class="mt-8 p-6 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-inner animate-fade-in">
       <h4 class="text-2xl font-bold mb-5 flex items-center gap-2" [ngClass]="isAnswerCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'">
         {{ isAnswerCorrect ? '🎉 Lựa chọn Chính xác!' : '❌ Rất tiếc, bạn đã chọn sai!' }}
       </h4>
       <div class="space-y-3">
-        <!-- Duyệt qua tất cả 4 đáp án để giải thích -->
-        <div *ngFor="let opt of questions[currentIndex].options" class="p-3 rounded-lg border text-base" [ngClass]="{'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/50': opt.isCorrect, 'bg-white border-slate-200 dark:bg-slate-800 dark:border-slate-700': !opt.isCorrect}">
-          <span class="font-bold text-slate-900 dark:text-white inline-block min-w-[120px]">{{ opt.text }}:</span> 
-          <span class="text-slate-600 dark:text-slate-400 ml-2">{{ opt.explanation }}</span>
-        </div>
+        <!-- Render explanation based on type -->
+        <ng-container *ngIf="questions[currentIndex].type === 'fixed'; else autoExplanation">
+          <div class="p-4 rounded-lg border bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-lg whitespace-pre-wrap">
+            {{ questions[currentIndex].dbItem?.explanation }}
+          </div>
+        </ng-container>
+        <ng-template #autoExplanation>
+          <div *ngFor="let opt of questions[currentIndex].options" class="p-3 rounded-lg border text-base" [ngClass]="{'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/50': opt.isCorrect, 'bg-white border-slate-200 dark:bg-slate-800 dark:border-slate-700': !opt.isCorrect}">
+            <span class="font-bold text-slate-900 dark:text-white inline-block min-w-[120px]">{{ opt.text }}:</span> 
+            <span class="text-slate-600 dark:text-slate-400 ml-2">{{ opt.explanation }}</span>
+          </div>
+        </ng-template>
       </div>
       <button (click)="nextQuestion()" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg py-4 rounded-xl shadow-md transition-all">
         Câu Tiếp Theo ➔
@@ -169,14 +197,25 @@
       </h3>
       <div class="space-y-3">
         <div *ngFor="let m of mistakes" class="p-4 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl flex flex-col sm:flex-row gap-4 justify-between sm:items-center">
-          <div>
+          <div class="flex-1">
             <div class="font-bold text-lg text-slate-800 dark:text-slate-200">{{ m.questionText }}</div>
-            <div class="text-sm text-slate-500 dark:text-slate-400">Đáp án đúng: <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ m.options[0].isCorrect ? m.options[0].text : (m.options[1].isCorrect ? m.options[1].text : (m.options[2].isCorrect ? m.options[2].text : m.options[3].text)) }}</span></div>
+            <div class="text-sm text-slate-500 dark:text-slate-400">Đáp án đúng: 
+              <span class="font-bold text-emerald-600 dark:text-emerald-400">
+                <ng-container *ngFor="let opt of m.options">
+                  <span *ngIf="opt.isCorrect">{{ opt.text }}</span>
+                </ng-container>
+              </span>
+            </div>
           </div>
-          <div class="text-right text-sm bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm self-start sm:self-auto">
-            <span class="font-bold block">{{ m.originalItem.front }}</span>
-            <span class="text-indigo-600 dark:text-indigo-400 block">{{ m.originalItem.hiragana }}</span>
-            <span class="text-slate-600 dark:text-slate-400">{{ m.originalItem.back }}</span>
+          <div class="text-right text-sm bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm self-start sm:self-auto max-w-[50%]">
+            <ng-container *ngIf="m.type === 'fixed'">
+              <span class="text-slate-600 dark:text-slate-400 line-clamp-3">{{ m.dbItem?.explanation }}</span>
+            </ng-container>
+            <ng-container *ngIf="m.type !== 'fixed'">
+              <span class="font-bold block">{{ m.originalItem?.front }}</span>
+              <span class="text-indigo-600 dark:text-indigo-400 block">{{ m.originalItem?.hiragana }}</span>
+              <span class="text-slate-600 dark:text-slate-400">{{ m.originalItem?.back }}</span>
+            </ng-container>
           </div>
         </div>
       </div>

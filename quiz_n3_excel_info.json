@@ -1,0 +1,65 @@
+{
+  "columns": [
+    "STT",
+    "Cấp độ",
+    "Bài học",
+    "Câu hỏi",
+    "Furigana",
+    "Đáp án A",
+    "Đáp án B",
+    "Đáp án C",
+    "Đáp án D",
+    "Đáp án đúng",
+    "Giải thích",
+    "Bản dịch",
+    "Phân tích các đáp án"
+  ],
+  "head": [
+    {
+      "STT": 1,
+      "Cấp độ": "N4",
+      "Bài học": "Bai 1",
+      "Câu hỏi": "（　　　）が部下に話している。",
+      "Furigana": "（　　　）が ぶか に はなしている。",
+      "Đáp án A": "後輩",
+      "Đáp án B": "年上",
+      "Đáp án C": "上司",
+      "Đáp án D": "男性",
+      "Đáp án đúng": "C",
+      "Giải thích": "上司 (じょうし): Cấp trên. Câu có nghĩa \"Cấp trên đang nói chuyện với cấp dưới\".",
+      "Bản dịch": "Cấp trên đang nói chuyện với cấp dưới.",
+      "Phân tích các đáp án": "後輩 (こうはい): Hậu bối. 年上 (としうえ): Lớn tuổi hơn. 上司 (じょうし): Cấp trên. 男性 (だんせい): Nam giới."
+    },
+    {
+      "STT": 2,
+      "Cấp độ": "N3",
+      "Bài học": "Bài 1",
+      "Câu hỏi": "JLPT試験に（　　　）する。",
+      "Furigana": "JLPTしけん に （　　　）する。",
+      "Đáp án A": "成長",
+      "Đáp án B": "成人",
+      "Đáp án C": "誕生",
+      "Đáp án D": "合格",
+      "Đáp án đúng": "D",
+      "Giải thích": "合格 (ごうかく): Động từ chỉ việc vượt qua một kỳ thi (試験に合格する). 成長 (Tăng trưởng), 成人 (Trưởng thành), 誕生 (Ra đời) đều không liên quan đến kỳ thi.",
+      "Bản dịch": "Đỗ kỳ thi JLPT.",
+      "Phân tích các đáp án": "成長 (せいちょう): Tăng trưởng. 成人 (せいじん): Trưởng thành. 誕生 (たんじょう): Sự ra đời. 合格 (ごうかく): Thi đỗ."
+    },
+    {
+      "STT": 3,
+      "Cấp độ": "N3",
+      "Bài học": "Bài 1",
+      "Câu hỏi": "あっという間に（　　　）をとってしまった。",
+      "Furigana": "あっというま に （　　　）を とって しまった。",
+      "Đáp án A": "年",
+      "Đáp án B": "成長",
+      "Đáp án C": "誕生日",
+      "Đáp án D": "女性",
+      "Đáp án đúng": "A",
+      "Giải thích": "年 (とし): Đi với động từ とる tạo thành cụm cố định \"年をとる\" (Già đi, có tuổi, thêm tuổi). 成長, 誕生日, 女性 không đi kèm với động từ \"とる\" trong ngữ cảnh này.",
+      "Bản dịch": "Thoáng một cái mà đã có tuổi (già đi) mất rồi.",
+      "Phân tích các đáp án": "年 (とし): Tuổi. 成長 (せいちょう): Tăng trưởng. 誕生日 (たんじょうび): Sinh nhật. 女性 (じょせい): Phụ nữ."
+    }
+  ],
+  "total_rows": 931
+}
