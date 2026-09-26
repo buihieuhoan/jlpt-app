@@ -72,24 +72,24 @@
             </label>
           </div>
         </div>
-
-        <!-- Lesson Selection -->
-        <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
-          <div class="flex justify-between items-center mb-3">
-            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Chọn Bài Học</label>
-            <button (click)="toggleAllLessons()" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Chọn/Bỏ chọn tất cả</button>
-          </div>
-          <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 custom-scrollbar">
-            <label *ngFor="let lesson of availableLessons" class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
-              <input type="checkbox" [(ngModel)]="selectedLessons[lesson]" class="w-4 h-4 text-indigo-600 rounded">
-              <span class="text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap">
-                {{ lesson === 0 ? 'Từ vựng ngoài (Không có bài)' : 'Bài ' + lesson }}
-              </span>
-            </label>
-            <div *ngIf="availableLessons.length === 0" class="text-sm text-slate-500 italic p-2">Không có dữ liệu bài học.</div>
-          </div>
-        </div>
       </ng-container>
+
+      <!-- Lesson Selection (For Both Modes) -->
+      <div class="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700/50">
+        <div class="flex justify-between items-center mb-3">
+          <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Chọn Bài Học</label>
+          <button (click)="toggleAllLessons()" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Chọn/Bỏ chọn tất cả</button>
+        </div>
+        <div class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 custom-scrollbar">
+          <label *ngFor="let lesson of availableLessons" class="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 rounded-lg transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
+            <input type="checkbox" [(ngModel)]="selectedLessons[lesson]" class="w-4 h-4 text-indigo-600 rounded">
+            <span class="text-slate-700 dark:text-slate-300 font-medium whitespace-nowrap">
+              {{ lesson === '0' ? 'Chưa phân loại' : 'Bài ' + lesson }}
+            </span>
+          </label>
+          <div *ngIf="availableLessons.length === 0" class="text-sm text-slate-500 italic p-2">Không có dữ liệu bài học.</div>
+        </div>
+      </div>
     </div>
 
     <button (click)="startQuiz()" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg mb-4">

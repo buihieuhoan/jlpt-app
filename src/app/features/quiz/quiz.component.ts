@@ -38,8 +38,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   
   // Auto Mode
   availableVocabs: VocabItem[] = [];
-  availableLessons: number[] = [];
-  selectedLessons: { [key: number]: boolean } = {};
+  availableLessons: string[] = [];
+  selectedLessons: { [key: string]: boolean } = {};
   
   // Fixed Mode
   availableFixedQuizzes: QuizQuestionDB[] = [];
@@ -80,11 +80,24 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.availableVocabs = vocabs.filter(v => v.jlptLevel === level || (!v.jlptLevel && level === 'N4'));
       this.availableFixedQuizzes = fixedQuizzes.filter(q => q.jlptLevel === level || q.jlptLevel === 'N3'); // HACK for N3 testing
       
-      const lessons = new Set<number>();
+      const lessons = new Set<string>();
       this.availableVocabs.forEach(v => {
-        lessons.add(v.lesson || 0);
+        lessons.add(v.lesson ? v.lesson.toString() : '0');
       });
-      this.availableLessons = Array.from(lessons).sort((a, b) => a - b);
+      this.availableFixedQuizzes.forEach(q => {
+        if (q.lesson) {
+          const match = q.lesson.match(/\d+/);
+          if (match) lessons.add(match[0]);
+          else lessons.add('0');
+        } else {
+          lessons.add('0');
+        }
+      });
+      this.availableLessons = Array.from(lessons).sort((a, b) => {
+        const nA = parseInt(a), nB = parseInt(b);
+        if (!isNaN(nA) && !isNaN(nB)) return nA - nB;
+        return a.localeCompare(b);
+      });
       this.availableLessons.forEach(l => this.selectedLessons[l] = true);
     });
   }
@@ -118,13 +131,31 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   startFixedQuiz() {
-    if (this.availableFixedQuizzes.length === 0) {
-      alert('Không có câu hỏi cố định nào trong Database cho cấp độ này!');
+    let filteredQuizzes = this.availableFixedQuizzes;
+    
+    // Filter by selected lessons
+    const isAnySelected = Object.values(this.selectedLessons).some(v => v);
+    if (!isAnySelected) {
+      alert('Vui lòng chọn ít nhất 1 bài học!');
+      return;
+    }
+    
+    filteredQuizzes = filteredQuizzes.filter(q => {
+      let lStr = '0';
+      if (q.lesson) {
+        const match = q.lesson.match(/\d+/);
+        if (match) lStr = match[0];
+      }
+      return this.selectedLessons[lStr];
+    });
+
+    if (filteredQuizzes.length === 0) {
+      alert('Không có câu hỏi cố định nào trong Database cho các bài học đã chọn!');
       return;
     }
     
     // Shuffle and pick
-    const shuffled = [...this.availableFixedQuizzes].sort(() => Math.random() - 0.5);
+    const shuffled = [...filteredQuizzes].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, Math.min(this.questionCount, shuffled.length));
     
     this.questions = selected.map(q => {
@@ -148,7 +179,10 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   startAutoQuiz() {
-    const filteredVocabs = this.availableVocabs.filter(v => this.selectedLessons[v.lesson || 0]);
+    const filteredVocabs = this.availableVocabs.filter(v => {
+      const lStr = v.lesson ? v.lesson.toString() : '0';
+      return this.selectedLessons[lStr];
+    });
 
     if (filteredVocabs.length < 4) {
       alert('Không đủ từ vựng trong các bài đã chọn để tạo bài thi (cần ít nhất 4 từ)!');
