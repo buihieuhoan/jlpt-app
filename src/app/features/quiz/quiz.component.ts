@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { VocabItem, VocabService } from '../../core/services/vocab.service';
 import { LevelService } from '../../core/services/level.service';
 import { UserService } from '../../core/services/user.service';
-import { QuizService, QuizQuestionDB } from '../../core/services/quiz.service';
+import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail } from '../../core/services/quiz.service';
 import { combineLatest } from 'rxjs';
 
 export interface QuizOption {
@@ -56,7 +56,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   };
 
   // State
-  stage: 'setup' | 'playing' | 'result' = 'setup';
+  stage: 'setup' | 'playing' | 'result' | 'history' | 'history-detail' = 'setup';
   questions: QuizQuestion[] = [];
   currentIndex: number = 0;
   score: number = 0;
@@ -65,6 +65,11 @@ export class QuizComponent implements OnInit, OnDestroy {
   isAnswerCorrect: boolean | null = null;
   showExplanation: boolean = false;
   expGained: number = 0;
+  
+  // History State
+  historyDetails: QuizHistoryDetail[] = [];
+  histories: QuizHistory[] = [];
+  selectedHistory: QuizHistory | null = null;
   
   // Timer
   timeLeft: number = 0;
@@ -174,6 +179,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.currentIndex = 0;
     this.score = 0;
     this.mistakes = [];
+    this.historyDetails = [];
     this.stage = 'playing';
     this.setupCurrentQuestion();
   }
@@ -207,6 +213,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.currentIndex = 0;
     this.score = 0;
     this.mistakes = [];
+    this.historyDetails = [];
     this.stage = 'playing';
     this.setupCurrentQuestion();
   }
@@ -450,6 +457,17 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     }
 
+    // Lọc lại detail
+    const detail: QuizHistoryDetail = {
+      questionText: currentQ.questionText,
+      furigana: currentQ.dbItem?.furigana,
+      options: currentQ.options.map(o => ({ text: o.text, isCorrect: o.isCorrect, explanation: o.explanation })),
+      selectedAnswer: option ? option.text : null,
+      isCorrect: !!this.isAnswerCorrect,
+      explanation: currentQ.type === 'fixed' ? (currentQ.dbItem?.explanation || '') : ''
+    };
+    this.historyDetails.push(detail);
+
     this.showExplanation = true;
   }
 
@@ -466,9 +484,36 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.stage = 'result';
     this.expGained = this.score * 10;
     this.userService.addExp(this.expGained);
+    
+    // Save history
+    const history: QuizHistory = {
+      id: Date.now().toString(),
+      date: Date.now(),
+      mode: this.quizMode,
+      level: this.currentLevel,
+      score: this.score,
+      totalQuestions: this.questions.length,
+      details: this.historyDetails
+    };
+    this.quizService.saveQuizHistory(history);
   }
 
   restart() {
     this.stage = 'setup';
+  }
+
+  viewHistory() {
+    this.histories = this.quizService.getQuizHistory();
+    this.stage = 'history';
+  }
+
+  viewHistoryDetail(history: QuizHistory) {
+    this.selectedHistory = history;
+    this.stage = 'history-detail';
+  }
+
+  backToHistory() {
+    this.selectedHistory = null;
+    this.stage = 'history';
   }
 }

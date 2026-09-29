@@ -92,9 +92,14 @@
       </div>
     </div>
 
-    <button (click)="startQuiz()" class="w-full mt-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg mb-4">
-      Bắt Đầu Thi
-    </button>
+    <div class="flex gap-4 mt-8 mb-4">
+      <button (click)="startQuiz()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all text-lg">
+        Bắt Đầu Thi
+      </button>
+      <button (click)="viewHistory()" class="flex-none bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-slate-700 dark:text-slate-200 font-bold py-4 px-6 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2">
+        <span>🕒</span> Lịch Sử
+      </button>
+    </div>
 
     <div class="flex justify-center">
       <button (click)="importFixedQuizzes()" class="text-sm bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/40 dark:hover:bg-amber-900/60 text-amber-800 dark:text-amber-300 py-2 px-6 rounded-full font-bold transition-colors border border-amber-300 dark:border-amber-700 shadow-sm animate-pulse">
@@ -221,13 +226,125 @@
       </div>
     </div>
 
-    <div class="flex gap-4">
+    <div class="flex flex-col sm:flex-row gap-4">
       <button (click)="restart()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-md hover:shadow-lg transition-all">
         Thi Lại
       </button>
-      <a routerLink="/study" class="flex-1 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-slate-700 dark:text-slate-200 font-bold py-4 rounded-xl shadow-sm hover:shadow-md transition-all text-center">
-        Ôn Thẻ Flashcard
+      <button (click)="viewHistory()" class="flex-1 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-slate-700 dark:text-slate-200 font-bold py-4 rounded-xl shadow-sm hover:shadow-md transition-all">
+        Lịch Sử
+      </button>
+      <a routerLink="/study" class="flex-1 flex items-center justify-center bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 text-slate-700 dark:text-slate-200 font-bold py-4 rounded-xl shadow-sm hover:shadow-md transition-all">
+        Ôn Thẻ
       </a>
+    </div>
+  </div>
+
+  <!-- STAGE 4: HISTORY -->
+  <div *ngIf="stage === 'history'" class="max-w-4xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+        <span>🕒</span> Lịch Sử Làm Bài
+      </h2>
+      <button (click)="restart()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors">
+        Quay Lại
+      </button>
+    </div>
+
+    <div *ngIf="histories.length === 0" class="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700/50">
+      <div class="text-5xl mb-4">📭</div>
+      <p class="text-lg text-slate-600 dark:text-slate-400 font-medium">Chưa có lịch sử làm bài nào.</p>
+      <p class="text-sm text-slate-500 mt-2">Hãy bắt đầu thi để ghi lại thành tích nhé!</p>
+      <button (click)="restart()" class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md">
+        Thi Ngay
+      </button>
+    </div>
+
+    <div *ngIf="histories.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let h of histories" 
+           (click)="viewHistoryDetail(h)"
+           class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-500 shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between">
+        
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <div class="text-sm text-slate-500 dark:text-slate-400 font-medium mb-1">{{ h.date | date:'dd/MM/yyyy HH:mm' }}</div>
+            <div class="inline-block px-2 py-1 bg-slate-100 dark:bg-slate-700 text-xs font-bold rounded text-slate-700 dark:text-slate-300">
+              {{ h.level }} • {{ h.mode === 'auto' ? 'Tạo tự động' : 'Đề cố định' }}
+            </div>
+          </div>
+          <div class="text-3xl font-black" [ngClass]="h.score === h.totalQuestions ? 'text-emerald-500' : (h.score >= h.totalQuestions/2 ? 'text-indigo-500' : 'text-orange-500')">
+            {{ h.score }}<span class="text-lg text-slate-400 font-medium">/{{ h.totalQuestions }}</span>
+          </div>
+        </div>
+        
+        <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2">
+          <div class="h-2 rounded-full transition-all duration-500" 
+               [ngClass]="h.score === h.totalQuestions ? 'bg-emerald-500' : (h.score >= h.totalQuestions/2 ? 'bg-indigo-500' : 'bg-orange-500')"
+               [style.width.%]="(h.score / h.totalQuestions) * 100">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 5: HISTORY DETAIL -->
+  <div *ngIf="stage === 'history-detail' && selectedHistory" class="max-w-3xl mx-auto">
+    <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200 dark:border-slate-700">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          Chi Tiết Lịch Sử
+        </h2>
+        <div class="text-slate-500 dark:text-slate-400 mt-1">
+          {{ selectedHistory.date | date:'dd/MM/yyyy HH:mm' }} • Điểm: <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ selectedHistory.score }}/{{ selectedHistory.totalQuestions }}</span>
+        </div>
+      </div>
+      <button (click)="backToHistory()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg font-semibold transition-colors">
+        Quay Lại
+      </button>
+    </div>
+
+    <div class="space-y-6">
+      <div *ngFor="let detail of selectedHistory.details; let i = index" class="p-6 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        
+        <div class="flex items-start gap-4 mb-4">
+          <div class="flex-none w-8 h-8 rounded-full flex items-center justify-center font-bold text-white"
+               [ngClass]="detail.isCorrect ? 'bg-emerald-500' : 'bg-red-500'">
+            {{ i + 1 }}
+          </div>
+          <div class="flex-1">
+            <h4 class="text-xl font-bold text-slate-900 dark:text-white">{{ detail.questionText }}</h4>
+            <p *ngIf="detail.furigana" class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">{{ detail.furigana }}</p>
+          </div>
+          <div class="text-2xl flex-none">
+            {{ detail.isCorrect ? '✅' : '❌' }}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pl-12 mb-4">
+          <div *ngFor="let opt of detail.options" class="p-3 rounded-xl border-2 text-sm font-medium"
+               [ngClass]="{
+                 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300': opt.isCorrect,
+                 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300': !opt.isCorrect && detail.selectedAnswer === opt.text,
+                 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-slate-600 dark:text-slate-400': !opt.isCorrect && detail.selectedAnswer !== opt.text
+               }">
+            <div class="flex justify-between items-center">
+              <span>{{ opt.text }}</span>
+              <span *ngIf="opt.isCorrect" class="text-xs ml-2">Đúng</span>
+              <span *ngIf="!opt.isCorrect && detail.selectedAnswer === opt.text" class="text-xs ml-2">Bạn chọn</span>
+            </div>
+            <div *ngIf="selectedHistory.mode === 'auto' && opt.explanation" class="text-xs mt-1 opacity-80 italic">{{ opt.explanation }}</div>
+          </div>
+        </div>
+        
+        <div *ngIf="detail.selectedAnswer === null" class="pl-12 text-sm font-bold text-orange-600 dark:text-orange-400 mb-4">
+          ⏰ Bạn đã không chọn đáp án (Hết giờ)
+        </div>
+
+        <div *ngIf="selectedHistory.mode === 'fixed' && detail.explanation" class="pl-12">
+          <div class="p-3 rounded-lg bg-slate-100 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 text-sm">
+            <span class="font-bold">Giải thích:</span> {{ detail.explanation }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

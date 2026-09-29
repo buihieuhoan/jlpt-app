@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { VocabItem, VocabService } from '../../core/services/vocab.service';
 import { LevelService } from '../../core/services/level.service';
+import { TtsService } from '../../core/services/tts.service';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { writeBatch, doc, Firestore } from '@angular/fire/firestore';
 import { map, startWith } from 'rxjs/operators';
@@ -22,6 +23,7 @@ export class ManageComponent implements OnInit {
   private firestore = inject(Firestore);
   private cdr = inject(ChangeDetectorRef);
   private levelService = inject(LevelService);
+  public ttsService = inject(TtsService);
 
   currentLevel = 'N4';
 
@@ -40,6 +42,10 @@ export class ManageComponent implements OnInit {
   currentPage$ = new BehaviorSubject<number>(1);
   pageSize = 10;
   totalItems = 0;
+
+  // Selection & Reading
+  selectedIds = new Set<string>();
+  currentFilteredVocabs: VocabItem[] = [];
 
   ngOnInit() {
     this.levelService.currentLevel$.subscribe(level => {
@@ -86,6 +92,8 @@ export class ManageComponent implements OnInit {
         }
         
         this.totalItems = result.length;
+        this.currentFilteredVocabs = result;
+        
         // Reset to page 1 when filter changes
         if (this.currentPage$.value !== 1) {
           // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
@@ -128,6 +136,7 @@ export class ManageComponent implements OnInit {
     this.activeTab = tab;
     this.cancelEdit();
     this.filterForm.reset({ search: '', partOfSpeech: '', lesson: null });
+    this.selectedIds.clear();
     this.currentPage$.next(1);
   }
 
@@ -276,5 +285,78 @@ export class ManageComponent implements OnInit {
         this.cdr.detectChanges(); // Force UI update for button state
       }
     });
+  }
+
+  // --- TTS & Selection Logic ---
+  toggleSelection(id: string | undefined) {
+    if (!id) return;
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+  }
+
+  toggleSelectAll() {
+    if (this.isAllSelected()) {
+      this.selectedIds.clear();
+    } else {
+      this.currentFilteredVocabs.forEach(v => {
+        if (v.id) this.selectedIds.add(v.id);
+      });
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.currentFilteredVocabs.length > 0 && 
+           this.currentFilteredVocabs.every(v => v.id && this.selectedIds.has(v.id));
+  }
+  
+  isSelected(id: string | undefined): boolean {
+    return !!id && this.selectedIds.has(id);
+  }
+
+  playSingle(item: VocabItem) {
+    if (this.ttsService.isSpeaking) {
+      this.ttsService.stop();
+    }
+    const sequence = [];
+    if (item.hiragana || item.front) {
+      sequence.push({ text: item.hiragana || item.front, lang: 'ja-JP', pauseAfterMs: 500 });
+    }
+    if (item.back) {
+      sequence.push({ text: item.back, lang: 'vi-VN', pauseAfterMs: 500 });
+    }
+    this.ttsService.playSequence(sequence);
+  }
+
+  playSelected() {
+    if (this.selectedIds.size === 0) {
+      alert('Vui lòng chọn ít nhất 1 từ để đọc!');
+      return;
+    }
+    
+    if (this.ttsService.isSpeaking) {
+      this.ttsService.stop();
+      return;
+    }
+
+    const itemsToPlay = this.currentFilteredVocabs.filter(v => v.id && this.selectedIds.has(v.id));
+    const sequence = [];
+    
+    for (const item of itemsToPlay) {
+      if (item.hiragana || item.front) {
+        sequence.push({ text: item.hiragana || item.front, lang: 'ja-JP', pauseAfterMs: 600 });
+      }
+      if (item.back) {
+        sequence.push({ text: item.back, lang: 'vi-VN', pauseAfterMs: 1000 });
+      }
+    }
+    
+    this.ttsService.playSequence(sequence);
+  }
+
+  stopPlaying() {
+    this.ttsService.stop();
   }
 }

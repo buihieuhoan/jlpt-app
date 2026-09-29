@@ -15,6 +15,25 @@ export interface QuizQuestionDB {
   createdAt: number;
 }
 
+export interface QuizHistoryDetail {
+  questionText: string;
+  furigana?: string;
+  options: { text: string; isCorrect: boolean; explanation?: string }[];
+  selectedAnswer: string | null;
+  isCorrect: boolean;
+  explanation: string;
+}
+
+export interface QuizHistory {
+  id: string;
+  date: number;
+  mode: 'auto' | 'fixed';
+  level: string;
+  score: number;
+  totalQuestions: number;
+  details: QuizHistoryDetail[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -46,5 +65,19 @@ export class QuizService {
       console.log(`Imported batch ${Math.floor(i / CHUNK_SIZE) + 1} of ${Math.ceil(quizzes.length / CHUNK_SIZE)}`);
     }
     console.log("Import completed!");
+  }
+
+  getQuizHistory(): QuizHistory[] {
+    const saved = localStorage.getItem('jlpt_quiz_history');
+    if (saved) {
+      return JSON.parse(saved) as QuizHistory[];
+    }
+    return [];
+  }
+
+  saveQuizHistory(history: QuizHistory) {
+    const histories = this.getQuizHistory();
+    histories.unshift(history); // Thêm vào đầu để hiển thị mới nhất trước
+    localStorage.setItem('jlpt_quiz_history', JSON.stringify(histories));
   }
 }
