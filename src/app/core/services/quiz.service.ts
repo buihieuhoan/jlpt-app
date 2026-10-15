@@ -11,6 +11,8 @@ export interface QuizQuestionDB {
   explanation: string;
   jlptLevel: string;
   lesson?: string;
+  lessonNum?: number;
+  category?: 'vocab' | 'kanji' | 'grammar';
   tags?: string[];
   createdAt: number;
 }
@@ -28,6 +30,8 @@ export interface QuizHistory {
   id: string;
   date: number;
   mode: 'auto' | 'fixed';
+  category?: 'vocab' | 'kanji' | 'grammar';
+  lessonTitle?: string;
   level: string;
   score: number;
   totalQuestions: number;

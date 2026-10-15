@@ -1,10 +1,12 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { VocabItem, VocabService } from '../../core/services/vocab.service';
 import { LevelService } from '../../core/services/level.service';
 import { UserService } from '../../core/services/user.service';
 import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail } from '../../core/services/quiz.service';
+import { TtsService } from '../../core/services/tts.service';
 import { combineLatest } from 'rxjs';
 
 export interface QuizOption {
@@ -21,10 +23,18 @@ export interface QuizQuestion {
   dbItem?: QuizQuestionDB; // for fixed from db
 }
 
+export interface KanjiLessonGroup {
+  lesson: string;
+  lessonNum: number;
+  count: number;
+  quizzes: QuizQuestionDB[];
+  sampleQuestion: string;
+}
+
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.scss'
 })
@@ -32,22 +42,29 @@ export class QuizComponent implements OnInit, OnDestroy {
   private vocabService = inject(VocabService);
   private levelService = inject(LevelService);
   private userService = inject(UserService);
-  private quizService = inject(QuizService); // NEW
+  private quizService = inject(QuizService);
+  public ttsService = inject(TtsService);
 
-  currentLevel = 'N4';
+  currentLevel = 'N3';
   
-  // Auto Mode
+  // Category Tab: 'kanji' or 'vocab'
+  activeCategory: 'kanji' | 'vocab' = 'kanji';
+  get Math() { return Math; }
+
+  // --- Kanji State ---
+  allFixedQuizzes: QuizQuestionDB[] = [];
+  kanjiQuizzes: QuizQuestionDB[] = [];
+  kanjiLessons: KanjiLessonGroup[] = [];
+  filteredKanjiLessons: KanjiLessonGroup[] = [];
+  selectedKanjiLessons: { [lesson: string]: boolean } = {};
+  kanjiSearchQuery: string = '';
+
+  // --- Vocab State ---
   availableVocabs: VocabItem[] = [];
-  availableLessons: string[] = [];
-  selectedLessons: { [key: string]: boolean } = {};
-  
-  // Fixed Mode
-  availableFixedQuizzes: QuizQuestionDB[] = [];
-
-  // Settings
-  quizMode: 'auto' | 'fixed' = 'fixed';
-  questionCount: number = 10;
-  timePerQuestion: number = 0; // 0 = no limit
+  vocabFixedQuizzes: QuizQuestionDB[] = [];
+  availableVocabLessons: string[] = [];
+  selectedVocabLessons: { [key: string]: boolean } = {};
+  vocabQuizMode: 'auto' | 'fixed' = 'fixed';
   selectedTypes = {
     'kanji-hiragana': true,
     'hiragana-kanji': true,
@@ -55,8 +72,13 @@ export class QuizComponent implements OnInit, OnDestroy {
     'meaning-word': true
   };
 
-  // State
+  // --- Global Settings ---
+  questionCount: number = 0; // 0 = all questions in lesson, or 10, 20, 50
+  timePerQuestion: number = 0; // 0 = no limit
+
+  // --- Playing State ---
   stage: 'setup' | 'playing' | 'result' | 'history' | 'history-detail' = 'setup';
+  currentQuizTitle: string = '';
   questions: QuizQuestion[] = [];
   currentIndex: number = 0;
   score: number = 0;
@@ -65,13 +87,14 @@ export class QuizComponent implements OnInit, OnDestroy {
   isAnswerCorrect: boolean | null = null;
   showExplanation: boolean = false;
   expGained: number = 0;
+  lastPlayedLessonGroup: KanjiLessonGroup | null = null;
   
-  // History State
+  // --- History State ---
   historyDetails: QuizHistoryDetail[] = [];
   histories: QuizHistory[] = [];
   selectedHistory: QuizHistory | null = null;
   
-  // Timer
+  // --- Timer ---
   timeLeft: number = 0;
   timerInterval: any;
 
@@ -80,114 +103,216 @@ export class QuizComponent implements OnInit, OnDestroy {
       this.vocabService.getVocabs(),
       this.quizService.getQuizzes(),
       this.levelService.currentLevel$
-    ]).subscribe(([vocabs, fixedQuizzes, level]) => {
+    ]).subscribe(([vocabs, quizzes, level]) => {
       this.currentLevel = level;
+      this.allFixedQuizzes = quizzes;
+
+      // Filter vocabs for current level
       this.availableVocabs = vocabs.filter(v => v.jlptLevel === level || (!v.jlptLevel && level === 'N4'));
-      this.availableFixedQuizzes = fixedQuizzes.filter(q => q.jlptLevel === level || q.jlptLevel === 'N3'); // HACK for N3 testing
-      
-      const lessons = new Set<string>();
-      this.availableVocabs.forEach(v => {
-        lessons.add(v.lesson ? v.lesson.toString() : '0');
+
+      // Filter quizzes into Kanji vs Vocab
+      // If quiz has category === 'kanji' or tags contain 'kanji'
+      this.kanjiQuizzes = quizzes.filter(q => {
+        const isKanji = q.category === 'kanji' || (q.tags && q.tags.includes('kanji'));
+        const matchesLevel = q.jlptLevel === level || (!q.jlptLevel && level === 'N3');
+        return isKanji && matchesLevel;
       });
-      this.availableFixedQuizzes.forEach(q => {
-        if (q.lesson) {
-          const match = q.lesson.match(/\d+/);
-          if (match) lessons.add(match[0]);
-          else lessons.add('0');
-        } else {
-          lessons.add('0');
-        }
+
+      this.vocabFixedQuizzes = quizzes.filter(q => {
+        const isKanji = q.category === 'kanji' || (q.tags && q.tags.includes('kanji'));
+        const matchesLevel = q.jlptLevel === level || (!q.jlptLevel && level === 'N3');
+        return !isKanji && matchesLevel;
       });
-      this.availableLessons = Array.from(lessons).sort((a, b) => {
-        const nA = parseInt(a), nB = parseInt(b);
-        if (!isNaN(nA) && !isNaN(nB)) return nA - nB;
-        return a.localeCompare(b);
-      });
-      this.availableLessons.forEach(l => this.selectedLessons[l] = true);
+
+      // Group Kanji Quizzes by Lesson
+      this.buildKanjiLessons();
+
+      // Build Vocab Lessons
+      this.buildVocabLessons();
     });
   }
 
   ngOnDestroy() {
     this.clearTimer();
+    this.ttsService.stop();
   }
-  
-  importFixedQuizzes() {
-    if (confirm('Import N3 quizzes từ file JSON vào DB?')) {
-      fetch('/assets/n3_quizzes.json')
-        .then(res => res.json())
-        .then((data: QuizQuestionDB[]) => {
-          this.quizService.importQuizzesBatch(data);
-          alert('Đang import ' + data.length + ' câu hỏi, vui lòng đợi trong console!');
-        }).catch(err => alert('Lỗi import: ' + err));
+
+  setCategory(cat: 'kanji' | 'vocab') {
+    this.activeCategory = cat;
+  }
+
+  // --- Kanji Lesson Grouping ---
+  buildKanjiLessons() {
+    const lessonMap = new Map<string, QuizQuestionDB[]>();
+    for (const q of this.kanjiQuizzes) {
+      const lessonName = q.lesson ? q.lesson.trim() : 'Chưa phân loại';
+      if (!lessonMap.has(lessonName)) {
+        lessonMap.set(lessonName, []);
+      }
+      lessonMap.get(lessonName)!.push(q);
     }
+
+    const groups: KanjiLessonGroup[] = [];
+    lessonMap.forEach((quizzesInLesson, lessonName) => {
+      const match = lessonName.match(/\d+/);
+      const lessonNum = match ? parseInt(match[0]) : 999;
+      groups.push({
+        lesson: lessonName,
+        lessonNum: lessonNum,
+        count: quizzesInLesson.length,
+        quizzes: quizzesInLesson,
+        sampleQuestion: quizzesInLesson[0]?.question || ''
+      });
+    });
+
+    // Sort ascending by lesson number (Bài 1, Bài 2, ... Bài 35)
+    groups.sort((a, b) => a.lessonNum - b.lessonNum);
+    this.kanjiLessons = groups;
+
+    // Default select all lessons for multi-quiz
+    this.kanjiLessons.forEach(l => {
+      if (this.selectedKanjiLessons[l.lesson] === undefined) {
+        this.selectedKanjiLessons[l.lesson] = true;
+      }
+    });
+
+    this.filterKanjiLessons();
   }
 
-  toggleAllLessons() {
-    const currentState = Object.values(this.selectedLessons).some(v => v);
-    this.availableLessons.forEach(l => this.selectedLessons[l] = !currentState);
-  }
-
-  startQuiz() {
-    if (this.quizMode === 'auto') {
-      this.startAutoQuiz();
-    } else {
-      this.startFixedQuiz();
+  filterKanjiLessons() {
+    if (!this.kanjiSearchQuery.trim()) {
+      this.filteredKanjiLessons = [...this.kanjiLessons];
+      return;
     }
+    const q = this.kanjiSearchQuery.toLowerCase().trim();
+    this.filteredKanjiLessons = this.kanjiLessons.filter(l => 
+      l.lesson.toLowerCase().includes(q) || 
+      l.lessonNum.toString() === q ||
+      l.sampleQuestion.toLowerCase().includes(q)
+    );
   }
 
-  startFixedQuiz() {
-    let filteredQuizzes = this.availableFixedQuizzes;
+  toggleAllKanjiLessons(select: boolean) {
+    this.kanjiLessons.forEach(l => this.selectedKanjiLessons[l.lesson] = select);
+  }
+
+  get selectedKanjiCount(): number {
+    return Object.values(this.selectedKanjiLessons).filter(v => v).length;
+  }
+
+  // --- Vocab Lessons Grouping ---
+  buildVocabLessons() {
+    const lessons = new Set<string>();
+    this.availableVocabs.forEach(v => {
+      lessons.add(v.lesson ? v.lesson.toString() : '0');
+    });
+    this.vocabFixedQuizzes.forEach(q => {
+      if (q.lesson) {
+        const match = q.lesson.match(/\d+/);
+        if (match) lessons.add(match[0]);
+        else lessons.add('0');
+      } else {
+        lessons.add('0');
+      }
+    });
+
+    this.availableVocabLessons = Array.from(lessons).sort((a, b) => {
+      const nA = parseInt(a), nB = parseInt(b);
+      if (!isNaN(nA) && !isNaN(nB)) return nA - nB;
+      return a.localeCompare(b);
+    });
+
+    this.availableVocabLessons.forEach(l => {
+      if (this.selectedVocabLessons[l] === undefined) {
+        this.selectedVocabLessons[l] = true;
+      }
+    });
+  }
+
+  toggleAllVocabLessons() {
+    const currentState = Object.values(this.selectedVocabLessons).some(v => v);
+    this.availableVocabLessons.forEach(l => this.selectedVocabLessons[l] = !currentState);
+  }
+
+  // --- Start Quiz Methods ---
+
+  // 1. Start a Single Kanji Lesson (e.g. Bài 1 with 20 questions)
+  startSingleKanjiLesson(group: KanjiLessonGroup) {
+    this.lastPlayedLessonGroup = group;
+    this.currentQuizTitle = `Kanji ${this.currentLevel} • ${group.lesson}`;
     
-    // Filter by selected lessons
-    const isAnySelected = Object.values(this.selectedLessons).some(v => v);
-    if (!isAnySelected) {
+    // Shuffle the questions in this lesson
+    const shuffled = [...group.quizzes].sort(() => Math.random() - 0.5);
+    const limit = this.questionCount > 0 ? Math.min(this.questionCount, shuffled.length) : shuffled.length;
+    const selected = shuffled.slice(0, limit);
+
+    this.initQuizQuestionsFromFixed(selected);
+  }
+
+  // 2. Start Multi-lesson Kanji Quiz
+  startMultiKanjiQuiz() {
+    this.lastPlayedLessonGroup = null;
+    const selectedLessons = this.kanjiLessons.filter(l => this.selectedKanjiLessons[l.lesson]);
+    if (selectedLessons.length === 0) {
       alert('Vui lòng chọn ít nhất 1 bài học!');
       return;
     }
-    
-    filteredQuizzes = filteredQuizzes.filter(q => {
+
+    let allQuestions: QuizQuestionDB[] = [];
+    selectedLessons.forEach(l => {
+      allQuestions = allQuestions.concat(l.quizzes);
+    });
+
+    if (allQuestions.length === 0) {
+      alert('Không có câu hỏi nào trong các bài đã chọn!');
+      return;
+    }
+
+    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+    const limit = this.questionCount > 0 ? Math.min(this.questionCount, shuffled.length) : shuffled.length;
+    const selected = shuffled.slice(0, limit);
+
+    this.currentQuizTitle = `Kanji ${this.currentLevel} • ${selectedLessons.length} bài (${selected.length} câu)`;
+    this.initQuizQuestionsFromFixed(selected);
+  }
+
+  // 3. Start Vocab Quiz
+  startVocabQuiz() {
+    this.lastPlayedLessonGroup = null;
+    if (this.vocabQuizMode === 'auto') {
+      this.startAutoQuiz();
+    } else {
+      this.startVocabFixedQuiz();
+    }
+  }
+
+  startVocabFixedQuiz() {
+    let filteredQuizzes = this.vocabFixedQuizzes.filter(q => {
       let lStr = '0';
       if (q.lesson) {
         const match = q.lesson.match(/\d+/);
         if (match) lStr = match[0];
       }
-      return this.selectedLessons[lStr];
+      return this.selectedVocabLessons[lStr];
     });
 
     if (filteredQuizzes.length === 0) {
-      alert('Không có câu hỏi cố định nào trong Database cho các bài học đã chọn!');
+      alert('Không có câu hỏi từ vựng nào trong Database cho các bài học đã chọn!');
       return;
     }
-    
-    // Shuffle and pick
+
     const shuffled = [...filteredQuizzes].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, Math.min(this.questionCount, shuffled.length));
-    
-    this.questions = selected.map(q => {
-      return {
-        type: 'fixed',
-        questionText: q.question,
-        options: q.options.map((optText, index) => ({
-          text: optText,
-          isCorrect: index === q.correctAnswerIndex,
-          explanation: index === q.correctAnswerIndex ? q.explanation : 'Đáp án sai'
-        })).sort(() => Math.random() - 0.5), // Xáo trộn 4 đáp án khi hiển thị
-        dbItem: q
-      };
-    });
-    
-    this.currentIndex = 0;
-    this.score = 0;
-    this.mistakes = [];
-    this.historyDetails = [];
-    this.stage = 'playing';
-    this.setupCurrentQuestion();
+    const limit = this.questionCount > 0 ? Math.min(this.questionCount, shuffled.length) : 10;
+    const selected = shuffled.slice(0, limit);
+
+    this.currentQuizTitle = `Từ vựng ${this.currentLevel} • Đề cố định (${selected.length} câu)`;
+    this.initQuizQuestionsFromFixed(selected);
   }
 
   startAutoQuiz() {
     const filteredVocabs = this.availableVocabs.filter(v => {
       const lStr = v.lesson ? v.lesson.toString() : '0';
-      return this.selectedLessons[lStr];
+      return this.selectedVocabLessons[lStr];
     });
 
     if (filteredVocabs.length < 4) {
@@ -201,10 +326,11 @@ export class QuizComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Shuffle and pick N vocabs from filtered pool
+    const count = this.questionCount > 0 ? this.questionCount : 10;
     const shuffled = [...filteredVocabs].sort(() => Math.random() - 0.5);
-    const selectedVocabs = shuffled.slice(0, Math.min(this.questionCount, filteredVocabs.length));
+    const selectedVocabs = shuffled.slice(0, Math.min(count, filteredVocabs.length));
 
+    this.currentQuizTitle = `Từ vựng ${this.currentLevel} • Tạo tự động (${selectedVocabs.length} câu)`;
     this.questions = selectedVocabs.map(vocab => {
       const type = types[Math.floor(Math.random() * types.length)];
       return this.generateQuestion(vocab, type, this.availableVocabs);
@@ -218,177 +344,86 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.setupCurrentQuestion();
   }
 
-  private generateHiraganaDistractor(correct: string): string {
-    let result = correct;
-    if (!result) return result;
-
-    const traps = [
-      () => {
-        const charMap: Record<string, string> = {
-          'か':'が', 'き':'ぎ', 'く':'ぐ', 'け':'げ', 'こ':'ご',
-          'が':'か', 'ぎ':'き', 'ぐ':'く', 'げ':'け', 'ご':'こ',
-          'さ':'ざ', 'し':'じ', 'す':'ず', 'せ':'ぜ', 'そ':'ぞ',
-          'ざ':'さ', 'じ':'し', 'ず':'す', 'ぜ':'せ', 'ぞ':'そ',
-          'た':'だ', 'ち':'ぢ', 'つ':'づ', 'て':'で', 'と':'ど',
-          'だ':'た', 'ぢ':'ち', 'づ':'つ', 'で':'て', 'ど':'と',
-          'は':'ば', 'ひ':'び', 'ふ':'ぶ', 'へ':'べ', 'ほ':'ぼ',
-          'ば':'は', 'び':'ひ', 'ぶ':'ふ', 'べ':'へ', 'ぼ':'ほ',
-          'ぱ':'ば', 'ぴ':'び', 'ぷ':'ぶ', 'ぺ':'べ', 'ぽ':'ぼ',
-        };
-        for (let i = 0; i < result.length; i++) {
-          if (charMap[result[i]]) {
-            return result.substring(0, i) + charMap[result[i]] + result.substring(i + 1);
-          }
-        }
-        return result;
-      },
-      () => {
-        if (result.includes('う')) {
-          return result.replace('う', '');
-        } else if (result.includes('い')) {
-          return result.replace('い', '');
-        } else {
-          if (result.length >= 2) {
-            return result.substring(0, result.length - 1) + 'う' + result.substring(result.length - 1);
-          }
-        }
-        return result;
-      },
-      () => {
-        if (result.includes('っ')) {
-          return result.replace('っ', '');
-        } else if (result.length >= 2) {
-          return result.substring(0, 1) + 'っ' + result.substring(1);
-        }
-        return result;
-      },
-      () => {
-        const similar: Record<string, string> = {
-          'ね':'れ', 'れ':'ね', 'め':'ぬ', 'ぬ':'め', 'わ':'ね', 'は':'ほ', 'ほ':'は'
-        };
-        for (let i = 0; i < result.length; i++) {
-          if (similar[result[i]]) {
-            return result.substring(0, i) + similar[result[i]] + result.substring(i + 1);
-          }
-        }
-        return result;
-      }
-    ];
-
-    const shuffledTraps = traps.sort(() => Math.random() - 0.5);
-    for (const trap of shuffledTraps) {
-      const modified = trap();
-      if (modified !== correct) return modified;
-    }
-    return correct;
-  }
-
-  private getSimilarItems(item: VocabItem, allItems: VocabItem[]): VocabItem[] {
-    const isVerbShi = item.front.endsWith('します') || item.hiragana?.endsWith('します');
-    const isVerbMasu = item.front.endsWith('ます') || item.hiragana?.endsWith('ます');
-    const isIAdj = item.front.endsWith('い') || item.hiragana?.endsWith('い');
-    const isNaAdj = item.front.endsWith('な') || item.hiragana?.endsWith('な');
-
-    const similar = allItems.filter(v => {
-      if (v.id === item.id) return false;
-      let match = false;
-      
-      if (isVerbShi) {
-        match = v.front.endsWith('します') || v.hiragana?.endsWith('します') || false;
-      } else if (isVerbMasu) {
-        match = v.front.endsWith('ます') || v.hiragana?.endsWith('ます') || false;
-      } else if (isIAdj) {
-        match = v.front.endsWith('い') || v.hiragana?.endsWith('い') || false;
-      } else if (isNaAdj) {
-        match = v.front.endsWith('な') || v.hiragana?.endsWith('な') || false;
-      }
-      
-      if (!match && item.partOfSpeech && v.partOfSpeech === item.partOfSpeech) {
-        match = true;
-      }
-      return match;
+  // --- Helper to initialize fixed questions ---
+  private initQuizQuestionsFromFixed(quizzes: QuizQuestionDB[]) {
+    this.questions = quizzes.map(q => {
+      return {
+        type: 'fixed',
+        questionText: q.question,
+        options: q.options.map((optText, index) => ({
+          text: optText,
+          isCorrect: index === q.correctAnswerIndex,
+          explanation: index === q.correctAnswerIndex ? q.explanation : 'Đáp án sai'
+        })).sort(() => Math.random() - 0.5), // Xáo trộn 4 đáp án khi hiển thị
+        dbItem: q
+      };
     });
 
-    if (similar.length < 3) {
-      const remaining = allItems.filter(v => v.id !== item.id && !similar.find(s => s.id === v.id));
-      similar.push(...remaining.sort(() => Math.random() - 0.5).slice(0, 3 - similar.length));
-    }
-
-    return similar;
+    this.currentIndex = 0;
+    this.score = 0;
+    this.mistakes = [];
+    this.historyDetails = [];
+    this.stage = 'playing';
+    this.setupCurrentQuestion();
   }
 
-  generateQuestion(item: VocabItem, type: string, allItems: VocabItem[]): QuizQuestion {
+  // --- Auto question generator ---
+  private generateQuestion(item: VocabItem, type: string, allItems: VocabItem[]): QuizQuestion {
     let questionText = '';
     let correctAnswer = '';
-    const distractors: {text: string, explanation: string}[] = [];
-    
+    const distractors: { text: string; explanation: string }[] = [];
+
     switch(type) {
       case 'kanji-hiragana':
         questionText = item.front;
-        correctAnswer = item.hiragana || item.front;
-        let attempts = 0;
-        while(distractors.length < 3 && attempts < 20) {
-          const fake = this.generateHiraganaDistractor(correctAnswer);
-          if (fake !== correctAnswer && !distractors.find(d => d.text === fake)) {
-            distractors.push({text: fake, explanation: 'Bẫy chính tả (Nhầm lẫn phát âm/trường âm)'});
-          }
-          attempts++;
-        }
+        correctAnswer = item.hiragana || '';
         break;
-
       case 'hiragana-kanji':
-        questionText = item.hiragana || item.front;
+        questionText = item.hiragana || '';
         correctAnswer = item.front;
         break;
-
       case 'word-meaning':
         questionText = item.front || item.hiragana || '';
         correctAnswer = item.back;
         break;
-
       case 'meaning-word':
         questionText = item.back;
         correctAnswer = item.front || item.hiragana || '';
         break;
     }
 
-    if (distractors.length < 3) {
-      const similarItems = this.getSimilarItems(item, allItems).sort(() => Math.random() - 0.5);
-      
-      for (const randomItem of similarItems) {
-        let wrongAnswer = '';
-        let explanation = '';
+    const similarItems = allItems.filter(v => v.id !== item.id).sort(() => Math.random() - 0.5);
+    for (const randomItem of similarItems) {
+      let wrongAnswer = '';
+      let explanation = '';
 
-        switch(type) {
-          case 'kanji-hiragana':
-            wrongAnswer = randomItem.hiragana || randomItem.front;
-            explanation = `Cách đọc của từ: ${randomItem.front} - ${randomItem.back}`;
-            break;
-          case 'hiragana-kanji':
-            wrongAnswer = randomItem.front;
-            explanation = `Từ này đọc là: ${randomItem.hiragana} - ${randomItem.back}`;
-            break;
-          case 'word-meaning':
-            wrongAnswer = randomItem.back;
-            explanation = `Nghĩa của từ: ${randomItem.front} (${randomItem.hiragana})`;
-            break;
-          case 'meaning-word':
-            wrongAnswer = randomItem.front || randomItem.hiragana || '';
-            explanation = `Từ này có nghĩa là: ${randomItem.back}`;
-            break;
-        }
-
-        if (wrongAnswer && wrongAnswer !== correctAnswer && !distractors.find(d => d.text === wrongAnswer)) {
-          distractors.push({text: wrongAnswer, explanation});
-        }
-        if (distractors.length >= 3) break;
+      switch(type) {
+        case 'kanji-hiragana':
+          wrongAnswer = randomItem.hiragana || randomItem.front;
+          explanation = `Cách đọc của từ: ${randomItem.front} - ${randomItem.back}`;
+          break;
+        case 'hiragana-kanji':
+          wrongAnswer = randomItem.front;
+          explanation = `Từ này đọc là: ${randomItem.hiragana} - ${randomItem.back}`;
+          break;
+        case 'word-meaning':
+          wrongAnswer = randomItem.back;
+          explanation = `Nghĩa của từ: ${randomItem.front} (${randomItem.hiragana})`;
+          break;
+        case 'meaning-word':
+          wrongAnswer = randomItem.front || randomItem.hiragana || '';
+          explanation = `Từ này có nghĩa là: ${randomItem.back}`;
+          break;
       }
+
+      if (wrongAnswer && wrongAnswer !== correctAnswer && !distractors.find(d => d.text === wrongAnswer)) {
+        distractors.push({ text: wrongAnswer, explanation });
+      }
+      if (distractors.length >= 3) break;
     }
 
-    if (distractors.length < 3) {
-      distractors.push({text: correctAnswer + ' (Sai 1)', explanation: 'Đáp án nhiễu'});
-      distractors.push({text: correctAnswer + ' (Sai 2)', explanation: 'Đáp án nhiễu'});
-      distractors.push({text: correctAnswer + ' (Sai 3)', explanation: 'Đáp án nhiễu'});
+    while (distractors.length < 3) {
+      distractors.push({ text: correctAnswer + ` (${distractors.length + 1})`, explanation: 'Đáp án nhiễu' });
     }
 
     const correctExplanation = `Ý nghĩa: ${item.front} (${item.hiragana}) - ${item.back}`;
@@ -405,6 +440,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     };
   }
 
+  // --- Question gameplay flow ---
   setupCurrentQuestion() {
     this.selectedAnswer = null;
     this.isAnswerCorrect = null;
@@ -438,14 +474,13 @@ export class QuizComponent implements OnInit, OnDestroy {
   }
 
   selectAnswer(option: QuizOption | null) {
-    if (this.showExplanation) return; // Đã trả lời xong, khóa nút
+    if (this.showExplanation) return;
     
     this.clearTimer();
     this.selectedAnswer = option;
     const currentQ = this.questions[this.currentIndex];
     
     if (option === null) {
-      // Hết giờ
       this.isAnswerCorrect = false;
       this.mistakes.push(currentQ);
     } else {
@@ -457,7 +492,6 @@ export class QuizComponent implements OnInit, OnDestroy {
       }
     }
 
-    // Lọc lại detail
     const detail: QuizHistoryDetail = {
       questionText: currentQ.questionText,
       furigana: currentQ.dbItem?.furigana,
@@ -485,11 +519,12 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.expGained = this.score * 10;
     this.userService.addExp(this.expGained);
     
-    // Save history
     const history: QuizHistory = {
       id: Date.now().toString(),
       date: Date.now(),
-      mode: this.quizMode,
+      mode: this.activeCategory === 'kanji' ? 'fixed' : (this.vocabQuizMode === 'auto' ? 'auto' : 'fixed'),
+      category: this.activeCategory,
+      lessonTitle: this.currentQuizTitle,
       level: this.currentLevel,
       score: this.score,
       totalQuestions: this.questions.length,
@@ -498,10 +533,32 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.quizService.saveQuizHistory(history);
   }
 
+  retryCurrentQuiz() {
+    if (this.lastPlayedLessonGroup) {
+      this.startSingleKanjiLesson(this.lastPlayedLessonGroup);
+    } else if (this.activeCategory === 'kanji') {
+      this.startMultiKanjiQuiz();
+    } else {
+      this.startVocabQuiz();
+    }
+  }
+
   restart() {
+    this.clearTimer();
+    this.ttsService.stop();
     this.stage = 'setup';
   }
 
+  speakCurrentQuestion() {
+    const q = this.questions[this.currentIndex];
+    if (!q) return;
+    const textToSpeak = q.questionText || q.dbItem?.furigana || '';
+    if (textToSpeak) {
+      this.ttsService.speak(textToSpeak, 'ja-JP');
+    }
+  }
+
+  // --- History Navigation ---
   viewHistory() {
     this.histories = this.quizService.getQuizHistory();
     this.stage = 'history';
@@ -515,5 +572,28 @@ export class QuizComponent implements OnInit, OnDestroy {
   backToHistory() {
     this.selectedHistory = null;
     this.stage = 'history';
+  }
+
+  // --- Import Actions ---
+  importKanjiQuizzes() {
+    if (confirm('Import lại toàn bộ 706 câu trắc nghiệm Kanji N3 từ file JSON vào DB?')) {
+      fetch('/assets/n3_kanji_quizzes.json')
+        .then(res => res.json())
+        .then((data: QuizQuestionDB[]) => {
+          this.quizService.importQuizzesBatch(data);
+          alert('Đang import ' + data.length + ' câu hỏi Kanji vào DB, vui lòng chờ trong giây lát!');
+        }).catch(err => alert('Lỗi import Kanji: ' + err));
+    }
+  }
+
+  importVocabQuizzes() {
+    if (confirm('Import N3 quizzes Từ vựng từ file JSON vào DB?')) {
+      fetch('/assets/n3_quizzes.json')
+        .then(res => res.json())
+        .then((data: QuizQuestionDB[]) => {
+          this.quizService.importQuizzesBatch(data);
+          alert('Đang import ' + data.length + ' câu hỏi Từ vựng vào DB!');
+        }).catch(err => alert('Lỗi import Từ vựng: ' + err));
+    }
   }
 }
