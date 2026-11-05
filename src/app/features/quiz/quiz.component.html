@@ -248,7 +248,14 @@
   <div class="mb-4 flex items-center justify-between gap-3">
     <button (click)="restart()" class="btn-ghost -ml-3">✕ Thoát</button>
     <p class="truncate text-sm font-semibold text-slate-600 dark:text-slate-300">{{ currentQuizTitle }}</p>
-    <span class="chip bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">Đúng {{ score }}</span>
+    <div class="flex shrink-0 items-center gap-2">
+      <span class="chip hidden bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300 sm:inline-flex">Đúng {{ score }}</span>
+      <button (click)="furigana.toggle()" title="Bật/tắt furigana (phím F)"
+              class="rounded-lg border px-2.5 py-1 font-jp text-xs font-semibold transition-colors"
+              [ngClass]="furigana.show ? 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300' : 'border-slate-200 text-slate-500 dark:border-slate-700'">
+        ふりがな
+      </button>
+    </div>
   </div>
 
   <div class="mb-6">
@@ -275,10 +282,14 @@
             class="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-500/10">
       🔊
     </button>
-    <h3 class="font-jp text-3xl font-bold leading-snug text-slate-900 dark:text-white md:text-4xl">
-      {{ questions[currentIndex].questionText }}
+    <h3 class="font-jp text-3xl font-bold leading-[2.2] text-slate-900 dark:text-white md:text-4xl md:leading-[2.2]">
+      <app-ruby-text *ngIf="questions[currentIndex].questionRuby as segs; else plainQuestion"
+                     [segments]="segs"
+                     [furigana]="furigana.show || showExplanation"
+                     [blankFill]="showExplanation ? correctText(questions[currentIndex]) : ''"></app-ruby-text>
+      <ng-template #plainQuestion>{{ questions[currentIndex].questionText }}</ng-template>
     </h3>
-    <p *ngIf="questions[currentIndex].dbItem?.furigana" class="mt-4 font-jp text-lg text-slate-500 dark:text-slate-400">
+    <p *ngIf="showExplanation && questions[currentIndex].dbItem?.furigana" class="mt-3 font-jp text-base text-slate-500 dark:text-slate-400">
       {{ questions[currentIndex].dbItem?.furigana }}
     </p>
     <p class="mt-5 text-xs font-semibold uppercase tracking-wider text-slate-400">Chọn đáp án đúng nhất</p>
@@ -300,7 +311,10 @@
             [ngClass]="showExplanation && opt.isCorrect ? 'bg-emerald-600 text-white' : (showExplanation && selectedAnswer === opt ? 'bg-rose-600 text-white' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300')">
         {{ i + 1 }}
       </span>
-      <span class="flex-1 font-jp text-xl font-semibold text-slate-900 dark:text-slate-50">{{ opt.text }}</span>
+      <span class="flex-1 font-jp text-xl font-semibold leading-loose text-slate-900 dark:text-slate-50">
+        <app-ruby-text [segments]="opt.ruby || [{ t: opt.text }]"
+                       [furigana]="showOptionRuby(questions[currentIndex], showExplanation)"></app-ruby-text>
+      </span>
     </button>
   </div>
 
@@ -336,7 +350,8 @@
     </button>
   </div>
   <p class="mt-3 hidden text-center text-xs text-slate-400 sm:block">
-    Phím tắt: <span class="kbd">1</span>–<span class="kbd">4</span> chọn đáp án · <span class="kbd">Enter</span> sang câu tiếp
+    Phím tắt: <span class="kbd">1</span>–<span class="kbd">4</span> chọn đáp án · <span class="kbd">Enter</span> sang câu tiếp ·
+    <span class="kbd">F</span> bật/tắt furigana
   </p>
 </div>
 
@@ -367,12 +382,15 @@
     <div class="space-y-3">
       <article *ngFor="let m of mistakes" class="card flex flex-col gap-4 p-5 md:flex-row md:items-start">
         <div class="flex-1">
-          <div class="font-jp text-xl font-bold text-slate-900 dark:text-white">{{ m.questionText }}</div>
+          <div class="font-jp text-xl font-bold leading-[2.2] text-slate-900 dark:text-white">
+            <app-ruby-text *ngIf="m.questionRuby as segs; else plainMistake" [segments]="segs" [blankFill]="correctText(m)"></app-ruby-text>
+            <ng-template #plainMistake>{{ m.questionText }}</ng-template>
+          </div>
           <div *ngIf="m.dbItem?.furigana" class="mt-1 font-jp text-sm text-slate-500 dark:text-slate-400">{{ m.dbItem?.furigana }}</div>
           <div class="mt-2 text-sm text-slate-500 dark:text-slate-400">
             Đáp án đúng:
             <ng-container *ngFor="let opt of m.options">
-              <b *ngIf="opt.isCorrect" class="font-jp text-emerald-600 dark:text-emerald-400">{{ opt.text }}</b>
+              <b *ngIf="opt.isCorrect" class="font-jp text-emerald-600 dark:text-emerald-400"><app-ruby-text [segments]="opt.ruby || [{ t: opt.text }]"></app-ruby-text></b>
             </ng-container>
           </div>
         </div>

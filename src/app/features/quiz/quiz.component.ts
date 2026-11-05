@@ -7,20 +7,26 @@ import { LevelService } from '../../core/services/level.service';
 import { UserService } from '../../core/services/user.service';
 import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail } from '../../core/services/quiz.service';
 import { TtsService } from '../../core/services/tts.service';
-import { GrammarService } from '../../core/services/grammar.service';
+import { GrammarService, RubySegment } from '../../core/services/grammar.service';
+import { FuriganaService } from '../../core/services/furigana.service';
+import { buildQuestionRuby, hasKanji, markedTargets, readingsFromText, toRuby, wordRuby } from '../../core/utils/furigana';
 import { GrammarPracticeComponent } from './grammar/grammar-practice.component';
+import { RubyTextComponent } from '../../shared/ruby-text/ruby-text.component';
 import { combineLatest, switchMap } from 'rxjs';
 
 export interface QuizOption {
   text: string;
   isCorrect: boolean;
   explanation: string;
+  ruby?: RubySegment[];
 }
 
 export interface QuizQuestion {
   type: 'kanji-hiragana' | 'hiragana-kanji' | 'word-meaning' | 'meaning-word' | 'fixed';
   questionText: string;
+  questionRuby?: RubySegment[];
   options: QuizOption[];
+  optionRubyBeforeAnswer?: boolean; // false: chỉ hiện furigana đáp án sau khi trả lời (tránh lộ đáp án)
   originalItem?: VocabItem; // only for auto generated
   dbItem?: QuizQuestionDB; // for fixed from db
 }
@@ -36,7 +42,7 @@ export interface KanjiLessonGroup {
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, GrammarPracticeComponent],
+  imports: [CommonModule, FormsModule, RouterLink, GrammarPracticeComponent, RubyTextComponent],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.scss'
 })
@@ -47,6 +53,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   private quizService = inject(QuizService);
   public ttsService = inject(TtsService);
   private grammarService = inject(GrammarService);
+  public furigana = inject(FuriganaService);
 
   currentLevel = 'N3';
   
@@ -363,18 +370,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // --- Helper to initialize fixed questions ---
   private initQuizQuestionsFromFixed(quizzes: QuizQuestionDB[]) {
-    this.questions = quizzes.map(q => {
-      return {
-        type: 'fixed',
-        questionText: q.question,
-        options: q.options.map((optText, index) => ({
-          text: optText,
-          isCorrect: index === q.correctAnswerIndex,
-          explanation: index === q.correctAnswerIndex ? q.explanation : 'Đáp án sai'
-        })).sort(() => Math.random() - 0.5), // Xáo trộn 4 đáp án khi hiển thị
-        dbItem: q
-      };
-    });
+    this.questions = quizzes.map(q => this.buildFixedQuestion(q));
 
     this.currentIndex = 0;
     this.score = 0;
@@ -384,11 +380,37 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.setupCurrentQuestion();
   }
 
+  // Furigana cho đề và đáp án, bỏ mọi cách đọc có thể làm lộ đáp án
+  private buildFixedQuestion(q: QuizQuestionDB): QuizQuestion {
+    const isKanji = q.category === 'kanji' || !!q.tags?.includes('kanji');
+    const correct = q.options[q.correctAnswerIndex] ?? '';
+    const readings = readingsFromText(`${q.explanation}
+${q.furigana ?? ''}`);
+
+    const options: QuizOption[] = q.options.map((optText, index) => ({
+      text: optText,
+      isCorrect: index === q.correctAnswerIndex,
+      explanation: index === q.correctAnswerIndex ? q.explanation : 'Đáp án sai',
+      ruby: hasKanji(optText) ? toRuby(optText, readings) : undefined
+    }));
+
+    return {
+      type: 'fixed',
+      questionText: q.question,
+      questionRuby: buildQuestionRuby(q.question, q.furigana, [correct], isKanji ? markedTargets(q.furigana ?? '') : []),
+      options: options.sort(() => Math.random() - 0.5), // Xáo trộn 4 đáp án khi hiển thị
+      // Kanji: cách đọc của đáp án chính là thứ đang hỏi. Từ vựng: chỉ hiện khi mọi đáp án đều có
+      // cách đọc, nếu không thì đáp án duy nhất có furigana sẽ thành gợi ý.
+      optionRubyBeforeAnswer: !isKanji && options.every(o => !o.ruby || o.ruby.some(seg => seg.r)),
+      dbItem: q
+    };
+  }
+
   // --- Auto question generator ---
   private generateQuestion(item: VocabItem, type: string, allItems: VocabItem[]): QuizQuestion {
     let questionText = '';
     let correctAnswer = '';
-    const distractors: { text: string; explanation: string }[] = [];
+    const distractors: { text: string; explanation: string; reading?: string }[] = [];
 
     switch(type) {
       case 'kanji-hiragana':
@@ -413,6 +435,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     for (const randomItem of similarItems) {
       let wrongAnswer = '';
       let explanation = '';
+      let reading: string | undefined;
 
       switch(type) {
         case 'kanji-hiragana':
@@ -422,6 +445,7 @@ export class QuizComponent implements OnInit, OnDestroy {
         case 'hiragana-kanji':
           wrongAnswer = randomItem.front;
           explanation = `Từ này đọc là: ${randomItem.hiragana} - ${randomItem.back}`;
+          reading = randomItem.hiragana;
           break;
         case 'word-meaning':
           wrongAnswer = randomItem.back;
@@ -430,11 +454,12 @@ export class QuizComponent implements OnInit, OnDestroy {
         case 'meaning-word':
           wrongAnswer = randomItem.front || randomItem.hiragana || '';
           explanation = `Từ này có nghĩa là: ${randomItem.back}`;
+          reading = randomItem.hiragana;
           break;
       }
 
       if (wrongAnswer && wrongAnswer !== correctAnswer && !distractors.find(d => d.text === wrongAnswer)) {
-        distractors.push({ text: wrongAnswer, explanation });
+        distractors.push({ text: wrongAnswer, explanation, reading });
       }
       if (distractors.length >= 3) break;
     }
@@ -444,15 +469,21 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
 
     const correctExplanation = `Ý nghĩa: ${item.front} (${item.hiragana}) - ${item.back}`;
+    // Đáp án là từ tiếng Nhật thì có furigana; với dạng Hiragana -> Kanji chỉ hiện sau khi trả lời
+    const withRuby = type === 'hiragana-kanji' || type === 'meaning-word';
     const options: QuizOption[] = [
-      { text: correctAnswer, isCorrect: true, explanation: correctExplanation },
-      ...distractors.slice(0, 3).map(d => ({ text: d.text, isCorrect: false, explanation: d.explanation }))
-    ].sort(() => Math.random() - 0.5);
+      { text: correctAnswer, isCorrect: true, explanation: correctExplanation, reading: item.hiragana },
+      ...distractors.slice(0, 3).map(d => ({ text: d.text, isCorrect: false, explanation: d.explanation, reading: d.reading }))
+    ].map(({ reading, ...o }) => ({ ...o, ruby: withRuby ? wordRuby(o.text, reading) : undefined }))
+      .sort(() => Math.random() - 0.5);
 
     return {
       type: type as any,
       questionText,
+      // Dạng Kanji -> Hiragana đang hỏi chính cách đọc nên không gắn furigana cho đề
+      questionRuby: type === 'word-meaning' ? wordRuby(questionText, item.hiragana) : undefined,
       options,
+      optionRubyBeforeAnswer: type === 'meaning-word',
       originalItem: item
     };
   }
@@ -592,13 +623,22 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.stage = 'history';
   }
 
+  correctText(q: QuizQuestion): string {
+    return q.options.find(o => o.isCorrect)?.text ?? '';
+  }
+
+  // Furigana đáp án: theo nút bật/tắt trước khi trả lời (nếu không làm lộ đáp án), luôn hiện sau khi trả lời
+  showOptionRuby(q: QuizQuestion, revealed: boolean): boolean {
+    return revealed || (this.furigana.show && !!q.optionRubyBeforeAnswer);
+  }
+
   categoryLabel(category?: string): string {
     if (category === 'kanji') return 'Kanji';
     if (category === 'grammar') return 'Ngữ pháp';
     return 'Từ vựng';
   }
 
-  // --- Keyboard: 1-4 chọn đáp án, Enter sang câu tiếp ---
+  // --- Keyboard: 1-4 chọn đáp án, Enter sang câu tiếp, F bật/tắt furigana ---
   @HostListener('window:keydown', ['$event'])
   onKeydown(e: KeyboardEvent) {
     if (this.stage !== 'playing' || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -613,6 +653,8 @@ export class QuizComponent implements OnInit, OnDestroy {
     } else if ((e.key === 'Enter' || e.key === 'ArrowRight') && this.showExplanation) {
       this.nextQuestion();
       e.preventDefault();
+    } else if (e.key.toLowerCase() === 'f') {
+      this.furigana.toggle();
     }
   }
 

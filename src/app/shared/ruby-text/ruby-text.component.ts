@@ -12,10 +12,10 @@ import { RubySegment } from '../../core/services/grammar.service';
   imports: [CommonModule],
   template: `<ng-container *ngFor="let s of segments">
     <span *ngIf="s.blank"
-          class="mx-1 inline-flex min-w-[4.5rem] items-baseline justify-center border-b-2 px-2"
+          class="mx-1 inline-block min-w-[4.5rem] border-b-2 px-2 text-center leading-tight"
           [ngClass]="blankFill ? 'border-emerald-500 font-bold text-emerald-700 dark:text-emerald-300' : 'border-slate-400 dark:border-slate-500'">{{ blankFill || nbsp }}</span>
     <span *ngIf="s.slot"
-          class="mx-1 inline-flex min-w-[3.5rem] items-baseline justify-center border-b-2 px-1.5"
+          class="mx-1 inline-block min-w-[3.5rem] border-b-2 px-1.5 text-center leading-tight"
           [ngClass]="slotClass(s)">{{ slotFill?.[s.slot - 1] || (s.star ? '★' : nbsp) }}</span>
     <span *ngIf="s.t !== undefined" [ngClass]="highlight(s)"><ruby *ngIf="s.r && furigana; else plain">{{ s.t }}<rt>{{ s.r }}</rt></ruby><ng-template #plain>{{ s.t }}</ng-template></span>
   </ng-container>`

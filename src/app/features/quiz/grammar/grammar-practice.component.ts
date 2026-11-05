@@ -6,13 +6,12 @@ import { GrammarLesson, GrammarPoint, GrammarProgress, GrammarQuestion, GrammarS
 import { QuizHistory, QuizHistoryDetail, QuizService } from '../../../core/services/quiz.service';
 import { UserService } from '../../../core/services/user.service';
 import { TtsService } from '../../../core/services/tts.service';
+import { FuriganaService } from '../../../core/services/furigana.service';
 import { RubyTextComponent } from '../../../shared/ruby-text/ruby-text.component';
 
 type GrammarView = 'lessons' | 'study' | 'playing' | 'result';
 type QuestionFilter = 'all' | 'choice' | 'order';
 type PracticeMode = 'practice' | 'exam';
-
-const FURIGANA_KEY = 'jlpt_grammar_furigana';
 
 @Component({
   selector: 'app-grammar-practice',
@@ -25,6 +24,7 @@ export class GrammarPracticeComponent implements OnChanges, OnDestroy {
   private quizService = inject(QuizService);
   private userService = inject(UserService);
   public ttsService = inject(TtsService);
+  private furigana = inject(FuriganaService);
 
   @Input() level = 'N3';
   // true khi đang học/làm bài, để trang cha ẩn thanh chọn danh mục
@@ -44,7 +44,10 @@ export class GrammarPracticeComponent implements OnChanges, OnDestroy {
   filter: QuestionFilter = 'all';
   mode: PracticeMode = 'practice';
   questionCount = 0; // 0 = tất cả
-  showFurigana = localStorage.getItem(FURIGANA_KEY) === '1';
+
+  get showFurigana(): boolean {
+    return this.furigana.show;
+  }
 
   // --- Study ---
   studyLesson: GrammarLesson | null = null;
@@ -254,8 +257,7 @@ export class GrammarPracticeComponent implements OnChanges, OnDestroy {
   }
 
   toggleFurigana() {
-    this.showFurigana = !this.showFurigana;
-    localStorage.setItem(FURIGANA_KEY, this.showFurigana ? '1' : '0');
+    this.furigana.toggle();
   }
 
   optionState(q: GrammarQuestion, qIndex: number, optIndex: number): 'idle' | 'chosen' | 'correct' | 'wrong' | 'dim' {
