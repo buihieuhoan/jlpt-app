@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -7,7 +7,9 @@ import { LevelService } from '../../core/services/level.service';
 import { UserService } from '../../core/services/user.service';
 import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail } from '../../core/services/quiz.service';
 import { TtsService } from '../../core/services/tts.service';
-import { combineLatest } from 'rxjs';
+import { GrammarService } from '../../core/services/grammar.service';
+import { GrammarPracticeComponent } from './grammar/grammar-practice.component';
+import { combineLatest, switchMap } from 'rxjs';
 
 export interface QuizOption {
   text: string;
@@ -34,7 +36,7 @@ export interface KanjiLessonGroup {
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, GrammarPracticeComponent],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.scss'
 })
@@ -44,11 +46,13 @@ export class QuizComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
   private quizService = inject(QuizService);
   public ttsService = inject(TtsService);
+  private grammarService = inject(GrammarService);
 
   currentLevel = 'N3';
   
-  // Category Tab: 'kanji' or 'vocab'
-  activeCategory: 'kanji' | 'vocab' = 'kanji';
+  // Category Tab: 'kanji', 'vocab' or 'grammar' (nhớ lựa chọn gần nhất)
+  activeCategory: 'kanji' | 'vocab' | 'grammar' =
+    (localStorage.getItem('jlpt_quiz_category') as 'kanji' | 'vocab' | 'grammar') || 'kanji';
   get Math() { return Math; }
 
   // --- Kanji State ---
@@ -71,6 +75,11 @@ export class QuizComponent implements OnInit, OnDestroy {
     'word-meaning': true,
     'meaning-word': true
   };
+
+  // --- Grammar State (logic nằm trong GrammarPracticeComponent) ---
+  grammarQuestionCount = 0;
+  grammarLessonCount = 0;
+  grammarInSession = false;
 
   // --- Global Settings ---
   questionCount: number = 0; // 0 = all questions in lesson, or 10, 20, 50
@@ -130,6 +139,13 @@ export class QuizComponent implements OnInit, OnDestroy {
       // Build Vocab Lessons
       this.buildVocabLessons();
     });
+
+    this.levelService.currentLevel$
+      .pipe(switchMap(level => this.grammarService.getLessons(level)))
+      .subscribe(lessons => {
+        this.grammarLessonCount = lessons.length;
+        this.grammarQuestionCount = lessons.reduce((sum, l) => sum + l.questions.length, 0);
+      });
   }
 
   ngOnDestroy() {
@@ -137,8 +153,9 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.ttsService.stop();
   }
 
-  setCategory(cat: 'kanji' | 'vocab') {
+  setCategory(cat: 'kanji' | 'vocab' | 'grammar') {
     this.activeCategory = cat;
+    localStorage.setItem('jlpt_quiz_category', cat);
   }
 
   // --- Kanji Lesson Grouping ---
@@ -560,6 +577,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   // --- History Navigation ---
   viewHistory() {
+    this.grammarInSession = false;
     this.histories = this.quizService.getQuizHistory();
     this.stage = 'history';
   }
@@ -572,6 +590,30 @@ export class QuizComponent implements OnInit, OnDestroy {
   backToHistory() {
     this.selectedHistory = null;
     this.stage = 'history';
+  }
+
+  categoryLabel(category?: string): string {
+    if (category === 'kanji') return 'Kanji';
+    if (category === 'grammar') return 'Ngữ pháp';
+    return 'Từ vựng';
+  }
+
+  // --- Keyboard: 1-4 chọn đáp án, Enter sang câu tiếp ---
+  @HostListener('window:keydown', ['$event'])
+  onKeydown(e: KeyboardEvent) {
+    if (this.stage !== 'playing' || e.ctrlKey || e.metaKey || e.altKey) return;
+    const target = e.target as HTMLElement;
+    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.tagName)) return;
+
+    const index = ['1', '2', '3', '4'].indexOf(e.key);
+    const options = this.questions[this.currentIndex]?.options;
+    if (index >= 0 && options && index < options.length && !this.showExplanation) {
+      this.selectAnswer(options[index]);
+      e.preventDefault();
+    } else if ((e.key === 'Enter' || e.key === 'ArrowRight') && this.showExplanation) {
+      this.nextQuestion();
+      e.preventDefault();
+    }
   }
 
   // --- Import Actions ---
