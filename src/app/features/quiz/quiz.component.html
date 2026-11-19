@@ -4,7 +4,7 @@
 <div *ngIf="stage === 'setup'" class="space-y-6">
 
   <!-- Page header + category picker (ẩn khi đang làm bài ngữ pháp) -->
-  <ng-container *ngIf="!grammarInSession">
+  <ng-container *ngIf="!grammarInSession && !kanjiStudyGroup">
     <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
       <div>
         <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Luyện thi JLPT {{ currentLevel }}</p>
@@ -46,19 +46,25 @@
   <!-- ============================================== -->
   <!-- VIEW A: KANJI                                  -->
   <!-- ============================================== -->
-  <div *ngIf="activeCategory === 'kanji'" class="space-y-6 animate-fade-in">
+  <app-kanji-study *ngIf="activeCategory === 'kanji' && kanjiStudyGroup && theoryFor(kanjiStudyGroup) as theory"
+                   [lesson]="theory"
+                   [questionCount]="kanjiStudyGroup.count"
+                   (back)="kanjiStudyGroup = null"
+                   (start)="startKanjiStudyQuiz()"></app-kanji-study>
+
+  <div *ngIf="activeCategory === 'kanji' && !kanjiStudyGroup" class="space-y-6 animate-fade-in">
 
     <section class="card space-y-4 p-5">
       <div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h3 class="text-lg font-bold text-slate-900 dark:text-white">Hán tự {{ currentLevel }} · {{ kanjiLessons.length }} bài</h3>
-          <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">Bấm <b>Làm bài</b> ở từng bài, hoặc chọn nhiều bài để ôn tổng hợp.</p>
+          <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">Học lý thuyết từng bài trước, sau đó bấm <b>Làm bài</b> hoặc chọn nhiều bài để ôn tổng hợp.</p>
         </div>
         <div class="relative w-full md:w-72">
           <input type="text"
                  [(ngModel)]="kanjiSearchQuery"
                  (input)="filterKanjiLessons()"
-                 placeholder="Tìm bài học (VD: Bài 1, 15...)"
+                 placeholder="Tìm bài hoặc chữ Hán (VD: 15, 信...)"
                  class="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-800 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
           <svg class="absolute left-3.5 top-3 h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
@@ -119,14 +125,21 @@
           <span class="chip bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ group.count }} câu</span>
         </div>
 
-        <div class="mb-4 rounded-xl bg-slate-50 px-3.5 py-3 dark:bg-slate-800/60">
-          <div class="mb-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Câu mẫu</div>
-          <div class="line-clamp-2 font-jp text-[15px] text-slate-700 dark:text-slate-300">{{ group.sampleQuestion }}</div>
+        <div *ngIf="theoryFor(group) as theory; else sampleBox" class="mb-4 flex flex-wrap gap-1.5">
+          <span *ngFor="let k of theory.kanji" [title]="k.hanViet"
+                class="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50 font-jp text-xl text-indigo-900 dark:bg-indigo-500/10 dark:text-indigo-100">{{ k.kanji }}</span>
         </div>
+        <ng-template #sampleBox>
+          <div class="mb-4 rounded-xl bg-slate-50 px-3.5 py-3 dark:bg-slate-800/60">
+            <div class="mb-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Câu mẫu</div>
+            <div class="line-clamp-2 font-jp text-[15px] text-slate-700 dark:text-slate-300">{{ group.sampleQuestion }}</div>
+          </div>
+        </ng-template>
 
-        <button (click)="startSingleKanjiLesson(group)" class="btn-primary mt-auto w-full">
-          Làm bài →
-        </button>
+        <div class="mt-auto grid gap-2" [class.grid-cols-2]="theoryFor(group)">
+          <button *ngIf="theoryFor(group)" (click)="openKanjiStudy(group)" class="btn-secondary px-3">Học lý thuyết</button>
+          <button (click)="startSingleKanjiLesson(group)" class="btn-primary px-3">Làm bài ({{ group.count }})</button>
+        </div>
       </article>
     </div>
 

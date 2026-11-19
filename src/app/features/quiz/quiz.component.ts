@@ -10,7 +10,9 @@ import { TtsService } from '../../core/services/tts.service';
 import { GrammarService, RubySegment } from '../../core/services/grammar.service';
 import { FuriganaService } from '../../core/services/furigana.service';
 import { buildQuestionRuby, hasKanji, markedTargets, readingsFromText, toRuby, wordRuby } from '../../core/utils/furigana';
+import { KanjiTheoryLesson, KanjiTheoryService } from '../../core/services/kanji-theory.service';
 import { GrammarPracticeComponent } from './grammar/grammar-practice.component';
+import { KanjiStudyComponent } from './kanji/kanji-study.component';
 import { RubyTextComponent } from '../../shared/ruby-text/ruby-text.component';
 import { combineLatest, switchMap } from 'rxjs';
 
@@ -42,7 +44,7 @@ export interface KanjiLessonGroup {
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, GrammarPracticeComponent, RubyTextComponent],
+  imports: [CommonModule, FormsModule, RouterLink, GrammarPracticeComponent, KanjiStudyComponent, RubyTextComponent],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.scss'
 })
@@ -53,6 +55,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   private quizService = inject(QuizService);
   public ttsService = inject(TtsService);
   private grammarService = inject(GrammarService);
+  private kanjiTheoryService = inject(KanjiTheoryService);
   public furigana = inject(FuriganaService);
 
   currentLevel = 'N3';
@@ -69,6 +72,8 @@ export class QuizComponent implements OnInit, OnDestroy {
   filteredKanjiLessons: KanjiLessonGroup[] = [];
   selectedKanjiLessons: { [lesson: string]: boolean } = {};
   kanjiSearchQuery: string = '';
+  kanjiTheory = new Map<number, KanjiTheoryLesson>(); // lý thuyết theo số bài
+  kanjiStudyGroup: KanjiLessonGroup | null = null;     // bài đang xem lý thuyết
 
   // --- Vocab State ---
   availableVocabs: VocabItem[] = [];
@@ -153,6 +158,14 @@ export class QuizComponent implements OnInit, OnDestroy {
         this.grammarLessonCount = lessons.length;
         this.grammarQuestionCount = lessons.reduce((sum, l) => sum + l.questions.length, 0);
       });
+
+    this.levelService.currentLevel$
+      .pipe(switchMap(level => this.kanjiTheoryService.getLessonMap(level)))
+      .subscribe(theory => {
+        this.kanjiTheory = theory;
+        this.kanjiStudyGroup = null;
+        this.filterKanjiLessons();
+      });
   }
 
   ngOnDestroy() {
@@ -162,6 +175,7 @@ export class QuizComponent implements OnInit, OnDestroy {
 
   setCategory(cat: 'kanji' | 'vocab' | 'grammar') {
     this.activeCategory = cat;
+    this.kanjiStudyGroup = null;
     localStorage.setItem('jlpt_quiz_category', cat);
   }
 
@@ -212,8 +226,29 @@ export class QuizComponent implements OnInit, OnDestroy {
     this.filteredKanjiLessons = this.kanjiLessons.filter(l => 
       l.lesson.toLowerCase().includes(q) || 
       l.lessonNum.toString() === q ||
-      l.sampleQuestion.toLowerCase().includes(q)
+      l.sampleQuestion.toLowerCase().includes(q) ||
+      this.kanjiCharsOf(l).includes(q)
     );
+  }
+
+  // --- Kanji theory ---
+  theoryFor(group: KanjiLessonGroup): KanjiTheoryLesson | undefined {
+    return this.kanjiTheory.get(group.lessonNum);
+  }
+
+  kanjiCharsOf(group: KanjiLessonGroup): string {
+    return this.theoryFor(group)?.kanji.map(k => k.kanji).join('') ?? '';
+  }
+
+  openKanjiStudy(group: KanjiLessonGroup) {
+    this.kanjiStudyGroup = group;
+    window.scrollTo({ top: 0 });
+  }
+
+  startKanjiStudyQuiz() {
+    if (this.kanjiStudyGroup) {
+      this.startSingleKanjiLesson(this.kanjiStudyGroup);
+    }
   }
 
   toggleAllKanjiLessons(select: boolean) {

@@ -19,6 +19,7 @@
   /* Furigana: chữ nhỏ trên Kanji giống đề thi */
   ruby {
     ruby-position: over;
+    ruby-align: center; /* furigana dài hơn chữ thì không giãn chữ Kanji ra */
   }
 
   rt {
