@@ -189,8 +189,8 @@
     "createdAt": 0
   },
   {
-    "question": "取り急ぎ、メールでようけんだけ伝える。",
-    "furigana": "取（と）り急（いそ）ぎ、メール で（ようけん）だけ 伝（つた）える。",
+    "question": "取り急ぎ、メールで用件だけ伝える。",
+    "furigana": "取り急ぎ、メールで（用件）だけ伝える。",
     "options": [
       "よけん",
       "よげん",
@@ -210,8 +210,8 @@
     "createdAt": 0
   },
   {
-    "question": "私は親からしんらいされている。",
-    "furigana": "私（わたし）は 親（おや）から（しんらい）されて いる。",
+    "question": "私は親から信頼されている。",
+    "furigana": "私は親から（信頼）されている。",
     "options": [
       "しんあい",
       "しんらい",
@@ -231,8 +231,8 @@
     "createdAt": 0
   },
   {
-    "question": "田中氏が社長をじにんした。",
-    "furigana": "田中氏（たなかし）が 社長（しゃちょう）を（じにん）した。",
+    "question": "田中氏が社長を辞任した。",
+    "furigana": "田中氏が社長を（辞任）した。",
     "options": [
       "じにんした",
       "しにんした",
@@ -252,8 +252,8 @@
     "createdAt": 0
   },
   {
-    "question": "彼のファッションはこせいてきだ。",
-    "furigana": "彼（かれ）の ファッション は（こせいてき）だ。",
+    "question": "彼のファッションは個性的だ。",
+    "furigana": "彼のファッションは（個性的）だ。",
     "options": [
       "こうせてき",
       "こせてき",
@@ -273,8 +273,8 @@
     "createdAt": 0
   },
   {
-    "question": "カメラのばいりつを変える。",
-    "furigana": "カメラ の（ばいりつ）を 変（か）える。",
+    "question": "カメラの倍率を変える。",
+    "furigana": "カメラの（倍率）を変える。",
     "options": [
       "はいりつ",
       "ばいりつ",
@@ -294,8 +294,8 @@
     "createdAt": 0
   },
   {
-    "question": "未解決のじけんがようやく解決した。",
-    "furigana": "未解決（みかいけつ）の（じけん）が ようやく 解決（かいけつ）した。",
+    "question": "未解決の事件がようやく解決した。",
+    "furigana": "未解決の（事件）がようやく解決した。",
     "options": [
       "しけん",
       "じけん",
@@ -315,8 +315,8 @@
     "createdAt": 0
   },
   {
-    "question": "問題をほりゅうにする。",
-    "furigana": "問題（もんだい）を（ほりゅう）に する。",
+    "question": "問題を保留にする。",
+    "furigana": "問題を（保留）にする。",
     "options": [
       "ほりゅ",
       "ほうりゅう",
@@ -336,8 +336,8 @@
     "createdAt": 0
   },
   {
-    "question": "このふきんには、くまが出るらしい。",
-    "furigana": "この（ふきん）には、くま が 出（で）る らしい。",
+    "question": "この付近には、くまが出るらしい。",
+    "furigana": "この（付近）には、くまが出るらしい。",
     "options": [
       "ふきん",
       "むきん",
@@ -357,8 +357,8 @@
     "createdAt": 0
   },
   {
-    "question": "今、自分がいるいちを地図で確認する。",
-    "furigana": "今（いま）、自分（じぶん）が いる（いち）を 地図（ちず）で 確認（かくにん）する。",
+    "question": "今、自分がいる位置を地図で確認する。",
+    "furigana": "今、自分がいる（位置）を地図で確認する。",
     "options": [
       "しち",
       "いち",
@@ -378,8 +378,8 @@
     "createdAt": 0
   },
   {
-    "question": "この歌は１９８０ねんだいにヒットした。",
-    "furigana": "この 歌（うた）は 1980（ねんだい）に ヒット した。",
+    "question": "この歌は1980年代にヒットした。",
+    "furigana": "この歌は1980（年代）にヒットした。",
     "options": [
       "ねんだい",
       "としかい",
@@ -399,8 +399,8 @@
     "createdAt": 0
   },
   {
-    "question": "いっこ二百円の卵を買う。",
-    "furigana": "（いっこ）200円（にひゃくえん）の 卵（たまご）を 買（か）う。",
+    "question": "一個二百円の卵を買う。",
+    "furigana": "（一個）二百円の卵を買う。",
     "options": [
       "いちこ",
       "いっこ",
@@ -441,16 +441,16 @@
     "createdAt": 0
   },
   {
-    "question": "ほかに意見無いですか。",
-    "furigana": "（ほか）に 意見（いけん）無（な）い です か。",
+    "question": "ほかに意見はないですか。",
+    "furigana": "（ほか）に 意見（いけん）は ない です か。",
     "options": [
       "地",
       "他",
       "備",
-      "外"
+      "池"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【他】 THA\n- Âm On: タ | Âm Kun: ほか\n- Mẹo nhớ: Người (亻) phân biệt rắn (也) là loài KHÁC.\n- Giải nghĩa: 他 (ほか) mang nghĩa là khác, ngoài ra.\n\nDịch: Ngoài ra còn ý kiến nào khác không?\n\nPhân tích:\nA. 地: Địa - ち/じ (đất)\nB. 他: Tha - ほか (khác) -> Đúng\nC. 備: Bị - そなえる (chuẩn bị)\nD. 外: Ngoại - そと (bên ngoài)",
+    "explanation": "【他】 THA\n- Âm On: タ | Âm Kun: ほか\n- Mẹo nhớ: Người (亻) phân biệt rắn (也) là loài KHÁC.\n- Giải nghĩa: 他 (ほか) mang nghĩa là khác, ngoài ra.\n\nDịch: Ngoài ra còn ý kiến nào khác không?\n\nPhân tích:\nA. 地: Địa - ち/じ (đất)\nB. 他: Tha - ほか (khác) -> Đúng\nC. 備: Bị - そなえる (chuẩn bị)\nD. 池: Trì - いけ (cái ao)",
     "jlptLevel": "N3",
     "lesson": "Bài 2",
     "lessonNum": 2,
@@ -463,7 +463,7 @@
   },
   {
     "question": "他国の文化を学ぶ。",
-    "furigana": "（たこく）の 文化（ぶんか）を 学（まな）ぶ。",
+    "furigana": "（他国）の 文化（ぶんか）を 学（まな）ぶ。",
     "options": [
       "たこっく",
       "たこうくう",
@@ -505,7 +505,7 @@
   },
   {
     "question": "優しい田中さんはこんなひどいことをするはずがない。",
-    "furigana": "（やさしい）田中（たなか）さん は こんな ひどい こと を する はず が ない。",
+    "furigana": "（優しい）田中（たなか）さん は こんな ひどい こと を する はず が ない。",
     "options": [
       "やさし",
       "やさしい",
@@ -526,7 +526,7 @@
   },
   {
     "question": "初秋の候、夜空には涼しい風がそよぎ、星が輝いています。",
-    "furigana": "初秋（しょしゅう）の（こう）、夜空（よぞら）には 涼（すず）しい 風（かぜ）が そよぎ、星（ほし）が 輝（かがや）いて います。",
+    "furigana": "初秋（しょしゅう）の（候）、夜空（よぞら）には 涼（すず）しい 風（かぜ）が そよぎ、星（ほし）が 輝（かがや）いて います。",
     "options": [
       "こ",
       "こお",
@@ -547,7 +547,7 @@
   },
   {
     "question": "便利でも、パソコンを使いません。",
-    "furigana": "（べんり）でも、パソコン を 使（つか）いません。",
+    "furigana": "（便利）でも、パソコン を 使（つか）いません。",
     "options": [
       "べんり",
       "べり",
@@ -568,7 +568,7 @@
   },
   {
     "question": "亡くなった父のために、毎朝ぶつだんに花とお茶を供える。",
-    "furigana": "亡（な）くなった 父（ちち）の ため に、毎朝（まいあさ）ぶつだん に 花（はな）と お茶（ちゃ）を（そなえる）。",
+    "furigana": "亡（な）くなった 父（ちち）の ため に、毎朝（まいあさ）ぶつだん に 花（はな）と お茶（ちゃ）を（供える）。",
     "options": [
       "たくわえる",
       "そなえる",
@@ -631,7 +631,7 @@
   },
   {
     "question": "候補",
-    "furigana": "（こうほ）",
+    "furigana": "（候補）",
     "options": [
       "こうほ",
       "ごうこ",
@@ -652,11 +652,11 @@
   },
   {
     "question": "価格",
-    "furigana": "（かかく）",
+    "furigana": "（価格）",
     "options": [
       "かかく",
       "はがく",
-      "はがく",
+      "かこく",
       "かがく"
     ],
     "correctAnswerIndex": 0,
@@ -673,7 +673,7 @@
   },
   {
     "question": "便利",
-    "furigana": "（べんり）",
+    "furigana": "（便利）",
     "options": [
       "へんじ",
       "べんし",
@@ -694,7 +694,7 @@
   },
   {
     "question": "関係",
-    "furigana": "（かんけい）",
+    "furigana": "（関係）",
     "options": [
       "かんけい",
       "かんせつ",
@@ -715,7 +715,7 @@
   },
   {
     "question": "他人",
-    "furigana": "（たにん）",
+    "furigana": "（他人）",
     "options": [
       "たにん",
       "だにん",
@@ -736,7 +736,7 @@
   },
   {
     "question": "提供",
-    "furigana": "（ていきょう）",
+    "furigana": "（提供）",
     "options": [
       "てきゅう",
       "ていぎょう",
@@ -757,7 +757,7 @@
   },
   {
     "question": "借金",
-    "furigana": "（しゃっきん）",
+    "furigana": "（借金）",
     "options": [
       "かりかね",
       "しゃっきん",
@@ -778,7 +778,7 @@
   },
   {
     "question": "停止",
-    "furigana": "（ていし）",
+    "furigana": "（停止）",
     "options": [
       "でし",
       "ていし",
@@ -799,7 +799,7 @@
   },
   {
     "question": "仲間",
-    "furigana": "（なかま）",
+    "furigana": "（仲間）",
     "options": [
       "じかん",
       "なかなお",
@@ -820,7 +820,7 @@
   },
   {
     "question": "優勝",
-    "furigana": "（ゆうしょう）",
+    "furigana": "（優勝）",
     "options": [
       "じゅうしょう",
       "じゅうよう",
@@ -840,8 +840,8 @@
     "createdAt": 0
   },
   {
-    "question": "美術が好きです。",
-    "furigana": "（びじゅつ）が 好（す）き です。",
+    "question": "美じゅつが好きです。",
+    "furigana": "美（び）（じゅつ）が 好（す）き です。",
     "options": [
       "術",
       "信",
@@ -849,7 +849,7 @@
       "徒"
     ],
     "correctAnswerIndex": 0,
-    "explanation": "【術】 THUẬT\n- Âm On: ジュツ\n- Từ vựng: 美術 (びじゅつ): Mỹ thuật.\n- Mẹo nhớ chữ Thuật: Hô hào (朮) mọi người (行) đi xem (行) NGHỆ THUẬT đường phố.\n\nDịch: (Từ vựng) Mỹ thuật\n\nPhân tích:\nA. 術: Thuật - びじゅつ (Mỹ thuật) -> Đúng\nB. 信: Tín\nC. 衛: Vệ\nD. 徒: Đồ",
+    "explanation": "【術】 THUẬT\n- Âm On: ジュツ\n- Từ vựng: 美術 (びじゅつ): Mỹ thuật.\n- Mẹo nhớ chữ Thuật: Hô hào (朮) mọi người (行) đi xem (行) NGHỆ THUẬT đường phố.\n\nDịch: Tôi thích mỹ thuật.\n\nPhân tích:\nA. 術: Thuật - びじゅつ (Mỹ thuật) -> Đúng\nB. 信: Tín\nC. 衛: Vệ\nD. 徒: Đồ",
     "jlptLevel": "N3",
     "lesson": "Bài 3",
     "lessonNum": 3,
@@ -861,8 +861,8 @@
     "createdAt": 0
   },
   {
-    "question": "勉強に役立つ本を読む。",
-    "furigana": "勉強（べんきょう）に（やくだつ）本（ほん）を 読（よ）む。",
+    "question": "勉強にやく立つ本を読む。",
+    "furigana": "勉強（べんきょう）に（やく）立（だ）つ 本（ほん）を 読（よ）む。",
     "options": [
       "設",
       "殺",
@@ -882,8 +882,8 @@
     "createdAt": 0
   },
   {
-    "question": "頭がいい生徒。",
-    "furigana": "頭（あたま）が いい（せいと）。",
+    "question": "頭がいい生と。",
+    "furigana": "頭（あたま）が いい 生（せい）（と）。",
     "options": [
       "起",
       "徒",
@@ -891,7 +891,7 @@
       "走"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【徒】 ĐỒ\n- Âm On: ト\n- Từ vựng: 生徒 (せいと): Học sinh.\n- Mẹo nhớ chữ Đồ: Người (彳) chạy (走) đến trường là HỌC SINH.\n\nDịch: (Từ vựng) Học sinh\n\nPhân tích:\nA. 起: Khởi\nB. 徒: Đồ -> Đúng (生徒 - Học sinh)\nC. 律: Luật\nD. 走: Tẩu",
+    "explanation": "【徒】 ĐỒ\n- Âm On: ト\n- Từ vựng: 生徒 (せいと): Học sinh.\n- Mẹo nhớ chữ Đồ: Người (彳) chạy (走) đến trường là HỌC SINH.\n\nDịch: Học sinh thông minh.\n\nPhân tích:\nA. 起: Khởi\nB. 徒: Đồ -> Đúng (生徒 - Học sinh)\nC. 律: Luật\nD. 走: Tẩu",
     "jlptLevel": "N3",
     "lesson": "Bài 3",
     "lessonNum": 3,
@@ -912,7 +912,7 @@
       "船"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【般】 BÀN\n- Âm On: ハン\n- Từ vựng: 一般 (いっぱん): Thông thường, phổ thông.\n- Mẹo nhớ chữ Bàn: Bàn đi Bàn lại cuối cùng quyết định CHUNG nhất là đóng thuyền (舟) bằng cái thù (殳).\n\nDịch: (Từ vựng) Thông thường / Phổ thông\n\nPhân tích:\nA. 投: Đầu\nB. 般: Bàn -> Đúng (一般 - Thông thường)\nC. 設: Thiết\nD. 船: Thuyền",
+    "explanation": "【般】 BÀN\n- Âm On: ハン\n- Từ vựng: 一般 (いっぱん): Thông thường, phổ thông.\n- Mẹo nhớ chữ Bàn: Bàn đi Bàn lại cuối cùng quyết định CHUNG nhất là đóng thuyền (舟) bằng cái thù (殳).\n\nDịch: Độc giả phổ thông.\n\nPhân tích:\nA. 投: Đầu\nB. 般: Bàn -> Đúng (一般 - Thông thường)\nC. 設: Thiết\nD. 船: Thuyền",
     "jlptLevel": "N3",
     "lesson": "Bài 3",
     "lessonNum": 3,
@@ -924,7 +924,7 @@
     "createdAt": 0
   },
   {
-    "question": "ボールを投げる。",
+    "question": "ボールをなげる。",
     "furigana": "ボール を（なげる）。",
     "options": [
       "投",
@@ -945,7 +945,7 @@
     "createdAt": 0
   },
   {
-    "question": "信頼を得る。",
+    "question": "信頼をえる。",
     "furigana": "信頼（しんらい）を（える）。",
     "options": [
       "固",
@@ -966,7 +966,7 @@
     "createdAt": 0
   },
   {
-    "question": "このロボットは直せないんです。",
+    "question": "このロボットはなおせないんです。",
     "furigana": "この ロボット は（なおせない）ん です。",
     "options": [
       "植",
@@ -987,8 +987,8 @@
     "createdAt": 0
   },
   {
-    "question": "値段が高い。",
-    "furigana": "（ねだん）が 高（たか）い。",
+    "question": "値だんが高い。",
+    "furigana": "値（ね）（だん）が 高（たか）い。",
     "options": [
       "設",
       "役",
@@ -1029,8 +1029,8 @@
     "createdAt": 0
   },
   {
-    "question": "価値を出したい。",
-    "furigana": "（かち）を 出（だ）したい。",
+    "question": "価ちを出したい。",
+    "furigana": "価（か）（ち）を 出（だ）したい。",
     "options": [
       "植",
       "埴",
@@ -1051,7 +1051,7 @@
   },
   {
     "question": "徒歩",
-    "furigana": "（とほ）",
+    "furigana": "（徒歩）",
     "options": [
       "とほ",
       "どほ",
@@ -1072,7 +1072,7 @@
   },
   {
     "question": "役割",
-    "furigana": "（やくわり）",
+    "furigana": "（役割）",
     "options": [
       "じゃくはり",
       "よくばり",
@@ -1093,7 +1093,7 @@
   },
   {
     "question": "値上げ",
-    "furigana": "（ねあげ）",
+    "furigana": "（値上げ）",
     "options": [
       "ねあげ",
       "ちあげ",
@@ -1114,7 +1114,7 @@
   },
   {
     "question": "設置",
-    "furigana": "（せっち）",
+    "furigana": "（設置）",
     "options": [
       "こち",
       "せっち",
@@ -1135,7 +1135,7 @@
   },
   {
     "question": "植える",
-    "furigana": "（うえる）",
+    "furigana": "（植える）",
     "options": [
       "ふえる",
       "たねる",
@@ -1156,7 +1156,7 @@
   },
   {
     "question": "技術",
-    "furigana": "（ぎじゅつ）",
+    "furigana": "（技術）",
     "options": [
       "びじゅつ",
       "ぎじゅつ",
@@ -1177,7 +1177,7 @@
   },
   {
     "question": "植物",
-    "furigana": "（しょくぶつ）",
+    "furigana": "（植物）",
     "options": [
       "しょくもの",
       "うえもの",
@@ -1198,7 +1198,7 @@
   },
   {
     "question": "段階",
-    "furigana": "（だんかい）",
+    "furigana": "（段階）",
     "options": [
       "だんかい",
       "たんかい",
@@ -1219,7 +1219,7 @@
   },
   {
     "question": "投資",
-    "furigana": "（とうし）",
+    "furigana": "（投資）",
     "options": [
       "どうし",
       "どうじ",
@@ -1240,7 +1240,7 @@
   },
   {
     "question": "直接",
-    "furigana": "（ちょくせつ）",
+    "furigana": "（直接）",
     "options": [
       "ちょくぜつ",
       "ちょくせつ",
@@ -1303,7 +1303,7 @@
   },
   {
     "question": "じゅ業に参加したい。",
-    "furigana": "（じゅぎょう）に 参加（さんか）したい。",
+    "furigana": "（じゅ）業（ぎょう）に 参加（さんか）したい。",
     "options": [
       "授",
       "接",
@@ -1471,7 +1471,7 @@
   },
   {
     "question": "担当",
-    "furigana": "（たんとう）",
+    "furigana": "（担当）",
     "options": [
       "かんどう",
       "たんとう",
@@ -1492,7 +1492,7 @@
   },
   {
     "question": "骨折",
-    "furigana": "（こっせつ）",
+    "furigana": "（骨折）",
     "options": [
       "こっせつ",
       "こんてつ",
@@ -1513,7 +1513,7 @@
   },
   {
     "question": "負担",
-    "furigana": "（ふたん）",
+    "furigana": "（負担）",
     "options": [
       "ぶだん",
       "ぶたん",
@@ -1534,7 +1534,7 @@
   },
   {
     "question": "指示",
-    "furigana": "（しじ）",
+    "furigana": "（指示）",
     "options": [
       "しち",
       "じみ",
@@ -1555,7 +1555,7 @@
   },
   {
     "question": "担任先生",
-    "furigana": "（たんにん）せんせい",
+    "furigana": "（担任）せんせい",
     "options": [
       "たんにん",
       "だんにん",
@@ -1576,7 +1576,7 @@
   },
   {
     "question": "指す",
-    "furigana": "（さす）",
+    "furigana": "（指す）",
     "options": [
       "さす",
       "しめす",
@@ -1597,7 +1597,7 @@
   },
   {
     "question": "接近",
-    "furigana": "（せっきん）",
+    "furigana": "（接近）",
     "options": [
       "せつきん",
       "せつぎん",
@@ -1618,7 +1618,7 @@
   },
   {
     "question": "打ち合わせ",
-    "furigana": "（う）ちあわせ",
+    "furigana": "（打）ちあわせ",
     "options": [
       "た",
       "うん",
@@ -1639,7 +1639,7 @@
   },
   {
     "question": "教授",
-    "furigana": "（きょうじゅ）",
+    "furigana": "（教授）",
     "options": [
       "きょうしゅ",
       "きょうじゅう",
@@ -1660,7 +1660,7 @@
   },
   {
     "question": "接続",
-    "furigana": "（せつぞく）",
+    "furigana": "（接続）",
     "options": [
       "ぜつそく",
       "せつぞく",
@@ -1743,8 +1743,8 @@
     "createdAt": 0
   },
   {
-    "question": "相手のい図とがよくわからない。",
-    "furigana": "相手（あいて）の（い）図（ず）が よく わからない。",
+    "question": "相手のい図がよくわからない。",
+    "furigana": "相手（あいて）の（い）図（と）が よく わからない。",
     "options": [
       "意",
       "志",
@@ -1806,7 +1806,7 @@
     "createdAt": 0
   },
   {
-    "question": "強い信しんねんを持つ。",
+    "question": "強い信ねんを持つ。",
     "furigana": "強（つよ）い 信（しん）（ねん）を 持（も）つ。",
     "options": [
       "変",
@@ -1891,7 +1891,7 @@
   },
   {
     "question": "恋愛",
-    "furigana": "（れんあい）",
+    "furigana": "（恋愛）",
     "options": [
       "れんあい",
       "ぜんたい",
@@ -1912,7 +1912,7 @@
   },
   {
     "question": "息子",
-    "furigana": "（むすこ）",
+    "furigana": "（息子）",
     "options": [
       "いきこ",
       "まいご",
@@ -1933,7 +1933,7 @@
   },
   {
     "question": "努力",
-    "furigana": "（どりょく）",
+    "furigana": "（努力）",
     "options": [
       "のうりょく",
       "どりょく",
@@ -1954,7 +1954,7 @@
   },
   {
     "question": "変更",
-    "furigana": "（へんこう）",
+    "furigana": "（変更）",
     "options": [
       "べんごう",
       "せんこう",
@@ -1975,7 +1975,7 @@
   },
   {
     "question": "休息",
-    "furigana": "（きゅうそく）",
+    "furigana": "（休息）",
     "options": [
       "きゅうそく",
       "きゅうじつ",
@@ -1996,7 +1996,7 @@
   },
   {
     "question": "失恋",
-    "furigana": "（しつれん）",
+    "furigana": "（失恋）",
     "options": [
       "しつねん",
       "しつれん",
@@ -2017,7 +2017,7 @@
   },
   {
     "question": "残念",
-    "furigana": "（ざんねん）",
+    "furigana": "（残念）",
     "options": [
       "さんねん",
       "たんめん",
@@ -2038,7 +2038,7 @@
   },
   {
     "question": "意味",
-    "furigana": "（いみ）",
+    "furigana": "（意味）",
     "options": [
       "じみ",
       "いし",
@@ -2059,7 +2059,7 @@
   },
   {
     "question": "怒鳴った。",
-    "furigana": "（どなった）。",
+    "furigana": "（怒鳴った）。",
     "options": [
       "となった",
       "どなった",
@@ -2080,7 +2080,7 @@
   },
   {
     "question": "最悪",
-    "furigana": "（さいあく）",
+    "furigana": "（最悪）",
     "options": [
       "さいじゃく",
       "さいやく",
@@ -2163,8 +2163,8 @@
     "createdAt": 0
   },
   {
-    "question": "せい別は男性と女性に分かれる。",
-    "furigana": "（せい）別（べつ）は 男性（だんせい）と 女性（じょせい）に 分（わ）かれる。",
+    "question": "ここにせい別を書いてください。",
+    "furigana": "ここに（せい）別（べつ）を 書（か）いてください。",
     "options": [
       "情",
       "性",
@@ -2172,7 +2172,7 @@
       "快"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【性】 TÍNH\n- Âm On: セイ, ショウ\n- Mẹo nhớ chữ Tính: TÍNH CÁCH (性) sinh ra (生) từ trái tim (忄).\n- Từ vựng: 性別 (せいべつ): Giới tính.\n\nDịch: Giới tính được chia thành nam và nữ.\n\nPhân tích:\nA. 情: Tình\nB. 性: Tính -> Đúng (性別 - Giới tính)\nC. 忙: Mang\nD. 快: Khoái",
+    "explanation": "【性】 TÍNH\n- Âm On: セイ, ショウ\n- Mẹo nhớ chữ Tính: TÍNH CÁCH (性) sinh ra (生) từ trái tim (忄).\n- Từ vựng: 性別 (せいべつ): Giới tính.\n\nDịch: Hãy ghi giới tính vào đây.\n\nPhân tích:\nA. 情: Tình\nB. 性: Tính -> Đúng (性別 - Giới tính)\nC. 忙: Mang\nD. 快: Khoái",
     "jlptLevel": "N3",
     "lesson": "Bài 6",
     "lessonNum": 6,
@@ -2289,8 +2289,8 @@
     "createdAt": 0
   },
   {
-    "question": "町をわたる。",
-    "furigana": "町（まち）を（わたる）。",
+    "question": "道をわたる。",
+    "furigana": "道（みち）を（わたる）。",
     "options": [
       "派",
       "渡",
@@ -2298,7 +2298,7 @@
       "満"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【渡】 ĐỘ\n- Âm On: ド | Âm Kun: わた・る, わた・す\n- Mẹo nhớ chữ Độ: Nhiệt độ (度) nước (氵) cao quá nên phải dùng thuyền để VƯỢT QUA sông.\n- Từ vựng: 渡る (わたる): Băng qua, đi qua.\n\nDịch: Đi băng qua khu phố.\n\nPhân tích:\nA. 派: Phái\nB. 渡: Độ -> Đúng (渡る - Đi băng qua)\nC. 波: Ba (sóng)\nD. 満: Mãn",
+    "explanation": "【渡】 ĐỘ\n- Âm On: ド | Âm Kun: わた・る, わた・す\n- Mẹo nhớ chữ Độ: Nhiệt độ (度) nước (氵) cao quá nên phải dùng thuyền để VƯỢT QUA sông.\n- Từ vựng: 渡る (わたる): Băng qua, đi qua.\n\nDịch: Băng qua đường.\n\nPhân tích:\nA. 派: Phái\nB. 渡: Độ -> Đúng (渡る - Đi băng qua)\nC. 波: Ba (sóng)\nD. 満: Mãn",
     "jlptLevel": "N3",
     "lesson": "Bài 6",
     "lessonNum": 6,
@@ -2311,7 +2311,7 @@
   },
   {
     "question": "情報",
-    "furigana": "（じょうほう）",
+    "furigana": "（情報）",
     "options": [
       "ぞうほう",
       "じょうほう",
@@ -2332,7 +2332,7 @@
   },
   {
     "question": "悲劇",
-    "furigana": "（ひげき）",
+    "furigana": "（悲劇）",
     "options": [
       "ひげき",
       "しんせき",
@@ -2353,7 +2353,7 @@
   },
   {
     "question": "性格",
-    "furigana": "（せいかく）",
+    "furigana": "（性格）",
     "options": [
       "めいわく",
       "せいかく",
@@ -2374,7 +2374,7 @@
   },
   {
     "question": "欠席",
-    "furigana": "（けっせき）",
+    "furigana": "（欠席）",
     "options": [
       "むせき",
       "けつえき",
@@ -2395,7 +2395,7 @@
   },
   {
     "question": "支社",
-    "furigana": "（ししゃ）",
+    "furigana": "（支社）",
     "options": [
       "じしゃ",
       "ひしゃ",
@@ -2416,7 +2416,7 @@
   },
   {
     "question": "何度",
-    "furigana": "（なんど）",
+    "furigana": "（何度）",
     "options": [
       "なんばい",
       "なんかい",
@@ -2437,7 +2437,7 @@
   },
   {
     "question": "事情",
-    "furigana": "（じじょう）",
+    "furigana": "（事情）",
     "options": [
       "じじょう",
       "いじょう",
@@ -2458,7 +2458,7 @@
   },
   {
     "question": "電波",
-    "furigana": "（でんぱ）",
+    "furigana": "（電波）",
     "options": [
       "でんわ",
       "でんぽ",
@@ -2479,7 +2479,7 @@
   },
   {
     "question": "演技",
-    "furigana": "（えんぎ）",
+    "furigana": "（演技）",
     "options": [
       "へんぎ",
       "えんぎ",
@@ -2500,7 +2500,7 @@
   },
   {
     "question": "犯罪",
-    "furigana": "（はんざい）",
+    "furigana": "（犯罪）",
     "options": [
       "ぼんさい",
       "ほんざい",
@@ -2571,7 +2571,7 @@
       "除法"
     ],
     "correctAnswerIndex": 0,
-    "explanation": "【情】 TÌNH - 【報】 BÁO\n- Từ vựng: 情報 (じょうほう): Thông tin.\n- Mẹo nhớ chữ Báo: Khi nhận được THÔNG BÁO có quần áo mới (服) thì cảm thấy hạnh phúc (幸).\n\nDịch: (Từ vựng) Thông tin\n\nPhân tích:\nA. 情報: Tình Báo -> Đúng (じょうほう - Thông tin)\nB. 状況: Trạng Huống (Tình trạng)\nC. 報告: Báo Cáo\nD. 除法: Trừ Pháp (Phép chia)",
+    "explanation": "【情】 TÌNH - 【報】 BÁO\n- Từ vựng: 情報 (じょうほう): Thông tin.\n- Mẹo nhớ chữ Báo: Khi nhận được THÔNG BÁO có quần áo mới (服) thì cảm thấy hạnh phúc (幸).\n\nDịch: Tài liệu này lúc nào cũng có thông tin phù hợp.\n\nPhân tích:\nA. 情報: Tình Báo -> Đúng (じょうほう - Thông tin)\nB. 状況: Trạng Huống (Tình trạng)\nC. 報告: Báo Cáo\nD. 除法: Trừ Pháp (Phép chia)",
     "jlptLevel": "N3",
     "lesson": "Bài 7",
     "lessonNum": 7,
@@ -2731,7 +2731,7 @@
   },
   {
     "question": "塩辛い",
-    "furigana": "（しおからい）",
+    "furigana": "（塩辛い）",
     "options": [
       "しあからい",
       "しおがらい",
@@ -2752,7 +2752,7 @@
   },
   {
     "question": "幸福",
-    "furigana": "（こうふく）",
+    "furigana": "（幸福）",
     "options": [
       "こうぶく",
       "こうふく",
@@ -2773,7 +2773,7 @@
   },
   {
     "question": "報告",
-    "furigana": "（ほうこく）",
+    "furigana": "（報告）",
     "options": [
       "ほうこく",
       "ぼうこく",
@@ -2794,7 +2794,7 @@
   },
   {
     "question": "洗剤",
-    "furigana": "（せんざい）",
+    "furigana": "（洗剤）",
     "options": [
       "せんさい",
       "ぜんさい",
@@ -2815,7 +2815,7 @@
   },
   {
     "question": "汚染",
-    "furigana": "（おせん）",
+    "furigana": "（汚染）",
     "options": [
       "おぜん",
       "あせん",
@@ -2836,7 +2836,7 @@
   },
   {
     "question": "生活",
-    "furigana": "（せいかつ）",
+    "furigana": "（生活）",
     "options": [
       "せいかつ",
       "せいがつ",
@@ -2857,7 +2857,7 @@
   },
   {
     "question": "液体",
-    "furigana": "（えきたい）",
+    "furigana": "（液体）",
     "options": [
       "えきだい",
       "えきたい",
@@ -2878,7 +2878,7 @@
   },
   {
     "question": "交流会",
-    "furigana": "（こうりゅうかい）",
+    "furigana": "（交流会）",
     "options": [
       "こうりゅうがい",
       "こうりょうかい",
@@ -2899,7 +2899,7 @@
   },
   {
     "question": "返戻",
-    "furigana": "（へんれい）",
+    "furigana": "（返戻）",
     "options": [
       "へんれい",
       "へんもと",
@@ -2920,7 +2920,7 @@
   },
   {
     "question": "深刻",
-    "furigana": "（しんこく）",
+    "furigana": "（深刻）",
     "options": [
       "しんごく",
       "しごく",
@@ -3003,16 +3003,16 @@
     "createdAt": 0
   },
   {
-    "question": "自分の将来は自分できめてほうがいい。",
+    "question": "自分の将来は自分できめたほうがいい。",
     "furigana": "自分（じぶん）の 将来（しょうらい）は 自分（じぶん）で（きめた）ほう が いい。",
     "options": [
-      "覚めて",
-      "決めて",
-      "占めて",
-      "泊まて"
+      "覚めた",
+      "決めた",
+      "占めた",
+      "閉めた"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【決】 QUYẾT\n- Âm On: ケツ | Âm Kun: き・める, き・まる\n- Mẹo nhớ chữ Quyết: Quái vật (夬) QUYẾT ĐỊNH đi tắm (氵).\n- Từ vựng: 決める (きめる): Quyết định.\n\nDịch: Tương lai của mình thì nên tự mình quyết định.\n\nPhân tích:\nA. 覚める: Giác - さめる (Tỉnh giấc)\nB. 決める: Quyết -> Đúng (きめる - Quyết định)\nC. 占める: Chiêm - しめる (Chiếm tỷ lệ)\nD. 泊まる: Bạc - とまる (Ở trọ - Sai ngữ pháp chia thể te)",
+    "explanation": "【決】 QUYẾT\n- Âm On: ケツ | Âm Kun: き・める, き・まる\n- Mẹo nhớ chữ Quyết: Quái vật (夬) QUYẾT ĐỊNH đi tắm (氵).\n- Từ vựng: 決める (きめる): Quyết định.\n\nDịch: Tương lai của mình thì nên tự mình quyết định.\n\nPhân tích:\nA. 覚める: Giác - さめる (Tỉnh giấc)\nB. 決める: Quyết -> Đúng (きめる - Quyết định)\nC. 占める: Chiêm - しめる (Chiếm tỷ lệ)\nD. 閉める: Bế - しめる (Đóng)",
     "jlptLevel": "N3",
     "lesson": "Bài 8",
     "lessonNum": 8,
@@ -3091,12 +3091,12 @@
     "furigana": "この 店（みせ）は、いつも（こんで）いる。",
     "options": [
       "混んで",
-      "込んで",
+      "困んで",
       "運んで",
       "頼んで"
     ],
     "correctAnswerIndex": 0,
-    "explanation": "【混】 HỖN\n- Âm On: コン | Âm Kun: こ・む, ま・ざる, ま・ぜる\n- Mẹo nhớ chữ Hỗn: Ngày (日) chủ nhật so sánh (比) loại nước (氵) để tìm ra cách PHA TRỘN rượu ngon.\n- Từ vựng: 混む (こむ): Đông đúc.\n\nDịch: Quán này lúc nào cũng đông khách.\n\nPhân tích:\nA. 混む: Hỗn -> Đúng (こむ - Đông đúc)\nB. 込む: Vào (こむ - VD: 申し込み)\nC. 運ぶ: Vận (はこぶ - Vận chuyển)\nD. 頼む: Lại (たのむ - Nhờ vả)",
+    "explanation": "【混】 HỖN\n- Âm On: コン | Âm Kun: こ・む, ま・ざる, ま・ぜる\n- Mẹo nhớ chữ Hỗn: Ngày (日) chủ nhật so sánh (比) loại nước (氵) để tìm ra cách PHA TRỘN rượu ngon.\n- Từ vựng: 混む (こむ): Đông đúc.\n\nDịch: Quán này lúc nào cũng đông khách.\n\nPhân tích:\nA. 混む: Hỗn -> Đúng (こむ - Đông đúc)\nB. 困んで: Sai. Khốn (困) đọc là こまる, không có cách viết này\nC. 運ぶ: Vận (はこぶ - Vận chuyển)\nD. 頼む: Lại (たのむ - Nhờ vả)",
     "jlptLevel": "N3",
     "lesson": "Bài 8",
     "lessonNum": 8,
@@ -3150,7 +3150,7 @@
     "createdAt": 0
   },
   {
-    "question": "この料理がしおからいい。",
+    "question": "この料理がしおからい。",
     "furigana": "この 料理（りょうり）が（しお）からい。",
     "options": [
       "湿",
@@ -3172,7 +3172,7 @@
   },
   {
     "question": "一泊する",
-    "furigana": "（いっぱく）する",
+    "furigana": "（一泊）する",
     "options": [
       "いちはく",
       "いばく",
@@ -3193,7 +3193,7 @@
   },
   {
     "question": "消費者",
-    "furigana": "（しょうひしゃ）",
+    "furigana": "（消費者）",
     "options": [
       "しょうひしゃ",
       "しょひしゃ",
@@ -3214,7 +3214,7 @@
   },
   {
     "question": "法律",
-    "furigana": "（ほうりつ）",
+    "furigana": "（法律）",
     "options": [
       "ぼうりつ",
       "ほりつ",
@@ -3235,7 +3235,7 @@
   },
   {
     "question": "解決する",
-    "furigana": "（かいけつ）する",
+    "furigana": "（解決）する",
     "options": [
       "かいけづする",
       "かいけつする",
@@ -3256,7 +3256,7 @@
   },
   {
     "question": "浅学",
-    "furigana": "（せんがく）",
+    "furigana": "（浅学）",
     "options": [
       "ぜんがく",
       "せんかく",
@@ -3277,7 +3277,7 @@
   },
   {
     "question": "未満",
-    "furigana": "（みまん）",
+    "furigana": "（未満）",
     "options": [
       "にまん",
       "みまん",
@@ -3298,7 +3298,7 @@
   },
   {
     "question": "演技",
-    "furigana": "（えんぎ）",
+    "furigana": "（演技）",
     "options": [
       "えんき",
       "えんし",
@@ -3319,7 +3319,7 @@
   },
   {
     "question": "混ぜている",
-    "furigana": "（まぜて）いる",
+    "furigana": "（混ぜて）いる",
     "options": [
       "ままぜて",
       "まぜて",
@@ -3340,7 +3340,7 @@
   },
   {
     "question": "湿気",
-    "furigana": "（しっけ）",
+    "furigana": "（湿気）",
     "options": [
       "しっけ",
       "じっけ",
@@ -3361,7 +3361,7 @@
   },
   {
     "question": "気温",
-    "furigana": "（きおん）",
+    "furigana": "（気温）",
     "options": [
       "ぎおん",
       "きあん",
@@ -3382,7 +3382,7 @@
   },
   {
     "question": "塩",
-    "furigana": "（しお）",
+    "furigana": "（塩）",
     "options": [
       "まお",
       "さお",
@@ -3402,8 +3402,8 @@
     "createdAt": 0
   },
   {
-    "question": "やちんが上がったから引っ越そうと思い。",
-    "furigana": "（やちん）が 上（あ）がった から 引（ひ）っ越（こ）そう と 思（おも）い。",
+    "question": "やちんが上がったから引っ越そうと思う。",
+    "furigana": "（やちん）が 上（あ）がった から 引（ひ）っ越（こ）そう と 思（おも）う。",
     "options": [
       "家賃",
       "運賃",
@@ -3570,13 +3570,13 @@
     "createdAt": 0
   },
   {
-    "question": "わたしのせいで、チームはやぶれる。",
-    "furigana": "わたし の せい で、チーム は（やぶれる）。",
+    "question": "わたしのせいで、チームはやぶれた。",
+    "furigana": "わたし の せい で、チーム は（やぶれた）。",
     "options": [
-      "破れる",
-      "倒れる",
-      "折れる",
-      "敗れる"
+      "破れた",
+      "倒れた",
+      "折れた",
+      "敗れた"
     ],
     "correctAnswerIndex": 3,
     "explanation": "【敗】 BẠI\n- Âm On: ハイ | Âm Kun: やぶ・れる\n- Mẹo nhớ chữ Bại: Đánh (攵) vào vấn đề tài chính (貝) thì chắc chắn đối phương sẽ THẤT BẠI.\n- Từ vựng: 敗れる (やぶれる): Bị đánh bại, thua.\n\nDịch: Vì lỗi của tôi mà đội đã bị đánh bại (thua trận).\n\nPhân tích:\nA. 破れる: Phá - やぶれる (Bị rách)\nB. 倒れる: Đảo - たおれる (Bị ngã)\nC. 折れる: Chiết - おれる (Bị gãy)\nD. 敗れる: Bại -> Đúng (やぶれる - Thua/Bị đánh bại)",
@@ -3591,8 +3591,8 @@
     "createdAt": 0
   },
   {
-    "question": "車をはんばいのしことをしている。",
-    "furigana": "車（くるま）を（はんばい）の しごと を して いる。",
+    "question": "車のはんばいのしごとをしている。",
+    "furigana": "車（くるま）の（はんばい）の しごと を して いる。",
     "options": [
       "販売",
       "販促",
@@ -3613,7 +3613,7 @@
   },
   {
     "question": "通販",
-    "furigana": "（つうはん）",
+    "furigana": "（通販）",
     "options": [
       "つうばん",
       "つはん",
@@ -3634,7 +3634,7 @@
   },
   {
     "question": "銀行員",
-    "furigana": "（ぎんこういん）",
+    "furigana": "（銀行員）",
     "options": [
       "ぎんこいん",
       "きんごういん",
@@ -3655,7 +3655,7 @@
   },
   {
     "question": "運賃",
-    "furigana": "（うんちん）",
+    "furigana": "（運賃）",
     "options": [
       "うんちん",
       "うちん",
@@ -3676,7 +3676,7 @@
   },
   {
     "question": "貸し出す",
-    "furigana": "（か）し（だ）す",
+    "furigana": "（貸）し（だ）す",
     "options": [
       "かしたす",
       "がしだす",
@@ -3697,7 +3697,7 @@
   },
   {
     "question": "貧困",
-    "furigana": "（ひんこん）",
+    "furigana": "（貧困）",
     "options": [
       "びんこん",
       "びんごん",
@@ -3718,7 +3718,7 @@
   },
   {
     "question": "交通費",
-    "furigana": "（こうつうひ）",
+    "furigana": "（交通費）",
     "options": [
       "こうつひ",
       "こうつうひ",
@@ -3739,15 +3739,15 @@
   },
   {
     "question": "賛成",
-    "furigana": "（さんせい）",
+    "furigana": "（賛成）",
     "options": [
       "さんせい",
       "ざんせい",
       "さんぜい",
-      "ざんぜinput"
+      "ざんぜい"
     ],
     "correctAnswerIndex": 0,
-    "explanation": "【賛】 TÁN - 【成】 THÀNH\n- Âm On của 賛: サン | 成: セイ\n- Từ vựng: 賛成 (さんせい): Tán thành, đồng ý.\n- Mẹo nhớ chữ Tán: Ngày xưa việc lấy 2 người chồng (夫) có nhiều tiền (貝) được TÁN THÀNH.\n\nDịch: (Từ vựng) Tán thành / Đồng ý\n\nPhân tích:\nTán (サン) + Thành (セイ) = さんせい. Đáp án A đúng. (Chú ý D bị lỗi text ở đề bài là ざんぜinput).",
+    "explanation": "【賛】 TÁN - 【成】 THÀNH\n- Âm On của 賛: サン | 成: セイ\n- Từ vựng: 賛成 (さんせい): Tán thành, đồng ý.\n- Mẹo nhớ chữ Tán: Ngày xưa việc lấy 2 người chồng (夫) có nhiều tiền (貝) được TÁN THÀNH.\n\nDịch: (Từ vựng) Tán thành / Đồng ý\n\nPhân tích:\nTán (サン) + Thành (セイ) = さんせい. Đáp án A đúng.",
     "jlptLevel": "N3",
     "lesson": "Bài 9",
     "lessonNum": 9,
@@ -3760,7 +3760,7 @@
   },
   {
     "question": "財布",
-    "furigana": "（さいふ）",
+    "furigana": "（財布）",
     "options": [
       "さいふう",
       "ざいふ",
@@ -3781,7 +3781,7 @@
   },
   {
     "question": "貯金",
-    "furigana": "（ちょきん）",
+    "furigana": "（貯金）",
     "options": [
       "ちょうきん",
       "ちょうぎん",
@@ -3802,12 +3802,12 @@
   },
   {
     "question": "失敗",
-    "furigana": "（しっぱい）",
+    "furigana": "（失敗）",
     "options": [
       "しっばい",
       "じっばい",
       "しっぱい",
-      "じっばい"
+      "しつぱい"
     ],
     "correctAnswerIndex": 2,
     "explanation": "【敗】 BẠI\n- Âm On: ハイ\n- Từ vựng: 失敗 (しっぱい): Thất bại.\n- Mẹo nhớ chữ Bại: Đánh (攵) vào vấn đề tài chính (貝) thì chắc chắn đối phương sẽ THẤT BẠI.\n\nDịch: (Từ vựng) Thất bại\n\nPhân tích:\nThất (シツ) + Bại (ハイ) -> Biến âm ngắt và biến âm bán đục thành しっぱい. Đáp án C đúng.",
@@ -3927,8 +3927,8 @@
     "createdAt": 0
   },
   {
-    "question": "毎日はにっきを書きます。",
-    "furigana": "毎日（まいにち）は（にっき）を 書（か）きます。",
+    "question": "毎日にっきを書きます。",
+    "furigana": "毎日（まいにち）（にっき）を 書（か）きます。",
     "options": [
       "日紀",
       "日給",
@@ -4012,7 +4012,7 @@
   },
   {
     "question": "責任者",
-    "furigana": "（せきにん）しゃ",
+    "furigana": "（責任）しゃ",
     "options": [
       "せいきにん",
       "せきにん",
@@ -4033,7 +4033,7 @@
   },
   {
     "question": "成績",
-    "furigana": "（せいせき）",
+    "furigana": "（成績）",
     "options": [
       "せせき",
       "せいせいき",
@@ -4054,7 +4054,7 @@
   },
   {
     "question": "積極的",
-    "furigana": "（せっきょくてき）",
+    "furigana": "（積極的）",
     "options": [
       "せっきよくてき",
       "せっきょくてき",
@@ -4075,7 +4075,7 @@
   },
   {
     "question": "変改",
-    "furigana": "（へんかい）",
+    "furigana": "（変改）",
     "options": [
       "へんかい",
       "べんかい",
@@ -4096,7 +4096,7 @@
   },
   {
     "question": "復配",
-    "furigana": "（ふくはい）",
+    "furigana": "（復配）",
     "options": [
       "ふうくばい",
       "ふくばい",
@@ -4117,7 +4117,7 @@
   },
   {
     "question": "記入",
-    "furigana": "（きにゅう）",
+    "furigana": "（記入）",
     "options": [
       "きにょう",
       "きいにゅう",
@@ -4138,7 +4138,7 @@
   },
   {
     "question": "反対",
-    "furigana": "（はんたい）",
+    "furigana": "（反対）",
     "options": [
       "はんだい",
       "ばんたい",
@@ -4159,7 +4159,7 @@
   },
   {
     "question": "看板",
-    "furigana": "（かんばん）",
+    "furigana": "（看板）",
     "options": [
       "かんばん",
       "がんはん",
@@ -4180,7 +4180,7 @@
   },
   {
     "question": "坂道",
-    "furigana": "（さかみち）",
+    "furigana": "（坂道）",
     "options": [
       "ざかみち",
       "ざがみち",
@@ -4201,7 +4201,7 @@
   },
   {
     "question": "返品",
-    "furigana": "（へんぴん）",
+    "furigana": "（返品）",
     "options": [
       "へんぴん",
       "べんびん",
@@ -4264,7 +4264,7 @@
   },
   {
     "question": "紙一まいください。",
-    "furigana": "紙（かみ）一（まい）ください。",
+    "furigana": "紙（かみ）一（いち）（まい）ください。",
     "options": [
       "毎",
       "材",
@@ -4285,7 +4285,7 @@
   },
   {
     "question": "き会があれば日本へ行きたい。",
-    "furigana": "（きかい）が あれば 日本（にほん）へ 行（い）きたい。",
+    "furigana": "（き）会（かい）が あれば 日本（にほん）へ 行（い）きたい。",
     "options": [
       "機",
       "械",
@@ -4369,7 +4369,7 @@
   },
   {
     "question": "未来をそう像する。",
-    "furigana": "未来（みらい）を（そうぞう）する。",
+    "furigana": "未来（みらい）を（そう）像（ぞう）する。",
     "options": [
       "相",
       "想",
@@ -4411,7 +4411,7 @@
   },
   {
     "question": "母にそう談する。",
-    "furigana": "母（はは）に（そうだん）する。",
+    "furigana": "母（はは）に（そう）談（だん）する。",
     "options": [
       "箱",
       "相",
@@ -4432,7 +4432,7 @@
   },
   {
     "question": "一杯",
-    "furigana": "（いっぱい）",
+    "furigana": "（一杯）",
     "options": [
       "いちばい",
       "いっぱい",
@@ -4453,7 +4453,7 @@
   },
   {
     "question": "教材",
-    "furigana": "（きょうざい）",
+    "furigana": "（教材）",
     "options": [
       "きょざい",
       "きょうさい",
@@ -4474,7 +4474,7 @@
   },
   {
     "question": "枚数",
-    "furigana": "（まいすう）",
+    "furigana": "（枚数）",
     "options": [
       "まいず",
       "まいす",
@@ -4495,7 +4495,7 @@
   },
   {
     "question": "飛行機",
-    "furigana": "（ひこうき）",
+    "furigana": "（飛行機）",
     "options": [
       "ひこうき",
       "ひこうきい",
@@ -4516,7 +4516,7 @@
   },
   {
     "question": "横断歩道",
-    "furigana": "（おうだんほどう）",
+    "furigana": "（横断歩道）",
     "options": [
       "おおだんほど",
       "おうだんほどう",
@@ -4537,7 +4537,7 @@
   },
   {
     "question": "鉄橋",
-    "furigana": "（てっきょう）",
+    "furigana": "（鉄橋）",
     "options": [
       "てきょう",
       "てきょ",
@@ -4558,7 +4558,7 @@
   },
   {
     "question": "大根",
-    "furigana": "（だいこん）",
+    "furigana": "（大根）",
     "options": [
       "だいごん",
       "たいこん",
@@ -4579,7 +4579,7 @@
   },
   {
     "question": "相当",
-    "furigana": "（そうとう）",
+    "furigana": "（相当）",
     "options": [
       "そうとう",
       "ぞうとう",
@@ -4600,7 +4600,7 @@
   },
   {
     "question": "想像",
-    "furigana": "（そうぞう）",
+    "furigana": "（想像）",
     "options": [
       "そうぞ",
       "そうぞう",
@@ -4621,7 +4621,7 @@
   },
   {
     "question": "筆箱",
-    "furigana": "（ふでばこ）",
+    "furigana": "（筆箱）",
     "options": [
       "ふうでばこ",
       "ふうではこ",
@@ -4641,7 +4641,7 @@
     "createdAt": 0
   },
   {
-    "question": "か学者がくしゃになりたい。",
+    "question": "か学者になりたい。",
     "furigana": "（か）学者（がくしゃ）に なりたい。",
     "options": [
       "科",
@@ -4852,7 +4852,7 @@
   },
   {
     "question": "音楽家",
-    "furigana": "（おんがくか）",
+    "furigana": "（音楽家）",
     "options": [
       "おんがくが",
       "おんかくか",
@@ -4873,7 +4873,7 @@
   },
   {
     "question": "秒針",
-    "furigana": "（びょうしん）",
+    "furigana": "（秒針）",
     "options": [
       "ひょうしん",
       "びょうしん",
@@ -4894,7 +4894,7 @@
   },
   {
     "question": "移民",
-    "furigana": "（いみん）",
+    "furigana": "（移民）",
     "options": [
       "いいみん",
       "いまん",
@@ -4915,7 +4915,7 @@
   },
   {
     "question": "人種",
-    "furigana": "（じんしゅ）",
+    "furigana": "（人種）",
     "options": [
       "ひとしゅ",
       "じんしゅ",
@@ -4936,7 +4936,7 @@
   },
   {
     "question": "消費税",
-    "furigana": "（しょうひぜい）",
+    "furigana": "（消費税）",
     "options": [
       "しょうひぜい",
       "しょひせい",
@@ -4957,12 +4957,12 @@
   },
   {
     "question": "小説家",
-    "furigana": "（しょうせつか）",
+    "furigana": "（小説家）",
     "options": [
       "しょせつか",
       "じょうせつか",
       "しょうせつか",
-      "じょうせつか"
+      "しょうせっか"
     ],
     "correctAnswerIndex": 2,
     "explanation": "【小】 TIỂU - 【説】 THUYẾT - 【家】 GIA\n- Âm On của 説: セツ\n- Từ vựng: 小説家 (しょうせつか): Tiểu thuyết gia, nhà văn.\n- Mẹo nhớ chữ Thuyết: Anh trai (兄) đang nói (言) về cuốn TIỂU THUYẾT mà mình đã viết.\n\nDịch: (Từ vựng) Tiểu thuyết gia / Nhà văn\n\nPhân tích:\nTiểu (ショウ) + Thuyết (セツ) + Gia (カ) = しょうせつか. Đáp án C đúng.",
@@ -4978,7 +4978,7 @@
   },
   {
     "question": "協議会",
-    "furigana": "（きょうぎかい）",
+    "furigana": "（協議会）",
     "options": [
       "きょうぎがい",
       "きょうぎかい",
@@ -4999,7 +4999,7 @@
   },
   {
     "question": "参加者",
-    "furigana": "（さんかしゃ）",
+    "furigana": "（参加者）",
     "options": [
       "さんかじゃ",
       "さんかしゃ",
@@ -5020,7 +5020,7 @@
   },
   {
     "question": "助ける",
-    "furigana": "（たす）ける",
+    "furigana": "（助）ける",
     "options": [
       "だすける",
       "だずける",
@@ -5041,7 +5041,7 @@
   },
   {
     "question": "効果",
-    "furigana": "（こうか）",
+    "furigana": "（効果）",
     "options": [
       "こうか",
       "こか",
@@ -5062,7 +5062,7 @@
   },
   {
     "question": "転勤する",
-    "furigana": "（てんきん）する",
+    "furigana": "（転勤）する",
     "options": [
       "でんきんする",
       "てんぎんする",
@@ -5271,8 +5271,8 @@
     "createdAt": 0
   },
   {
-    "question": "日本のこうきゅうレベルを勉強する。",
-    "furigana": "日本（にほん）の（こうきゅう）レベルを 勉強（べんきょう）する。",
+    "question": "こうきゅうなホテルに泊まる。",
+    "furigana": "（こうきゅう）な ホテルに 泊（と）まる。",
     "options": [
       "吸",
       "級",
@@ -5280,7 +5280,7 @@
       "救"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【級】 CẤP\n- Âm On: キュウ\n- Mẹo nhớ: Dùng sợi chỉ (糸) treo 3 người (及) lên thì thật ĐẲNG CẤP.\n- Giải nghĩa: 高級 (こうきゅう) là cao cấp.\n\nDịch: Học ở trình độ cao cấp của tiếng Nhật.\n\nPhân tích:\nA. 吸: Hấp (hút)\nB. 級: Đúng. Cấp trong 高級 (こうきゅう - Cao cấp)\nC. 急: Cấp (khẩn cấp)\nD. 救: Cứu (cứu giúp)",
+    "explanation": "【級】 CẤP\n- Âm On: キュウ\n- Mẹo nhớ: Dùng sợi chỉ (糸) treo 3 người (及) lên thì thật ĐẲNG CẤP.\n- Giải nghĩa: 高級 (こうきゅう) là cao cấp.\n\nDịch: Ở khách sạn cao cấp.\n\nPhân tích:\nA. 吸: Hấp (hút)\nB. 級: Đúng. Cấp trong 高級 (こうきゅう - Cao cấp)\nC. 急: Cấp (khẩn cấp)\nD. 救: Cứu (cứu giúp)",
     "jlptLevel": "N3",
     "lesson": "Bài 13",
     "lessonNum": 13,
@@ -5544,8 +5544,8 @@
     "createdAt": 0
   },
   {
-    "question": "友達のけっこんしきを参加する。",
-    "furigana": "友達（ともだち）の（けっこんしき）を 参加（さんか）する。",
+    "question": "友達のけっこんしきに参加する。",
+    "furigana": "友達（ともだち）の（けっこんしき）に 参加（さんか）する。",
     "options": [
       "続",
       "結",
@@ -5649,8 +5649,8 @@
     "createdAt": 0
   },
   {
-    "question": "国のけいざいを発展する。",
-    "furigana": "国（くに）の（けいざい）を 発展（はってん）する。",
+    "question": "国のけいざいを発展させる。",
+    "furigana": "国（くに）の（けいざい）を 発展（はってん）させる。",
     "options": [
       "形",
       "計",
@@ -5964,8 +5964,8 @@
     "createdAt": 0
   },
   {
-    "question": "私のかこを思いたくない。",
-    "furigana": "私（わたし）の（かこ）を 思（おも）いたくない。",
+    "question": "私のかこを思い出したくない。",
+    "furigana": "私（わたし）の（かこ）を 思（おも）い 出（だ）したくない。",
     "options": [
       "高",
       "違",
@@ -5973,7 +5973,7 @@
       "退"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【過】 QUÁ\n- Âm On: カ\n- Mẹo nhớ: Đi QUA con đường (辶) có nhà bạn.\n- Giải nghĩa: 過去 (かこ) là quá khứ.\n\nDịch: Tôi không muốn nghĩ về quá khứ của mình.\n\nPhân tích:\nA. 高: Cao (cao)\nB. 違: Vi (khác)\nC. 過: Đúng. Quá trong 過去 (かこ - quá khứ)\nD. 退: Thoái (lùi)",
+    "explanation": "【過】 QUÁ\n- Âm On: カ\n- Mẹo nhớ: Đi QUA con đường (辶) có nhà bạn.\n- Giải nghĩa: 過去 (かこ) là quá khứ.\n\nDịch: Tôi không muốn nhớ lại quá khứ của mình.\n\nPhân tích:\nA. 高: Cao (cao)\nB. 違: Vi (khác)\nC. 過: Đúng. Quá trong 過去 (かこ - quá khứ)\nD. 退: Thoái (lùi)",
     "jlptLevel": "N3",
     "lesson": "Bài 15",
     "lessonNum": 15,
@@ -5985,8 +5985,8 @@
     "createdAt": 0
   },
   {
-    "question": "色の間違った。",
-    "furigana": "色（いろ）の（まちがった）。",
+    "question": "色をまちがえた。",
+    "furigana": "色（いろ）を（まちがえた）。",
     "options": [
       "過",
       "進",
@@ -5994,7 +5994,7 @@
       "違"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【違】 VI\n- Âm Kun: ちが・う / ちが・える\n- Mẹo nhớ: Số 5 (五) và Chữ Năm (年) miệng đọc giống nhau nhưng đường (辶) đi nét vẽ KHÁC NHAU.\n- Giải nghĩa: 間違う (まちがう) là sai, nhầm lẫn.\n\nDịch: Nhầm màu sắc rồi.\n\nPhân tích:\nA. 過: Quá\nB. 進: Tiến\nC. 遊: Du\nD. 違: Đúng. Vi (まちがう - sai, nhầm lẫn)",
+    "explanation": "【違】 VI\n- Âm Kun: ちが・う / ちが・える\n- Mẹo nhớ: Số 5 (五) và Chữ Năm (年) miệng đọc giống nhau nhưng đường (辶) đi nét vẽ KHÁC NHAU.\n- Giải nghĩa: 間違う (まちがう) là sai, nhầm lẫn.\n\nDịch: Tôi đã nhầm màu.\n\nPhân tích:\nA. 過: Quá\nB. 進: Tiến\nC. 遊: Du\nD. 違: Đúng. Vi (まちがう - sai, nhầm lẫn)",
     "jlptLevel": "N3",
     "lesson": "Bài 15",
     "lessonNum": 15,
@@ -6006,7 +6006,7 @@
     "createdAt": 0
   },
   {
-    "question": "服をぎゃくにに着る。",
+    "question": "服をぎゃくに着る。",
     "furigana": "服（ふく）を（ぎゃく）に 着（き）る。",
     "options": [
       "迎",
@@ -6073,12 +6073,12 @@
     "furigana": "正（ただ）しい（せんたく）をする。",
     "options": [
       "線",
-      "洗",
+      "先",
       "遊",
       "選"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【選】 TUYỂN\n- Âm On: セン\n- Mẹo nhớ: TUYỂN CHỌN 22 tuyển thủ có điểm chung (共) lên đường (辶) thi đấu.\n- Giải nghĩa: 選択 (せんたく) là lựa chọn.\n\nDịch: Đưa ra lựa chọn đúng đắn.\n\nPhân tích:\nA. 線: Tuyến (đường kẻ)\nB. 洗: Tẩy (rửa)\nC. 遊: Du (chơi)\nD. 選: Đúng. Tuyển trong 選択 (せんたく - lựa chọn)",
+    "explanation": "【選】 TUYỂN\n- Âm On: セン\n- Mẹo nhớ: TUYỂN CHỌN 22 tuyển thủ có điểm chung (共) lên đường (辶) thi đấu.\n- Giải nghĩa: 選択 (せんたく) là lựa chọn.\n\nDịch: Đưa ra lựa chọn đúng đắn.\n\nPhân tích:\nA. 線: Tuyến (đường kẻ)\nB. 先: Tiên (trước)\nC. 遊: Du (chơi)\nD. 選: Đúng. Tuyển trong 選択 (せんたく - lựa chọn)",
     "jlptLevel": "N3",
     "lesson": "Bài 15",
     "lessonNum": 15,
@@ -6468,8 +6468,8 @@
     "createdAt": 0
   },
   {
-    "question": "仕事を終わったら、かくにんする。",
-    "furigana": "仕事（しごと）を 終（お）わったら、（かくにん）する。",
+    "question": "仕事が終わったら、かくにんする。",
+    "furigana": "仕事（しごと）が 終（お）わったら、（かくにん）する。",
     "options": [
       "誌",
       "談",
@@ -6552,8 +6552,8 @@
     "createdAt": 0
   },
   {
-    "question": "このことはふくざつな。",
-    "furigana": "このことは（ふくざつ）な。",
+    "question": "このことはふくざつだね。",
+    "furigana": "このことは（ふくざつ）だね。",
     "options": [
       "集",
       "確",
@@ -6679,7 +6679,7 @@
   },
   {
     "question": "会議室",
-    "furigana": "（会議室）",
+    "furigana": "（会議）室（しつ）",
     "options": [
       "かいき",
       "がいぎ",
@@ -6725,7 +6725,7 @@
     "options": [
       "しんぽう",
       "しんぽ",
-      "しんぽう",
+      "しんほ",
       "しょんぼ"
     ],
     "correctAnswerIndex": 1,
@@ -6783,8 +6783,8 @@
     "createdAt": 0
   },
   {
-    "question": "今日の仕事をかんりょうです。",
-    "furigana": "今日（きょう）の 仕事（しごと）を（かん）了（りょう）です。",
+    "question": "今日の仕事はかん了しました。",
+    "furigana": "今日（きょう）の 仕事（しごと）は（かん）了（りょう）しました。",
     "options": [
       "元",
       "完",
@@ -7371,8 +7371,8 @@
     "createdAt": 0
   },
   {
-    "question": "いしゃになって人々助けたい。",
-    "furigana": "医（い）（しゃ）になって 人々（ひとびと）助（たす）けたい。",
+    "question": "いしゃになって人々を助けたい。",
+    "furigana": "医（い）（しゃ）になって 人々（ひとびと）を 助（たす）けたい。",
     "options": [
       "考",
       "老",
@@ -7434,7 +7434,7 @@
     "createdAt": 0
   },
   {
-    "question": "きせいをる。",
+    "question": "きせいを作る。",
     "furigana": "（き）制（せい）を 作（つく）る。",
     "options": [
       "見",
@@ -7524,7 +7524,7 @@
       "しゅうちょう",
       "しゅちょう",
       "じゅちょう",
-      "じゅちょう"
+      "しゅちょ"
     ],
     "correctAnswerIndex": 1,
     "explanation": "【主】【張】 CHỦ TRƯƠNG\n- Âm On của 主 là シュ, 張 là チョウ.\n- Giải nghĩa: 主張 (しゅちょう) là chủ trương, khăng khăng.\n\nDịch: Chủ trương / Khăng khăng.\n\nPhân tích:\nA. しゅうちょう: Sai vì chữ 主 không có trường âm.\nB. しゅちょう: Đúng.\nC. じゅちょう: Sai âm đục chữ 主.\nD. じゅちょう: Lặp lại C.",
@@ -7644,8 +7644,8 @@
     "createdAt": 0
   },
   {
-    "question": "参考する",
-    "furigana": "（参考）する",
+    "question": "参考にする",
+    "furigana": "（参考）にする",
     "options": [
       "さんこう",
       "ざんこう",
@@ -7812,8 +7812,8 @@
     "createdAt": 0
   },
   {
-    "question": "昨日からいつもねむかった。",
-    "furigana": "昨日（きのう）からいつも（ねむかった）。",
+    "question": "昨日からずっとねむい。",
+    "furigana": "昨日（きのう）からずっと（ねむい）。",
     "options": [
       "暖",
       "眠",
@@ -7837,12 +7837,12 @@
     "furigana": "（あたたかい） 手袋（てぶくろ）。",
     "options": [
       "腹",
-      "温",
+      "服",
       "眠",
       "暖"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【暖】 NOÃN\n- Âm Kun: あたた・かい\n- Mẹo nhớ: Tay người bạn (友) giữ mặt trời (日) ở lại nên ẤM ÁP.\n- Giải nghĩa: 暖かい (あたたかい) là ấm áp (thường dùng cho thời tiết, không khí).\n\nDịch: Găng tay ấm.\n\nPhân tích:\nA. 腹: Phúc (bụng)\nB. 温: Ôn (ấm - dùng cho đồ vật, nước... không dùng cho thời tiết/không khí bằng 暖)\nC. 眠: Miên (ngủ)\nD. 暖: Đúng. Noãn (あたたかい - ấm áp)",
+    "explanation": "【暖】 NOÃN\n- Âm Kun: あたた・かい\n- Mẹo nhớ: Tay người bạn (友) giữ mặt trời (日) ở lại nên ẤM ÁP.\n- Giải nghĩa: 暖かい (あたたかい) là ấm áp (thường dùng cho thời tiết, không khí).\n\nDịch: Găng tay ấm.\n\nPhân tích:\nA. 腹: Phúc (bụng)\nB. 服: Phục (quần áo)\nC. 眠: Miên (ngủ)\nD. 暖: Đúng. Noãn (あたたかい - ấm áp)",
     "jlptLevel": "N3",
     "lesson": "Bài 19",
     "lessonNum": 19,
@@ -8253,8 +8253,8 @@
     "createdAt": 0
   },
   {
-    "question": "この研究をせいこうしました。",
-    "furigana": "この 研究（けんきゅう）を（せいこう）しました。",
+    "question": "この研究はせいこうしました。",
+    "furigana": "この 研究（けんきゅう）は（せいこう）しました。",
     "options": [
       "威",
       "減",
@@ -8262,7 +8262,7 @@
       "感"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【成】 THÀNH\n- Âm On: セイ\n- Mẹo nhớ: Người vượt qua (戈) muôn ngàn (万) khó khăn thì sẽ THÀNH CÔNG.\n- Giải nghĩa: 成功 (せいこう) là thành công.\n\nDịch: Đã thành công trong nghiên cứu này.\n\nPhân tích:\nA. 威: Uy (uy quyền)\nB. 減: Giảm (cắt giảm)\nC. 成: Đúng. Thành trong 成功 (せいこう - thành công)\nD. 感: Cảm (cảm giác)",
+    "explanation": "【成】 THÀNH\n- Âm On: セイ\n- Mẹo nhớ: Người vượt qua (戈) muôn ngàn (万) khó khăn thì sẽ THÀNH CÔNG.\n- Giải nghĩa: 成功 (せいこう) là thành công.\n\nDịch: Nghiên cứu này đã thành công.\n\nPhân tích:\nA. 威: Uy (uy quyền)\nB. 減: Giảm (cắt giảm)\nC. 成: Đúng. Thành trong 成功 (せいこう - thành công)\nD. 感: Cảm (cảm giác)",
     "jlptLevel": "N3",
     "lesson": "Bài 20",
     "lessonNum": 20,
@@ -8274,8 +8274,8 @@
     "createdAt": 0
   },
   {
-    "question": "日本で若者をだんだんへらす。",
-    "furigana": "日本（にほん）で 若者（わかもの）をだんだん（へらす）。",
+    "question": "ごみの量をへらす。",
+    "furigana": "ごみの 量（りょう）を（へらす）。",
     "options": [
       "減",
       "威",
@@ -8283,7 +8283,7 @@
       "成"
     ],
     "correctAnswerIndex": 0,
-    "explanation": "【減】 GIẢM\n- Âm Kun: へ・らす\n- Mẹo nhớ: Nước chảy khắp mọi nơi làm nước bị GIẢM.\n- Giải nghĩa: 減らす (へらす) là làm giảm.\n\nDịch: Ở Nhật Bản, số lượng người trẻ đang dần bị giảm đi.\n\nPhân tích:\nA. 減: Đúng. Giảm (へらす - làm giảm)\nB. 威: Uy\nC. 感: Cảm\nD. 成: Thành",
+    "explanation": "【減】 GIẢM\n- Âm Kun: へ・らす\n- Mẹo nhớ: Nước chảy khắp mọi nơi làm nước bị GIẢM.\n- Giải nghĩa: 減らす (へらす) là làm giảm.\n\nDịch: Giảm lượng rác.\n\nPhân tích:\nA. 減: Đúng. Giảm (へらす - làm giảm)\nB. 威: Uy\nC. 感: Cảm\nD. 成: Thành",
     "jlptLevel": "N3",
     "lesson": "Bài 20",
     "lessonNum": 20,
@@ -8529,13 +8529,13 @@
     "question": "感謝する",
     "furigana": "（感謝）する",
     "options": [
-      "ざくけん",
+      "かんじゃ",
       "がんじゃ",
       "かんしゃ",
       "がんしゃ"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【感】【謝】 CẢM TẠ\n- Âm On của 感 là カン, 謝 là シャ.\n- Giải nghĩa: 感謝 (かんしゃ) là cảm tạ, biết ơn.\n\nDịch: Biết ơn / Cảm tạ.\n\nPhân tích:\nA. ざくけん: Sai hoàn toàn.\nB. がんじゃ: Sai âm đục.\nC. かんしゃ: Đúng.\nD. がんしゃ: Sai âm đục chữ 感.",
+    "explanation": "【感】【謝】 CẢM TẠ\n- Âm On của 感 là カン, 謝 là シャ.\n- Giải nghĩa: 感謝 (かんしゃ) là cảm tạ, biết ơn.\n\nDịch: Biết ơn / Cảm tạ.\n\nPhân tích:\nA. かんじゃ: Sai (かんじゃ là 患者 - bệnh nhân).\nB. がんじゃ: Sai âm đục.\nC. かんしゃ: Đúng.\nD. がんしゃ: Sai âm đục chữ 感.",
     "jlptLevel": "N3",
     "lesson": "Bài 20",
     "lessonNum": 20,
@@ -8548,15 +8548,15 @@
   },
   {
     "question": "引っ越し",
-    "furigana": "引（ひ）っ（越）し",
+    "furigana": "（引っ越し）",
     "options": [
-      "しっこし",
-      "びっこし",
+      "ひっごし",
+      "ひっこうし",
       "ひっこし",
-      "じっこし"
+      "ひきこし"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【越】 VIỆT\n- Âm Kun: こ・す\n- Giải nghĩa: 引っ越し (ひっこし) là chuyển nhà.\n\nDịch: Chuyển nhà.\n\nPhân tích:\nA. しっこし: Sai.\nB. びっこし: Sai.\nC. ひっこし: Đúng.\nD. じっこし: Sai.",
+    "explanation": "【越】 VIỆT\n- Âm Kun: こ・す\n- Giải nghĩa: 引っ越し (ひっこし) là chuyển nhà.\n\nDịch: Chuyển nhà.\n\nPhân tích:\nA. ひっごし: Sai âm đục.\nB. ひっこうし: Sai, thừa trường âm.\nC. ひっこし: Đúng.\nD. ひきこし: Sai, 引っ đọc ngắt âm là ひっ.",
     "jlptLevel": "N3",
     "lesson": "Bài 20",
     "lessonNum": 20,
@@ -9177,8 +9177,8 @@
     "createdAt": 0
   },
   {
-    "question": "ベトナムののう業を集中されている。",
-    "furigana": "ベトナムの（のう）業（ぎょう）を 集中（しゅうちゅう）されている。",
+    "question": "ベトナムはのう業に力を入れている。",
+    "furigana": "ベトナムは（のう）業（ぎょう）に 力（ちから）を 入（い）れている。",
     "options": [
       "登",
       "豆",
@@ -9186,7 +9186,7 @@
       "農"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【農】 NÔNG\n- Âm On: ノウ\n- Mẹo nhớ: Con rồng (辰) đang bay rẽ (曲) xuống cánh đồng làm NÔNG NGHIỆP để kiếm ăn.\n- Giải nghĩa: 農業 (のうぎょう) là nông nghiệp.\n\nDịch: Nông nghiệp của Việt Nam đang được tập trung phát triển.\n\nPhân tích:\nA. 登: Đăng (leo lên)\nB. 豆: Đậu (hạt đậu)\nC. 豊: Phong (phong phú)\nD. 農: Đúng. Nông trong 農業 (のうぎょう - nông nghiệp)",
+    "explanation": "【農】 NÔNG\n- Âm On: ノウ\n- Mẹo nhớ: Con rồng (辰) đang bay rẽ (曲) xuống cánh đồng làm NÔNG NGHIỆP để kiếm ăn.\n- Giải nghĩa: 農業 (のうぎょう) là nông nghiệp.\n\nDịch: Việt Nam đang chú trọng vào nông nghiệp.\n\nPhân tích:\nA. 登: Đăng (leo lên)\nB. 豆: Đậu (hạt đậu)\nC. 豊: Phong (phong phú)\nD. 農: Đúng. Nông trong 農業 (のうぎょう - nông nghiệp)",
     "jlptLevel": "N3",
     "lesson": "Bài 22",
     "lessonNum": 22,
@@ -9372,7 +9372,7 @@
       "のうきょう",
       "のぎょう",
       "のうぎょう",
-      "のうきょう"
+      "のうぎょ"
     ],
     "correctAnswerIndex": 2,
     "explanation": "【農】【業】 NÔNG NGHIỆP\n- Âm On của 農 là ノウ, của 業 là ギョウ.\n- Giải nghĩa: 農業 (のうぎょう) là nông nghiệp.\n\nDịch: Nông nghiệp.\n\nPhân tích:\nA. のうきょう: 農協 (Hợp tác xã nông nghiệp).\nB. のぎょう: Thiếu trường âm chữ 農.\nC. のうぎょう: Đúng.\nD. のうきょう: Lặp lại A.",
@@ -9471,8 +9471,8 @@
     "createdAt": 0
   },
   {
-    "question": "わたしのかれ氏とてもハンサム。",
-    "furigana": "わたしの（かれ）氏（し）とてもハンサム。",
+    "question": "わたしのかれ氏はとてもハンサムです。",
+    "furigana": "わたしの（かれ）氏（し）はとてもハンサムです。",
     "options": [
       "波",
       "痛",
@@ -9576,8 +9576,8 @@
     "createdAt": 0
   },
   {
-    "question": "下にまがる。",
-    "furigana": "下（した）に（まがる）。",
+    "question": "次の角を右にまがる。",
+    "furigana": "次（つぎ）の 角（かど）を 右（みぎ）に（まがる）。",
     "options": [
       "皿",
       "血",
@@ -9585,7 +9585,7 @@
       "曲"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【曲】 KHÚC\n- Âm Kun: ま・がる\n- Mẹo nhớ: Tấm lưới ô vuông có nhiều sợi dây đan GẤP KHÚC nhau.\n- Giải nghĩa: 曲がる (まがる) là rẽ, quẹo, uốn cong.\n\nDịch: Rẽ xuống dưới.\n\nPhân tích:\nA. 皿: Mãnh\nB. 血: Huyết\nC. 冊: Sách\nD. 曲: Đúng. Khúc (まがる - rẽ)",
+    "explanation": "【曲】 KHÚC\n- Âm Kun: ま・がる\n- Mẹo nhớ: Tấm lưới ô vuông có nhiều sợi dây đan GẤP KHÚC nhau.\n- Giải nghĩa: 曲がる (まがる) là rẽ, quẹo, uốn cong.\n\nDịch: Rẽ phải ở góc đường tiếp theo.\n\nPhân tích:\nA. 皿: Mãnh\nB. 血: Huyết\nC. 冊: Sách\nD. 曲: Đúng. Khúc (まがる - rẽ)",
     "jlptLevel": "N3",
     "lesson": "Bài 23",
     "lessonNum": 23,
@@ -9598,7 +9598,7 @@
   },
   {
     "question": "銀行口座",
-    "furigana": "（銀行口座）",
+    "furigana": "銀行（ぎんこう）（口座）",
     "options": [
       "こうざ",
       "こざ",
@@ -9912,8 +9912,8 @@
     "createdAt": 0
   },
   {
-    "question": "熱い過ぎて、あせが流れる。",
-    "furigana": "熱（あつ）い 過（す）ぎて、（あせ）が 流（なが）れる。",
+    "question": "暑すぎて、あせが流れる。",
+    "furigana": "暑（あつ）すぎて、（あせ）が 流（なが）れる。",
     "options": [
       "刊",
       "干",
@@ -10524,13 +10524,13 @@
     "question": "頭",
     "furigana": "（頭）",
     "options": [
-      "おなあ",
+      "おなか",
       "かた",
       "あたま",
       "ゆび"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【頭】 ĐẦU\n- Âm Kun: あたま\n- Giải nghĩa: 頭 (あたま) là cái đầu.\n\nDịch: Cái đầu.\n\nPhân tích:\nA. おなあ: Sai.\nB. かた: 肩 (Vai).\nC. あたま: Đúng.\nD. ゆび: 指 (Ngón tay).",
+    "explanation": "【頭】 ĐẦU\n- Âm Kun: あたま\n- Giải nghĩa: 頭 (あたま) là cái đầu.\n\nDịch: Cái đầu.\n\nPhân tích:\nA. おなか: お腹 (Bụng).\nB. かた: 肩 (Vai).\nC. あたま: Đúng.\nD. ゆび: 指 (Ngón tay).",
     "jlptLevel": "N3",
     "lesson": "Bài 25",
     "lessonNum": 25,
@@ -10689,7 +10689,7 @@
     "createdAt": 0
   },
   {
-    "question": "法ほうりつ家になりたい。",
+    "question": "法りつ家になりたい。",
     "furigana": "法（ほう）（りつ）家（か）になりたい。",
     "options": [
       "健",
@@ -10731,7 +10731,7 @@
     "createdAt": 0
   },
   {
-    "question": "結婚けっこんしきに呼ばれた。",
+    "question": "結婚しきに呼ばれた。",
     "furigana": "結婚（けっこん）（しき）に 呼（よ）ばれた。",
     "options": [
       "式",
@@ -11446,7 +11446,7 @@
   },
   {
     "question": "郵便局",
-    "furigana": "（郵便局）",
+    "furigana": "（郵便）局（きょく）",
     "options": [
       "ゆびん",
       "じゅうびん",
@@ -11592,8 +11592,8 @@
     "createdAt": 0
   },
   {
-    "question": "広いへやがほしい。",
-    "furigana": "広（ひろ）い（へや）がほしい。",
+    "question": "広い部やがほしい。",
+    "furigana": "広（ひろ）い 部（へ）（や）がほしい。",
     "options": [
       "屋",
       "室",
@@ -12327,7 +12327,7 @@
     "createdAt": 0
   },
   {
-    "question": "白線の内うちがわに立ってください。",
+    "question": "白線の内がわに立ってください。",
     "furigana": "白線（はくせん）の 内（うち）（がわ）に 立（た）ってください。",
     "options": [
       "川",
@@ -12348,8 +12348,8 @@
     "createdAt": 0
   },
   {
-    "question": "楽器のはじめ。",
-    "furigana": "楽器（がっき）の（はじめ）。",
+    "question": "はじめて日本に来ました。",
+    "furigana": "（はじめて） 日本（にほん）に 来（き）ました。",
     "options": [
       "神",
       "礼",
@@ -12357,7 +12357,7 @@
       "初"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【初】 SƠ\n- Âm Kun: はじ・め / はつ\n- Mẹo nhớ: Việc ĐẦU TIÊN khi may áo quần (衤) là dùng dao (刀) cắt vải.\n- Giải nghĩa: 初め (はじめ) là ban đầu, sự khởi đầu.\n\nDịch: Phần dạo đầu của nhạc cụ.\n\nPhân tích:\nA. 神: Thần\nB. 礼: Lễ\nC. 始: Thủy (Bắt đầu - thường dùng cho 始める/始まる)\nD. 初: Đúng. Sơ trong 初め (はじめ - ban đầu)",
+    "explanation": "【初】 SƠ\n- Âm Kun: はじ・め / はつ\n- Mẹo nhớ: Việc ĐẦU TIÊN khi may áo quần (衤) là dùng dao (刀) cắt vải.\n- Giải nghĩa: 初めて (はじめて) là lần đầu tiên.\n\nDịch: Lần đầu tiên tôi đến Nhật Bản.\n\nPhân tích:\nA. 神: Thần\nB. 礼: Lễ\nC. 始: Thủy - dùng cho 始める/始まる (bắt đầu), không dùng với nghĩa \"lần đầu tiên\"\nD. 初: Đúng. Sơ trong 初めて (はじめて - lần đầu tiên)",
     "jlptLevel": "N3",
     "lesson": "Bài 30",
     "lessonNum": 30,
@@ -12391,7 +12391,7 @@
   },
   {
     "question": "車せいぞう会社",
-    "furigana": "車（くるま）（せい）（ぞう） 会社（がいしゃ）",
+    "furigana": "車（くるま）（せい）造（ぞう） 会社（がいしゃ）",
     "options": [
       "製",
       "制",
@@ -12411,8 +12411,8 @@
     "createdAt": 0
   },
   {
-    "question": "思い病にたおれる。",
-    "furigana": "重（おも）い 病（びょう）に（たおれる）。",
+    "question": "重い病にたおれる。",
+    "furigana": "重（おも）い 病（やまい）に（たおれる）。",
     "options": [
       "至",
       "制",
@@ -12420,7 +12420,7 @@
       "到"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【倒】 ĐẢO\n- Âm Kun: たお・れる\n- Mẹo nhớ: Người (亻) vừa chạy về đến (到) đích thì NGÃ xuống vì mệt.\n- Giải nghĩa: 倒れる (たおれる) là ngã, gục ngã (vì bệnh tật, mệt mỏi).\n\nDịch: Gục ngã vì căn bệnh nặng. (Gốc: 思い病 nhưng đúng nghĩa đen phải là 重い病: căn bệnh nặng)\n\nPhân tích:\nA. 至: Chí (Đến)\nB. 制: Chế (Chế độ)\nC. 倒: Đúng. Đảo (たおれる - ngã, gục)\nD. 到: Đáo (Đến đích)",
+    "explanation": "【倒】 ĐẢO\n- Âm Kun: たお・れる\n- Mẹo nhớ: Người (亻) vừa chạy về đến (到) đích thì NGÃ xuống vì mệt.\n- Giải nghĩa: 倒れる (たおれる) là ngã, gục ngã (vì bệnh tật, mệt mỏi).\n\nDịch: Gục ngã vì căn bệnh nặng.\n\nPhân tích:\nA. 至: Chí (Đến)\nB. 制: Chế (Chế độ)\nC. 倒: Đúng. Đảo (たおれる - ngã, gục)\nD. 到: Đáo (Đến đích)",
     "jlptLevel": "N3",
     "lesson": "Bài 30",
     "lessonNum": 30,
@@ -12432,8 +12432,8 @@
     "createdAt": 0
   },
   {
-    "question": "そこにいたるまで10年かかったそうだ。",
-    "furigana": "そこに（いたる）まで 10年（じゅうねん）かかったそうだ。",
+    "question": "やっと目的地にとう着した。",
+    "furigana": "やっと 目的地（もくてきち）に（とう）着（ちゃく）した。",
     "options": [
       "到",
       "制",
@@ -12441,7 +12441,7 @@
       "製"
     ],
     "correctAnswerIndex": 0,
-    "explanation": "【到】 ĐÁO\n- Âm Kun: いた・る (N2)\n- Mẹo nhớ: Phi con dao (刂) ĐẾN ĐÍCH.\n- Giải nghĩa: 到る (いたる) là đạt đến, đi đến (đích, mức độ). (*Lưu ý: Chữ 至 cũng đọc là いたる, nhưng theo sách giáo trình này ở bài 30, trọng tâm là chữ 到).\n\nDịch: Nghe nói phải mất 10 năm mới đạt đến mức độ đó.\n\nPhân tích:\nA. 到: Đúng. Đáo (いたる - đạt đến, đến đích)\nB. 制: Chế\nC. 至: Chí (Cũng đọc là いたる, nhưng bài này học chữ 到)\nD. 製: Chế",
+    "explanation": "【到】 ĐÁO\n- Âm On: トウ\n- Mẹo nhớ: Phi con dao (刂) ĐẾN ĐÍCH.\n- Giải nghĩa: 到着 (とうちゃく) là đến nơi.\n\nDịch: Cuối cùng cũng đã đến được nơi cần đến.\n\nPhân tích:\nA. 到: Đúng. Đáo trong 到着 (とうちゃく - đến nơi)\nB. 制: Chế (セイ)\nC. 至: Chí (シ) - không đọc là とう\nD. 製: Chế (セイ)",
     "jlptLevel": "N3",
     "lesson": "Bài 30",
     "lessonNum": 30,
@@ -12790,7 +12790,7 @@
   },
   {
     "question": "どうろが込んでいる。",
-    "furigana": "（どう）ろが 込（こ）んでいる。",
+    "furigana": "道（どう）（ろ）が 込（こ）んでいる。",
     "options": [
       "各",
       "路",
@@ -12915,8 +12915,8 @@
     "createdAt": 0
   },
   {
-    "question": "この本をかくグルーブに一冊ずつ配ってください。",
-    "furigana": "この 本（ほん）を（かく）グルーブに 一冊（いっさつ）ずつ 配（くば）ってください。",
+    "question": "この本をかくグループに一冊ずつ配ってください。",
+    "furigana": "この 本（ほん）を（かく）グループに 一冊（いっさつ）ずつ 配（くば）ってください。",
     "options": [
       "格",
       "路",
@@ -13272,8 +13272,8 @@
     "createdAt": 0
   },
   {
-    "question": "たんじょうびをしゅくふくする。",
-    "furigana": "たんじょうびを（しゅくふく）する。",
+    "question": "たんじょうびを祝ふくする。",
+    "furigana": "たんじょうびを 祝（しゅく）（ふく）する。",
     "options": [
       "礼",
       "祝",
@@ -13281,7 +13281,7 @@
       "福"
     ],
     "correctAnswerIndex": 3,
-    "explanation": "【福】 PHÚC\n- Âm On: フク\n- Mẹo nhớ: Trước khi ra đồng (田), đứng trước bàn thờ (礻) miệng (口) CẦU PHÚC.\n- Giải nghĩa: 祝福 (しゅくふく) là chúc phúc.\n\nDịch: Chúc phúc sinh nhật.\n\nPhân tích:\nA. 礼: Lễ\nB. 祝: Chúc\nC. 神: Thần\nD. 福: Đúng. Phúc trong 祝福 (しゅくふく - chúc phúc)",
+    "explanation": "【福】 PHÚC\n- Âm On: フク\n- Mẹo nhớ: Trước khi ra đồng (田), đứng trước bàn thờ (礻) miệng (口) CẦU PHÚC.\n- Giải nghĩa: 祝福 (しゅくふく) là chúc phúc.\n\nDịch: Chúc phúc sinh nhật.\n\nPhân tích:\nA. 礼: Lễ\nB. 祝: Chúc - đã có trong đề (祝ふく), phần cần điền là ふく\nC. 神: Thần\nD. 福: Đúng. Phúc trong 祝福 (しゅくふく - chúc phúc)",
     "jlptLevel": "N3",
     "lesson": "Bài 32",
     "lessonNum": 32,
@@ -13692,8 +13692,8 @@
     "createdAt": 0
   },
   {
-    "question": "いちばんのは愛だ。",
-    "furigana": "一（いち）（ばん）のは 愛（あい）だ。",
+    "question": "いちばん大切なのは愛だ。",
+    "furigana": "いち（ばん） 大切（たいせつ）なのは 愛（あい）だ。",
     "options": [
       "留",
       "申",
@@ -13701,7 +13701,7 @@
       "理"
     ],
     "correctAnswerIndex": 2,
-    "explanation": "【番】 PHIÊN\n- Âm On: バン\n- Mẹo nhớ: Lúa gạo (米) trên ruộng (田) được trồng LUÂN PHIÊN.\n- Giải nghĩa: 一番 (いちばん) là số 1, tuyệt nhất.\n\nDịch: Tình yêu là điều tuyệt vời nhất (số 1).\n\nPhân tích:\nA. 留: Lưu\nB. 申: Thân\nC. 番: Đúng. Phiên trong 一番 (いちばん - số 1)\nD. 理: Lí",
+    "explanation": "【番】 PHIÊN\n- Âm On: バン\n- Mẹo nhớ: Lúa gạo (米) trên ruộng (田) được trồng LUÂN PHIÊN.\n- Giải nghĩa: 一番 (いちばん) là số 1, tuyệt nhất.\n\nDịch: Điều quan trọng nhất là tình yêu.\n\nPhân tích:\nA. 留: Lưu\nB. 申: Thân\nC. 番: Đúng. Phiên trong 一番 (いちばん - số 1)\nD. 理: Lí",
     "jlptLevel": "N3",
     "lesson": "Bài 33",
     "lessonNum": 33,
@@ -13718,7 +13718,7 @@
     "options": [
       "思",
       "重",
-      "重",
+      "主",
       "面"
     ],
     "correctAnswerIndex": 3,
@@ -13755,8 +13755,8 @@
     "createdAt": 0
   },
   {
-    "question": "魚をあきない中。",
-    "furigana": "魚（さかな）を（あきない） 中（ちゅう）。",
+    "question": "駅前のしょう店街で買い物をする。",
+    "furigana": "駅前（えきまえ）の（しょう）店街（てんがい）で 買（か）い 物（もの）をする。",
     "options": [
       "南",
       "商",
@@ -13764,7 +13764,7 @@
       "匹"
     ],
     "correctAnswerIndex": 1,
-    "explanation": "【商】 THƯƠNG\n- Âm Kun: あきな・う / あきな・い\n- Mẹo nhớ: THƯƠNG LÁI luôn phải đứng (立) và nói (口) nhiều gấp 4 (四) lần người khác.\n- Giải nghĩa: 商い (あきない) là kinh doanh, buôn bán.\n\nDịch: Đang bán cá.\n\nPhân tích:\nA. 南: Nam (phía nam)\nB. 商: Đúng. Thương (あきない - kinh doanh, bán)\nC. 西: Tây (phía tây)\nD. 匹: Thất (đếm con vật nhỏ)",
+    "explanation": "【商】 THƯƠNG\n- Âm On: ショウ | Âm Kun: あきな・う\n- Mẹo nhớ: THƯƠNG LÁI luôn phải đứng (立) và nói (口) nhiều gấp 4 (四) lần người khác.\n- Giải nghĩa: 商店街 (しょうてんがい) là khu phố mua sắm.\n\nDịch: Đi mua sắm ở khu phố mua sắm trước nhà ga.\n\nPhân tích:\nA. 南: Nam (phía nam)\nB. 商: Đúng. Thương trong 商店街 (しょうてんがい - khu phố mua sắm)\nC. 西: Tây (phía tây)\nD. 匹: Thất (đếm con vật nhỏ)",
     "jlptLevel": "N3",
     "lesson": "Bài 33",
     "lessonNum": 33,
@@ -13986,8 +13986,8 @@
     "createdAt": 0
   },
   {
-    "question": "人間は、皆 平びょうどうではない。",
-    "furigana": "人間（にんげん）は、 皆（みな） 平（びょうどう）ではない。",
+    "question": "人間は皆、平どうではない。",
+    "furigana": "人間（にんげん）は 皆（みな）、 平（びょう）（どう）ではない。",
     "options": [
       "等",
       "寺",
