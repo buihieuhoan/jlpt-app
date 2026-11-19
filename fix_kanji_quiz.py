@@ -44,6 +44,7 @@ READ_LEAK = {
 # Sửa từng câu. 'phan_tich_dong': thay dòng phân tích của phương án tương ứng.
 FIXES = {
     # --- Đề dạng VIẾT có sẵn chữ Kanji đáp án ---
+    20: {'furigana': '（一個）二百円（にひゃくえん）の 卵（たまご）を 買（か）う。'},
     41: {'de': '美じゅつが好きです。', 'furigana': '美（び）（じゅつ）が 好（す）き です。', 'dich': 'Tôi thích mỹ thuật.'},
     42: {'de': '勉強にやく立つ本を読む。', 'furigana': '勉強（べんきょう）に（やく）立（だ）つ 本（ほん）を 読（よ）む。'},
     43: {'de': '頭がいい生と。', 'furigana': '頭（あたま）が いい 生（せい）（と）。', 'dich': 'Học sinh thông minh.'},
@@ -142,6 +143,15 @@ FIXES = {
     209: {'furigana': '未来（みらい）を（そう）像（ぞう）する。'},
     211: {'furigana': '母（はは）に（そう）談（だん）する。'},
     237: {'D': 'しょうせっか'},
+    # Câu hỏi cách đọc một phần của từ: thêm cách đọc cho phần không bị hỏi để furigana hiện đủ
+    192: {'furigana': '（責任）者（しゃ）'},
+    278: {'furigana': '（組み立てる）'},
+    423: {'furigana': '（因果）関係（かんけい）'},
+    427: {'furigana': '（個人）情報（じょうほう）'},
+    522: {'furigana': '大（だい）（丈夫）'},
+    643: {'furigana': '文化（ぶんか）（祭）'},
+    683: {'furigana': '（芸能）人（じん）'},
+    686: {'furigana': '（令和）時代（じだい）'},
     667: {'de': '人間は皆、平どうではない。', 'furigana': '人間（にんげん）は 皆（みな）、 平（びょう）（どう）ではない。'},
 }
 
@@ -227,6 +237,54 @@ def find_read_target(q, furi, correct, extra):
     return max(cands, key=len) if cands else None
 
 
+def furigana_dict(old_furi):
+    """Cách đọc từng cụm Kanji: lấy từ furigana cũ của câu, thiếu thì tra từ điển chung (KNOWN)."""
+    d = {}
+    for w, rd in KNOWN.items():
+        m = align(w, rd)
+        if m:
+            runs = re.findall(f'[{KJ}]+', w)
+            for run, reading in zip(runs, m.groups()):
+                d.setdefault(run, reading)
+    for m in reading_parens(old_furi):
+        before = re.search(f'([{KJ}]+)([ぁ-ん]*)$', old_furi[:m.start()])
+        content = m.group(1).strip()
+        base, okuri = before.groups()
+        if okuri and content.endswith(okuri) and len(content) > len(okuri):
+            d[base] = content[:-len(okuri)]
+        elif not okuri:
+            d[base] = content
+    return d
+
+
+def build_furigana(q, target, old_furi):
+    """Dựng lại furigana: phần đang hỏi -> （target）, Kanji khác giữ cách đọc."""
+    d = furigana_dict(old_furi)
+    at = q.find(target)
+    out, i = '', 0
+    while i < len(q):
+        if i == at:
+            out += f'（{target}）'
+            i += len(target)
+            continue
+        if re.match(f'[{KJ}]', q[i]) and not re.search(r'[0-9０-９]$', q[:i]):
+            j = i
+            while j < len(q) and re.match(f'[{KJ}]', q[j]) and j != at:
+                j += 1
+            for k in range(j, i, -1):
+                if q[i:k] in d:
+                    out += f'{q[i:k]}（{d[q[i:k]]}）'
+                    i = k
+                    break
+            else:
+                out += q[i]
+                i += 1
+            continue
+        out += q[i]
+        i += 1
+    return out
+
+
 def replace_analysis_line(text, letter, line):
     lines = (text or '').split('\n')
     for i, l in enumerate(lines):
@@ -255,7 +313,7 @@ for r in rows:
         t = next(w for w, rd in word_pairs(f'{r[10]}\n{r[12]}') if w in q and hira(correct).startswith(rd)) \
             if any(w in q for w, _ in word_pairs(f'{r[10]}\n{r[12]}')) else None
         r[3] = q
-        r[4] = q.replace(t, f'（{t}）', 1) if t else r[4]
+        r[4] = build_furigana(q, t, r[4] or '') if t else r[4]
 
     for key, val in FIXES.get(stt, {}).items():
         if key == 'phan_tich_dong':
@@ -274,8 +332,7 @@ for r in rows:
         if not valid:
             t = find_read_target(r[3], furi, correct, f'{r[10]}\n{r[12]}')
             if t:
-                ms = [m for m in markers(furi) if is_kana(m.group(1).strip())]
-                r[4] = furi[:ms[0].start()] + f'（{t}）' + furi[ms[0].end():] if ms else r[3].replace(t, f'（{t}）', 1)
+                r[4] = build_furigana(r[3], t, furi)
 
     if r != before:
         changes[stt] = [k for k, i in COLS.items() if r[i] != before[i]]

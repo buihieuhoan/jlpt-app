@@ -9,7 +9,7 @@ import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail } from '../
 import { TtsService } from '../../core/services/tts.service';
 import { GrammarService, RubySegment } from '../../core/services/grammar.service';
 import { FuriganaService } from '../../core/services/furigana.service';
-import { buildQuestionRuby, hasKanji, markedTargets, readingsFromText, toRuby, wordRuby } from '../../core/utils/furigana';
+import { buildQuestionRuby, hasKanji, isKana, markedTargets, readingsFromText, revealTargetReading, toRuby, wordRuby } from '../../core/utils/furigana';
 import { KanjiTheoryLesson, KanjiTheoryService } from '../../core/services/kanji-theory.service';
 import { GrammarPracticeComponent } from './grammar/grammar-practice.component';
 import { KanjiStudyComponent } from './kanji/kanji-study.component';
@@ -27,6 +27,7 @@ export interface QuizQuestion {
   type: 'kanji-hiragana' | 'hiragana-kanji' | 'word-meaning' | 'meaning-word' | 'fixed';
   questionText: string;
   questionRuby?: RubySegment[];
+  questionRubyRevealed?: RubySegment[]; // sau khi trả lời: thêm cách đọc của phần đang hỏi
   options: QuizOption[];
   optionRubyBeforeAnswer?: boolean; // false: chỉ hiện furigana đáp án sau khi trả lời (tránh lộ đáp án)
   originalItem?: VocabItem; // only for auto generated
@@ -429,10 +430,14 @@ ${q.furigana ?? ''}`);
       ruby: hasKanji(optText) ? toRuby(optText, readings) : undefined
     }));
 
+    const questionRuby = buildQuestionRuby(q.question, q.furigana, [correct], isKanji ? markedTargets(q.furigana ?? '') : []);
+    const isReadingQuestion = isKanji && q.options.every(isKana);
+
     return {
       type: 'fixed',
       questionText: q.question,
-      questionRuby: buildQuestionRuby(q.question, q.furigana, [correct], isKanji ? markedTargets(q.furigana ?? '') : []),
+      questionRuby,
+      questionRubyRevealed: isReadingQuestion ? revealTargetReading(questionRuby, correct, q.question) : undefined,
       options: options.sort(() => Math.random() - 0.5), // Xáo trộn 4 đáp án khi hiển thị
       // Kanji: cách đọc của đáp án chính là thứ đang hỏi. Từ vựng: chỉ hiện khi mọi đáp án đều có
       // cách đọc, nếu không thì đáp án duy nhất có furigana sẽ thành gợi ý.
@@ -665,6 +670,14 @@ ${q.furigana ?? ''}`);
   // Furigana đáp án: theo nút bật/tắt trước khi trả lời (nếu không làm lộ đáp án), luôn hiện sau khi trả lời
   showOptionRuby(q: QuizQuestion, revealed: boolean): boolean {
     return revealed || (this.furigana.show && !!q.optionRubyBeforeAnswer);
+  }
+
+  // Bật furigana nhưng đề không có chữ nào hiện được: câu hỏi cách đọc, furigana của từ đang hỏi chính là đáp án
+  furiganaHiddenForQuestion(q: QuizQuestion): boolean {
+    return this.furigana.show && !this.showExplanation
+      && hasKanji(q.questionText)
+      && !q.questionRuby?.some(seg => seg.r)
+      && q.options.every(o => isKana(o.text));
   }
 
   categoryLabel(category?: string): string {

@@ -179,3 +179,26 @@ export function readingsFromText(text: string): ReadingDict {
   }
   return dict;
 }
+
+/**
+ * Sau khi trả lời câu hỏi cách đọc: gắn cách đọc (= đáp án) lên phần được gạch chân.
+ * Đáp án có thể kèm đuôi kana nằm sau phần gạch chân trong đề (辞任|した ↔ じにん|した).
+ */
+export function revealTargetReading(segs: RubySegment[], reading: string, question: string): RubySegment[] {
+  const first = segs.findIndex(s => s.hl);
+  if (first < 0) return segs;
+  let last = first;
+  while (last + 1 < segs.length && segs[last + 1].hl) last++;
+  const target = segs.slice(first, last + 1).map(s => s.t ?? '').join('');
+  const after = kataToHira(question.slice(question.indexOf(target) + target.length));
+  const r = kataToHira(reading);
+
+  // Ưu tiên bỏ phần đuôi dài nhất trùng với chữ ngay sau phần gạch chân, rồi mới gióng cả đáp án
+  let pairs: [string, string][] = [];
+  for (let k = 1; !pairs.length && k < r.length; k++) {
+    if (after.startsWith(r.slice(k))) pairs = alignReading(target, r.slice(0, k));
+  }
+  if (!pairs.length) pairs = alignReading(target, r);
+  if (!pairs.length) return segs;
+  return [...segs.slice(0, first), ...toRuby(target, new Map(pairs), { hl: 1 }), ...segs.slice(last + 1)];
+}
