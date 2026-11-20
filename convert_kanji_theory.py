@@ -9,6 +9,7 @@ dựa trên toạ độ từng ký tự (chữ cỡ 6 nằm ngay trên chữ c�
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 import fitz  # PyMuPDF
@@ -16,6 +17,8 @@ import fitz  # PyMuPDF
 ROOT = Path(__file__).resolve().parent
 PDF_PATH = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'n3-junbi-kanji-tonghop-fixed.pdf'
 OUTPUT_PATH = ROOT / 'src' / 'assets' / 'n3_kanji_theory.json'
+# Bản dịch tiếng Việt của câu ví dụ (sách gốc chỉ có tiếng Nhật), khoá là nguyên văn câu tiếng Nhật
+TRANSLATIONS_PATH = ROOT / 'n3_kanji_theory_vi.json'
 
 KANJI_RE = re.compile(r'[㐀-鿿豈-﫿々〆ヶ]')
 BODY_TOP, BODY_BOTTOM = 45, 745     # bỏ header / footer
@@ -24,13 +27,18 @@ RUBY_MAX_SIZE = 8                   # furigana cỡ 6
 MNEMONIC_SIZE = 10                  # mẹo nhớ cỡ 10
 
 
+def normalize_radical(ch):
+    return unicodedata.normalize('NFKC', ch) if '⺀' <= ch <= '⿟' else ch
+
+
 def page_items(page, pno):
     """Các span trong thân trang, kèm toạ độ từng ký tự."""
     items = []
     for block in page.get_text('rawdict')['blocks']:
         for line in block.get('lines', []):
             for span in line['spans']:
-                chars = [c for c in span['chars']]
+                # PDF dùng ký tự bộ thủ Khang Hi (⽊ U+2F4A...) thay cho chữ Kanji thật (木): quy về chữ chuẩn
+                chars = [{**c, 'c': normalize_radical(c['c'])} for c in span['chars']]
                 text = ''.join(c['c'] for c in chars)
                 if not text.strip():
                     continue
@@ -92,6 +100,30 @@ def build_ruby(base_line, rubies):
     return segs
 
 
+# Lỗi in trong sách gốc (sửa sau khi đã tra bản dịch, vì bản dịch đánh khoá theo câu gốc)
+TEXT_FIX = [('担任年金の支払い', '年金の支払い'), ('ちるあ。', 'ちる。'), ('プレゼンを', 'プレゼントを'),
+            ('の人の気を使う', 'の人に気を使う'), ('に答えください', 'に答えてください')]
+RUBY_FIX = {('門', 'かど'): 'もん', ('座席', 'ぎせき'): 'ざせき', ('存知', 'ぞんち'): 'ぞんじ',
+            ('鼻', 'び'): 'はな', ('味玉子', 'あじたまこ'): 'あじたまご'}
+
+
+def fix_example(segs):
+    out = []
+    for s in segs:
+        if 'r' in s:
+            r = re.sub(r'[^ぁ-んァ-ヶー]', '', s['r'])  # bỏ ký tự lạc trong furigana (‘せいかつ)
+            out.append({'t': s['t'], 'r': RUBY_FIX.get((s['t'], r), r)})
+        else:
+            t = re.sub(r'[ 　]{2,}', ' ', s['t'])  # khoảng trắng thừa còn lại từ bảng
+            for old, new in TEXT_FIX:
+                t = t.replace(old, new)
+            out.append({'t': t})
+    return out
+
+
+EXAMPLE_FIX = {'位置グーグルマップでお店の': 'グーグルマップでお店の'}
+
+
 def clean_segments(segs):
     # Bỏ khoảng trắng thừa ở đầu/cuối, gộp đoạn thường liền nhau
     out = []
@@ -101,7 +133,7 @@ def clean_segments(segs):
         else:
             out.append(dict(s))
     if out and 'r' not in out[0]:
-        out[0]['t'] = out[0]['t'].lstrip()
+        out[0]['t'] = EXAMPLE_FIX.get(out[0]['t'].lstrip(), out[0]['t'].lstrip())
     if out and 'r' not in out[-1]:
         out[-1]['t'] = out[-1]['t'].rstrip()
     return [s for s in out if s['t']]
@@ -160,7 +192,12 @@ def parse_card(items):
                 prev[-1] = {'t': prev[-1]['t'].rstrip()}
             if segs and 'r' not in segs[0]:
                 segs[0] = {'t': segs[0]['t'].lstrip()}
-            examples[-1] = prev + segs
+            # Ghi chú của sách (営業：..., → ..., 疲れ ＜ 疲労...) nằm trên dòng riêng thì giữ xuống dòng
+            prev_text = ''.join(x['t'] for x in prev).rstrip()
+            new_text = ''.join(x['t'] for x in segs).strip()
+            is_note = prev_text.endswith(tuple('。！？」）)')) or new_text.startswith(tuple('→＝≒＞＜・')) \
+                or bool(re.search('[：＜＞≒]', new_text))
+            examples[-1] = prev + ([{'t': '\n'}] if is_note else []) + segs
     examples = [clean_segments(e) for e in examples]
     examples = [e for e in examples if e]
 
@@ -189,7 +226,8 @@ starts = [(int(re.search(r'bai (\d+)', title).group(1)), page)
 starts.sort()
 toc = toc_kanji(doc)
 
-lessons, problems = [], []
+lessons, problems, missing_vi = [], [], []
+translations = json.loads(TRANSLATIONS_PATH.read_text(encoding='utf-8')) if TRANSLATIONS_PATH.exists() else {}
 for idx, (num, start) in enumerate(starts):
     end = starts[idx + 1][1] - 1 if idx + 1 < len(starts) else doc.page_count
     # Trang cuối sách là lời cảm ơn, không thuộc buổi 35
@@ -217,8 +255,15 @@ for idx, (num, start) in enumerate(starts):
         missing = [k for k in ('hanViet', 'mnemonic', 'examples') if not c[k]] + ([] if c['on'] or c['kun'] else ['on/kun'])
         if missing or len(c['kanji']) != 1:
             problems.append(f'Buổi {num} #{c["no"]} {c["kanji"]}: thiếu {missing}')
+    for c in cards:
+        keys = [''.join(s['t'] for s in e).replace('\n', '') for e in c['examples']]
+        c['translations'] = [translations.get(k, '') for k in keys]
+        missing_vi.extend(k for k, vi in zip(keys, c['translations']) if not vi)
+        c['examples'] = [fix_example(e) for e in c['examples']]
     lessons.append({'lesson': f'Bài {num}', 'lessonNum': num, 'level': 'N3', 'kanji': cards})
 
 OUTPUT_PATH.write_text(json.dumps(lessons, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
 print(f'Đã trích {len(lessons)} buổi, {sum(len(l["kanji"]) for l in lessons)} chữ Kanji -> {OUTPUT_PATH}')
 print('\n'.join(problems) if problems else 'Không có sai lệch so với mục lục.')
+if missing_vi:
+    print(f'Thiếu bản dịch cho {len(missing_vi)} câu ví dụ, vd: {missing_vi[:3]}')

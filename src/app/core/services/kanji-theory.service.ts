@@ -12,6 +12,7 @@ export interface KanjiCard {
   kun: string[];
   mnemonic: string;
   examples: RubySegment[][];
+  translations?: string[]; // bản dịch tiếng Việt, cùng thứ tự với examples
 }
 
 export interface KanjiTheoryLesson {
