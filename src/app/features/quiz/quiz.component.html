@@ -122,7 +122,15 @@
                    class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-600">
             <span class="text-lg font-bold text-slate-900 dark:text-white">{{ group.lesson }}</span>
           </label>
-          <span class="chip bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">{{ group.count }} câu</span>
+          <span *ngIf="progress[kanjiLessonKey(group)] as p; else notDone"
+                class="chip"
+                [ngClass]="p.best >= 80 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300' : 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300'"
+                [title]="'Đã làm ' + p.attempts + ' lần · lần gần nhất ' + p.last + '%'">
+            Cao nhất {{ p.best }}%
+          </span>
+          <ng-template #notDone>
+            <span class="chip bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">Chưa làm</span>
+          </ng-template>
         </div>
 
         <div *ngIf="theoryFor(group) as theory; else sampleBox" class="mb-4 flex flex-wrap gap-1.5">
@@ -227,6 +235,9 @@
             <span class="whitespace-nowrap text-sm font-medium text-slate-700 dark:text-slate-300">
               {{ lesson === '0' ? 'Chưa phân loại' : 'Bài ' + lesson }}
             </span>
+            <span *ngIf="vocabLessonBest(lesson) as p" [title]="'Điểm cao nhất khi làm riêng bài này · đã làm ' + p.attempts + ' lần'"
+                  class="text-xs font-semibold"
+                  [ngClass]="p.best >= 80 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">{{ p.best }}%</span>
           </label>
           <div *ngIf="availableVocabLessons.length === 0" class="p-2 text-sm italic text-slate-500">Không có dữ liệu bài học.</div>
         </div>
@@ -384,10 +395,29 @@
       <span class="text-xl font-semibold text-slate-400"> / {{ questions.length }}</span>
       <span class="ml-2 text-sm text-slate-400">({{ Math.round((score / questions.length) * 100) }}%)</span>
     </p>
-    <span class="chip mt-4 bg-amber-100 px-4 py-1.5 text-sm text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">+{{ expGained }} EXP</span>
+    <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+      <span class="chip bg-amber-100 px-4 py-1.5 text-sm text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">+{{ expGained }} EXP</span>
+      <ng-container *ngIf="progressResult as p">
+        <span *ngIf="p.isRecord && p.previousBest !== null" class="chip bg-emerald-100 px-4 py-1.5 text-sm text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300">
+          🏆 Kỷ lục mới! (trước đó {{ p.previousBest }}%)
+        </span>
+        <span *ngIf="p.previousBest === null" class="chip bg-indigo-50 px-4 py-1.5 text-sm text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
+          Lần đầu làm đề này · đã lưu thành tích
+        </span>
+        <span *ngIf="!p.isRecord" class="chip bg-slate-100 px-4 py-1.5 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+          Cao nhất: {{ p.best }}% ({{ p.bestScore }}/{{ p.bestTotal }})
+        </span>
+      </ng-container>
+      <span *ngIf="!progressResult" class="chip bg-slate-100 px-4 py-1.5 text-sm text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+        Lượt ôn câu sai không tính vào thành tích
+      </span>
+    </div>
 
-    <div class="mt-6 grid gap-3 sm:grid-cols-3">
-      <button (click)="retryCurrentQuiz()" class="btn-primary py-3">Thi lại bài này</button>
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      <button (click)="retryWrong()" [disabled]="mistakes.length === 0" class="btn-primary py-3">
+        Ôn lại {{ mistakes.length }} câu sai
+      </button>
+      <button (click)="retryCurrentQuiz()" class="btn-secondary py-3">Thi lại bài này</button>
       <button (click)="restart()" class="btn-secondary py-3">Danh sách bài học</button>
       <button (click)="viewHistory()" class="btn-secondary py-3">Xem lịch sử</button>
     </div>

@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { VocabItem, VocabService } from '../../core/services/vocab.service';
 import { LevelService } from '../../core/services/level.service';
 import { UserService } from '../../core/services/user.service';
-import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail } from '../../core/services/quiz.service';
+import { QuizService, QuizQuestionDB, QuizHistory, QuizHistoryDetail, QuizProgress, QuizProgressResult } from '../../core/services/quiz.service';
 import { TtsService } from '../../core/services/tts.service';
 import { GrammarService, RubySegment } from '../../core/services/grammar.service';
 import { FuriganaService } from '../../core/services/furigana.service';
@@ -110,6 +110,12 @@ export class QuizComponent implements OnInit, OnDestroy {
   showExplanation: boolean = false;
   expGained: number = 0;
   lastPlayedLessonGroup: KanjiLessonGroup | null = null;
+
+  // --- Thành tích tốt nhất & ôn câu sai ---
+  progress: { [key: string]: QuizProgress } = {};
+  private currentProgressKey: string | null = null;   // null = lượt ôn câu sai (không tính kỷ lục)
+  private reviewSource: QuizQuestion[] | null = null; // các câu của lượt ôn câu sai, để "Thi lại" lặp lại đúng lượt đó
+  progressResult: QuizProgressResult | null = null;
   
   // --- History State ---
   historyDetails: QuizHistoryDetail[] = [];
@@ -121,6 +127,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   timerInterval: any;
 
   ngOnInit() {
+    this.progress = this.quizService.getProgress();
     combineLatest([
       this.vocabService.getVocabs(),
       this.quizService.getQuizzes(),
@@ -300,6 +307,7 @@ export class QuizComponent implements OnInit, OnDestroy {
   startSingleKanjiLesson(group: KanjiLessonGroup) {
     this.lastPlayedLessonGroup = group;
     this.currentQuizTitle = `Kanji ${this.currentLevel} • ${group.lesson}`;
+    this.setProgressKey(this.kanjiLessonKey(group));
     
     // Shuffle the questions in this lesson
     const shuffled = [...group.quizzes].sort(() => Math.random() - 0.5);
@@ -333,12 +341,14 @@ export class QuizComponent implements OnInit, OnDestroy {
     const selected = shuffled.slice(0, limit);
 
     this.currentQuizTitle = `Kanji ${this.currentLevel} • ${selectedLessons.length} bài (${selected.length} câu)`;
+    this.setProgressKey(`kanji|${this.currentLevel}|${selectedLessons.map(l => l.lessonNum).join(',')}`);
     this.initQuizQuestionsFromFixed(selected);
   }
 
   // 3. Start Vocab Quiz
   startVocabQuiz() {
     this.lastPlayedLessonGroup = null;
+    this.setProgressKey(this.vocabKey(this.availableVocabLessons.filter(l => this.selectedVocabLessons[l])));
     if (this.vocabQuizMode === 'auto') {
       this.startAutoQuiz();
     } else {
@@ -391,29 +401,62 @@ export class QuizComponent implements OnInit, OnDestroy {
     const selectedVocabs = shuffled.slice(0, Math.min(count, filteredVocabs.length));
 
     this.currentQuizTitle = `Từ vựng ${this.currentLevel} • Tạo tự động (${selectedVocabs.length} câu)`;
-    this.questions = selectedVocabs.map(vocab => {
+    this.beginRun(selectedVocabs.map(vocab => {
       const type = types[Math.floor(Math.random() * types.length)];
       return this.generateQuestion(vocab, type, this.availableVocabs);
-    });
-
-    this.currentIndex = 0;
-    this.score = 0;
-    this.mistakes = [];
-    this.historyDetails = [];
-    this.stage = 'playing';
-    this.setupCurrentQuestion();
+    }));
   }
 
   // --- Helper to initialize fixed questions ---
   private initQuizQuestionsFromFixed(quizzes: QuizQuestionDB[]) {
-    this.questions = quizzes.map(q => this.buildFixedQuestion(q));
+    this.beginRun(quizzes.map(q => this.buildFixedQuestion(q)));
+  }
 
+  private beginRun(questions: QuizQuestion[]) {
+    this.questions = questions;
     this.currentIndex = 0;
     this.score = 0;
     this.mistakes = [];
     this.historyDetails = [];
+    this.progressResult = null;
     this.stage = 'playing';
     this.setupCurrentQuestion();
+  }
+
+  // --- Thành tích tốt nhất ---
+  private setProgressKey(key: string) {
+    this.currentProgressKey = key;
+    this.reviewSource = null;
+  }
+
+  kanjiLessonKey(group: KanjiLessonGroup): string {
+    return `kanji|${this.currentLevel}|${group.lessonNum}`;
+  }
+
+  private vocabKey(lessons: string[]): string {
+    return `vocab|${this.currentLevel}|${this.vocabQuizMode}|${lessons.join(',')}`;
+  }
+
+  // Điểm cao nhất của 1 bài từ vựng (khi làm riêng bài đó) theo chế độ đang chọn
+  vocabLessonBest(lesson: string): QuizProgress | undefined {
+    return this.progress[this.vocabKey([lesson])];
+  }
+
+  // --- Ôn lại câu sai ---
+  retryWrong() {
+    if (this.mistakes.length === 0) return;
+    this.reviewSource = [...this.mistakes];
+    this.currentProgressKey = null;
+    this.currentQuizTitle = `${this.currentQuizTitle.replace(/ • Ôn câu sai$/, '')} • Ôn câu sai`;
+    this.beginReview();
+  }
+
+  private beginReview() {
+    // Câu có sẵn trong DB thì dựng lại (xáo đáp án), câu tạo tự động thì giữ nguyên câu, xáo lại đáp án
+    const source = this.reviewSource ?? [];
+    this.beginRun(source.map(q => q.dbItem
+      ? this.buildFixedQuestion(q.dbItem)
+      : { ...q, options: [...q.options].sort(() => Math.random() - 0.5) }));
   }
 
   // Furigana cho đề và đáp án, bỏ mọi cách đọc có thể làm lộ đáp án
@@ -619,10 +662,17 @@ ${q.furigana ?? ''}`);
       details: this.historyDetails
     };
     this.quizService.saveQuizHistory(history);
+
+    if (this.currentProgressKey) {
+      this.progressResult = this.quizService.saveProgress(this.currentProgressKey, this.score, this.questions.length);
+      this.progress = this.quizService.getProgress();
+    }
   }
 
   retryCurrentQuiz() {
-    if (this.lastPlayedLessonGroup) {
+    if (this.reviewSource) {
+      this.beginReview();
+    } else if (this.lastPlayedLessonGroup) {
       this.startSingleKanjiLesson(this.lastPlayedLessonGroup);
     } else if (this.activeCategory === 'kanji') {
       this.startMultiKanjiQuiz();

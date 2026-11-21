@@ -38,6 +38,22 @@ export interface QuizHistory {
   details: QuizHistoryDetail[];
 }
 
+export interface QuizProgress {
+  best: number;       // % cao nhất
+  bestScore: number;
+  bestTotal: number;
+  last: number;       // % lần gần nhất
+  attempts: number;
+  updatedAt: number;
+}
+
+export interface QuizProgressResult extends QuizProgress {
+  previousBest: number | null; // null = lần đầu làm đề này
+  isRecord: boolean;
+}
+
+const PROGRESS_KEY = 'jlpt_quiz_progress';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,6 +93,32 @@ export class QuizService {
       return JSON.parse(saved) as QuizHistory[];
     }
     return [];
+  }
+
+  // --- Thành tích tốt nhất theo từng đề (Kanji: theo bài; Từ vựng: theo chế độ + các bài đã chọn) ---
+  getProgress(): { [key: string]: QuizProgress } {
+    try {
+      return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  saveProgress(key: string, score: number, total: number): QuizProgressResult {
+    const all = this.getProgress();
+    const prev = all[key];
+    const percent = total ? Math.round((score / total) * 100) : 0;
+    const isRecord = !prev || percent > prev.best;
+    all[key] = {
+      best: isRecord ? percent : prev.best,
+      bestScore: isRecord ? score : prev.bestScore,
+      bestTotal: isRecord ? total : prev.bestTotal,
+      last: percent,
+      attempts: (prev?.attempts ?? 0) + 1,
+      updatedAt: Date.now()
+    };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(all));
+    return { ...all[key], previousBest: prev?.best ?? null, isRecord };
   }
 
   saveQuizHistory(history: QuizHistory) {
